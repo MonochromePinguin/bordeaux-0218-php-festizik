@@ -1,0 +1,98 @@
+/* -------- NAVBAR -------- */
+nav {
+	display: block;
+}
+
+.logo {
+	background: url("/assets/images/logo_mini.png") no-repeat;
+	height: 40px;
+	width: 70%;
+}
+
+nav div {
+	height: 85vh;
+	text-align: center;
+}
+
+nav ul:first-child {
+	margin-top: 15%;
+}
+
+nav li {
+	list-style-type: none;
+	height: 10vh;
+}
+
+nav li a {
+	color: #FDB940;
+	padding-top: 5%;
+}
+
+nav li a:hover {
+	color: #3C3C3D;
+}
+
+.social-icons {
+	display: inline;
+}
+.social-icons li {
+	display: inline-flex;
+	margin: 5%;
+}
+
+
+/* -------- MEDIA QUERIES -------- */
+@media screen and (min-width: 992px) {
+	nav {
+		min-width: 100px;
+		height: 100vh;
+		border-right: 1px solid black;
+	}
+
+	.logo {
+		background: url("/assets/images/favicon.png") no-repeat;
+		position: absolute;
+		top: 0;
+		height: 80px;
+		width: 74px;
+		top: 5%;
+	}
+
+	nav:hover .logo {
+		background: url("/assets/images/logo.png") no-repeat;
+		height: 102px;
+		width: 130px;
+		top: 0;
+		margin-left: 3.2%;
+	}
+
+	#navbarSupportedContent {
+		display: none !important;
+	}
+
+	nav:hover #navbarSupportedContent {
+		display: block !important;
+	}
+
+	nav:hover .navbar-nav:first-child {
+		margin-top: 70%;
+	}
+
+	nav ul {
+		display: block !important;
+	}
+
+	nav ul:first-child {
+	margin-top: 0;
+	}
+
+	.social-icons {
+		position: absolute;
+		top: 90%;
+		width: 80%;
+	}
+
+	.social-icons li {
+		margin: 0 5%;
+	}
+}
