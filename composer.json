@@ -1,10 +1,22 @@
 {
-    "name": "aurel/simple-mvc",
-    "description": "Simple from scratch PHP MVC",
+    "name": "digitalfestival/festizik",
+    "description": "festival site application",
     "authors": [
         {
-            "name": "Aurelien",
-            "email": "barbier.aurelien@wildcodeschool.fr"
+            "name": "Anthony",
+            "email": "x.y@yopmail.fr"
+        },
+        {
+            "name": "Gauthier",
+            "email": "y.z@yopmail.fr"
+        },
+        {
+            "name": "Léa",
+            "email": "z.a@yopmail.fr"
+        },
+        {
+            "name": "Sébastien",
+            "email": "a.b@yopmail.fr"
         }
     ],
     "minimum-stability": "stable",

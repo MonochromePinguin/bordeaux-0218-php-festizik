@@ -1,0 +1,43 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block title %}Festizik – administration concerts{% endblock %}
+
+
+{% block stylesheet %}
+    <link href="assets/css/admin.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+    <header>
+        <h1>Édition du planning concerts</h1>
+    </header
+
+    <hr/>
+
+    <main>
+
+ {# TODO : à écrire ! #}
+      {% for c in concerts %}
+        <article>
+            <header>
+                <h1>le {{ c.date }} à {{ c.hour }}</h1>
+                <h2>à {{ c.scene }}</h2>
+            </header>
+
+            <main>
+                {# <p>{{ c.artiste.nom }}</p> #}
+                <p>{{ c.artiste.about }}</p>
+            </main>
+        </article>
+
+        {% else %}
+            <article>
+                <p>Aucun événement enregistré</p>
+            </article>
+
+      {% endfor %}
+    </main>
+
+{% endblock %}

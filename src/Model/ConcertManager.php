@@ -4,15 +4,15 @@ namespace Model;
 /**
  *
  */
-class ItemManager extends AbstractManager
+class ConcertManager extends AbstractManager
 {
-    const TABLE = 'styles';
+    const TABLE = 'concerts';
 
     /**
      *  Initializes this class.
      */
     public function __construct()
     {
-        parent::__construct(self::TABLE, 'Item');
+        parent::__construct(self::TABLE, 'Concert');
     }
 }

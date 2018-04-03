@@ -13,7 +13,7 @@ namespace Model;
  * Class Item
  *
  */
-class Item
+class Style
 {
     private $id;
     private $name;

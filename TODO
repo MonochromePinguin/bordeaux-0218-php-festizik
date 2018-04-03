@@ -1,0 +1,9 @@
+_ remove the remnants of the old MVC squeleton :
+    simple-mvc.sql,
+    Item{,Controller,Manager}.php
+
+_ write our own README.md
+
+_ complete the composer.json with our personnal informations
+
+_ write the 404 error page

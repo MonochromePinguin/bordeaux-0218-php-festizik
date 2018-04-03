@@ -1,10 +1,7 @@
 <?php
 namespace Model;
 
-/**
- *
- */
-class ItemManager extends AbstractManager
+class StyleManager extends AbstractManager
 {
     const TABLE = 'styles';
 
@@ -13,6 +10,6 @@ class ItemManager extends AbstractManager
      */
     public function __construct()
     {
-        parent::__construct(self::TABLE, 'Item');
+        parent::__construct(self::TABLE, 'Style');
     }
 }

@@ -1,0 +1,68 @@
+:root {
+    --backColor : lightgrey;
+}
+
+
+body {
+    padding: 4vw;
+    text-align: left;
+
+    background-color: lightgrey;
+    background-color: var(--backColor);
+}
+
+
+header > h1 {
+    margin: 0.3rem;
+    color: darkred;
+}
+
+h2 {
+    margin: 0.3rem;
+    margin-bottom: 3rem;
+    color: darkblue;
+}
+
+header + hr { border: 1px solid darkred }
+
+
+/* one article per entries in the DB */
+
+
+article {
+    border: 1px solid darkred;
+    border-radius: 0.5rem;
+
+    margin: 2rem;
+    padding: 1rem;
+}
+
+article > h1 {
+    color: darkred;
+    border-bottom: 1px solid darkblue;
+    margin: 0.5rem;
+}
+
+article > main > p:first-child {
+    color: darkblue;
+    text-align: right;
+    margin: 0.5rem;
+}
+
+
+
+/* error messages */
+
+aside.error { padding: 1rem }
+
+.error {
+    display: inline-block;
+    padding: 0.3rem;
+    margin-top: 1rem;
+
+    color: red;
+    font-weight: bold;
+    border: 1px solid red;
+}
+
+.norm { color: black }
