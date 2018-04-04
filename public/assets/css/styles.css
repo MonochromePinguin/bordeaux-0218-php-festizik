@@ -1,5 +1,7 @@
+
 /* -------- NAVBAR -------- */
 nav {
+	background-color: white;
 	display: block;
 }
 
@@ -38,6 +40,18 @@ nav li a:hover {
 .social-icons li {
 	display: inline-flex;
 	margin: 5%;
+}
+
+/*********************FOOTER***************************/
+
+
+.myNav {
+	padding: 0;	
+}
+
+
+.logoLink {
+	display: none;
 }
 
 
@@ -94,5 +108,34 @@ nav li a:hover {
 
 	.social-icons li {
 		margin: 0 5%;
+	}
+
+	/****************Footer***************/
+
+	.myFooter{
+	z-index: -10000;
+	height: 100px;
+	}
+
+	.myNav {
+		padding-right: 0;
+		align-items: center;
+		height: 100px;
+	}
+
+	.myCopyright {
+		margin-left: 35px;
+	}
+
+	.logoLink {
+		display: block;
+		width: 10em;
+		height: 100%;
+	}
+
+	.footLogo {
+		background-repeat: no-repeat;
+		background-position: center;
+		height: 100%;
 	}
 }
