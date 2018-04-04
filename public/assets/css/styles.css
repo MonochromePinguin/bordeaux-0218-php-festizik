@@ -1,6 +1,8 @@
 /* -------- NAVBAR -------- */
 nav {
 	display: block;
+	background-color: white;
+	z-index: 22222;
 }
 
 .logo {
@@ -15,7 +17,7 @@ nav div {
 }
 
 nav ul:first-child {
-	margin-top: 15%;
+	margin-top: 2%;
 }
 
 nav li {
@@ -52,7 +54,6 @@ nav li a:hover {
 	.logo {
 		background: url("/assets/images/favicon.png") no-repeat;
 		position: absolute;
-		top: 0;
 		height: 80px;
 		width: 74px;
 		top: 5%;
