@@ -10,8 +10,7 @@ class ArtistManager extends AbstractManager
      */
     public function __construct()
     {
+        Artist::initStatics();
         parent::__construct(self::TABLE, 'Artist');
-//TODO : S'assurer que ttes les tables dépendantes soient chargées ...
-// → les initialiser !?
     }
 }

@@ -25,12 +25,16 @@
       {% for c in concerts %}
         <article>
             <header>
-                <h1>le {{ c.Day }} à {{ c.hour }}</h1>
-                <h2>sur {{ c.SceneName }}</h2>
+                <h1>le {{ c.Date }} à {{ c.hour }}</h1>
+                <h2>scène «{{ c.sceneName | title }}»</h2>
             </header>
 
+            {% if 1 == c.cancelled %}
+                <p class="righted">Annulé</p>
+            {% endif %}
+
             <main>
-                <p>{{ c.ArtistName }} ( {{ c.ArtistGenre }} )</p>
+                <p>{{ c.ArtistName }} ( {{ c.ArtistStyle }} )</p>
             </main>
         </article>
 

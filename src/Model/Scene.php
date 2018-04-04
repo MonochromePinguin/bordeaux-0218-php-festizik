@@ -1,21 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wcs
- * Date: 23/10/17
- * Time: 10:57
- * PHP version 7
- */
-
 namespace Model;
 
 /**
- * Class Item
+ * Class Scene
  *
  */
-class Style
+class Scene
 {
-    private $id_style;
+    private $id_scene;
     private $name;
 
     /**
@@ -23,7 +15,7 @@ class Style
      */
     public function getId(): int
     {
-        return $this->id_style;
+        return $this->id_scene;
     }
 
     /**

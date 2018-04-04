@@ -1,29 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wcs
- * Date: 23/10/17
- * Time: 10:57
- * PHP version 7
- */
-
 namespace Model;
 
 /**
- * Class Item
+ * Class Scene
  *
  */
-class Style
+class Day
 {
-    private $id_style;
+    private $id_day;
     private $name;
+    private $date;
 
     /**
      * @return int
      */
     public function getId(): int
     {
-        return $this->id_style;
+        return $this->id_day;
     }
 
     /**
@@ -32,6 +25,15 @@ class Style
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateAsString(): string
+    {
+setlocale( LC_ALL, null );
+        return strftime( '%A %d %B %Y', strtotime( $this->date) );
     }
 
     // /**

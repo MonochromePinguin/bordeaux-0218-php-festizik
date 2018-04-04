@@ -13,6 +13,7 @@ class ConcertManager extends AbstractManager
      */
     public function __construct()
     {
+        Concert::initStatics();
         parent::__construct(self::TABLE, 'Concert');
     }
 }

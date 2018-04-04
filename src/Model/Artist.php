@@ -7,18 +7,24 @@ namespace Model;
  */
 class Artist
 {
-    private $id;
+    private $id_artist;
     private $name;
-    private $idStyle;
+    private $id_style;
     private $about;
     private $picture;
+
+    private static $styles;
+
+    public static function initStatics() {
+        static::$styles = ( new StyleManager() )->selectAll();
+    }
 
     /**
      * @return int
      */
     public function getId(): int
     {
-        return $this->id;
+        return $this->id_artist;
     }
 
    /**
@@ -29,34 +35,46 @@ class Artist
         return $this->name;
     }
 
-    /**
-     * @param string Name
+   /**
      * @return string
      */
-    public function setName(string $name): string
+    public function getStyle(): string
     {
-        $this->name = $name;
-        return $this;
+        $style = static::$styles[$this->id_style -1];
+        if ( $style )
+            return $style->getName();
+        else
+            return 'Index de style erroné : ' . $this->id_style;
     }
 
-    /**
-     * @return int
-     */
-    public function getIdStyle(): int
-    {
-        return $this->idStyle;
-    }
+//     /**
+//      * @param string Name
+//      * @return string
+//      */
+//     public function setName(string $name): string
+//     {
+//         $this->name = $name;
+//         return $this;
+//     }
 
-    /**
-     * @param int IdStyle
-     * @return Artist
-     */
-    public function setIdStyle(int $idStyle): int
-    {
-//TODO : add verifications ...
-        $this->idStyle = $idStyle;
-        return $this;
-    }
+//     /**
+//      * @return int
+//      */
+//     public function getIdStyle(): int
+//     {
+//         return $this->idStyle;
+//     }
+
+//     /**
+//      * @param int IdStyle
+//      * @return Artist
+//      */
+//     public function setIdStyle(int $idStyle): int
+//     {
+// //TODO : add verifications ...
+//         $this->idStyle = $idStyle;
+//         return $this;
+//     }
 
 //TODO : add setStyle(string), getStyle(string) avec tt la logique
 // liant cette classe à Style ?

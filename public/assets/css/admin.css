@@ -19,9 +19,11 @@ header > h1 {
 
 h2 {
     margin: 0.3rem;
-    margin-bottom: 3rem;
     color: darkblue;
 }
+
+body > header { margin-bottom: 3rem }
+
 
 header + hr { border: 1px solid darkred }
 
@@ -35,13 +37,29 @@ article {
 
     margin: 2rem;
     padding: 1rem;
+
+    font-size: 2rem;
 }
 
-article > h1 {
+
+article > header > h1,
+article > header > h2 {
+    font-size: 1rem;
+}
+
+article > header > h1 {
     color: darkred;
     border-bottom: 1px solid darkblue;
     margin: 0.5rem;
 }
+
+.righted {
+    text-align: right;
+    font-style: italic;
+    color: darkred;
+}
+
+
 
 article > main > p:first-child {
     color: darkblue;
