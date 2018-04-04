@@ -22,4 +22,5 @@ class AdminManager extends AbstractManager
     {
         parent::__construct(self::TABLE);
     }
+
 }
