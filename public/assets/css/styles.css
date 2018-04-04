@@ -1,6 +1,8 @@
 /* -------- NAVBAR -------- */
 nav {
 	display: block;
+	background-color: white; 
+	z-index: 22222;
 }
 
 .logo {

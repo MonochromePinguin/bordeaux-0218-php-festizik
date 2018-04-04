@@ -1,5 +1,21 @@
-.height
-{
-	height: 100vh;
-	width: 100vw;
+
+
+
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+}
+
+
+.content {
+	position: absolute;
+	text-align: center;
+    position: fixed;
+    color: black; 
+    width: 100%;
+    top: 31%;
+    height: auto;
 }
