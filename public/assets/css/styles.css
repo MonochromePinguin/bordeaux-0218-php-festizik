@@ -1,7 +1,11 @@
 /* -------- NAVBAR -------- */
 nav {
 	display: block;
+<<<<<<< HEAD
 	background-color: white; 
+=======
+	background-color: white;
+>>>>>>> 66a329da5911e9bad35bcf5bc8748e44b870e39e
 	z-index: 22222;
 }
 
@@ -17,7 +21,7 @@ nav div {
 }
 
 nav ul:first-child {
-	margin-top: 15%;
+	margin-top: 2%;
 }
 
 nav li {
@@ -54,7 +58,6 @@ nav li a:hover {
 	.logo {
 		background: url("/assets/images/favicon.png") no-repeat;
 		position: absolute;
-		top: 0;
 		height: 80px;
 		width: 74px;
 		top: 5%;
