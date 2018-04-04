@@ -15,7 +15,8 @@ class Artist
 
     private static $styles;
 
-    public static function initStatics() {
+    public static function initStatics()
+    {
         static::$styles = ( new StyleManager() )->selectAll();
     }
 
@@ -41,41 +42,10 @@ class Artist
     public function getStyle(): string
     {
         $style = static::$styles[$this->id_style -1];
-        if ( $style )
+        if ($style) {
             return $style->getName();
-        else
+        } else {
             return 'Index de style erroné : ' . $this->id_style;
+        }
     }
-
-//     /**
-//      * @param string Name
-//      * @return string
-//      */
-//     public function setName(string $name): string
-//     {
-//         $this->name = $name;
-//         return $this;
-//     }
-
-//     /**
-//      * @return int
-//      */
-//     public function getIdStyle(): int
-//     {
-//         return $this->idStyle;
-//     }
-
-//     /**
-//      * @param int IdStyle
-//      * @return Artist
-//      */
-//     public function setIdStyle(int $idStyle): int
-//     {
-// //TODO : add verifications ...
-//         $this->idStyle = $idStyle;
-//         return $this;
-//     }
-
-//TODO : add setStyle(string), getStyle(string) avec tt la logique
-// liant cette classe à Style ?
 }

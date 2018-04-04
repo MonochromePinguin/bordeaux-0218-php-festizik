@@ -43,5 +43,4 @@ class Style
     //     $this->name = $name;
     //     return $this;
     // }
-
 }

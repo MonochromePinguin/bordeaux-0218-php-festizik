@@ -19,6 +19,8 @@ class Day
         return $this->id_day;
     }
 
+//TODO : delete the «name» field unless someone find a good reason to keep it.
+//who knows?
     /**
      * @return string
      */
@@ -32,18 +34,7 @@ class Day
      */
     public function getDateAsString(): string
     {
-setlocale( LC_ALL, null );
-        return strftime( '%A %d %B %Y', strtotime( $this->date) );
+        setlocale(LC_ALL, null);
+        return strftime('%A %d %B %Y', strtotime($this->date));
     }
-
-    // /**
-    //  * @param string Name
-    //  * @return Item
-    //  */
-    // public function setName(string $name): string
-    // {
-    //     $this->name = $name;
-    //     return $this;
-    // }
-
 }

@@ -10,22 +10,13 @@
  */
 
 $routes = [
-    // 'Item' => [ // Controller
-    //     ['index', '/', 'GET'], // action, url, method
-    //     ['add', '/item/add', 'GET'], // action, url, method
-    //     ['edit', '/item/edit/{id:\d+}', 'GET'], // action, url, method
-    //     ['show', '/item/{id:\d+}', 'GET'], // action, url, method
+    // 'Admin' => [ // Controller
+    //     ['concerts', '/admin/concerts', 'POST'],
+    //     ['articles', '/admin/articles', 'POST']
     // ],
-    'Item'=> [
-        ['index', '/item', 'GET']
-    ],
-    'Admin' => [ // Controller
-        ['list', '/list', 'GET'], // ● TEST !
-        ['concerts', '/admin/concerts', 'POST'],
-        ['articles', '/admin/articles', 'POST']
-    ],
     'User' => [
-        [ 'articles', '/', 'GET'],
+        ['testList', '/testList', 'GET'], // ● TEST !
+//        [ 'articles', '/', 'GET'], // action, url, method
         ['concerts', '/concerts', 'GET']
     ]
 ];

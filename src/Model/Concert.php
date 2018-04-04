@@ -24,7 +24,8 @@ class Concert
     private static $scenes;
     private static $days;
 
-    public static function initStatics() {
+    public static function initStatics()
+    {
         static::$artists = ( new ArtistManager() )->selectAll();
         static::$scenes = ( new SceneManager() )->selectAll();
         static::$days = ( new DayManager() )->selectAll();
@@ -45,13 +46,15 @@ class Concert
     public function getDate(): string
     {
         $day = static::$days[$this->id_day -1];
-        if ( $day )
+        if ($day) {
             return $day->getDateAsString();
-        else
+        } else {
             return 'Index de jour erroné : ' . $this->id_day;
+        }
         return ;
     }
 
+//TODO : seems unneeded. Delete it if no-one want it.
     /**
      * @return string
      */
@@ -68,45 +71,57 @@ class Concert
         return $this->hour;
     }
 
+
+# THIS COULD BE USED AS A TEMPLATE TO GENERATE THE NOT-DRY-AT-ALL FUNCTIONS
+# BELOW ↓ :
+    // public function get%fonc%(): string {
+    //     $%prop% = static::$%prop%s[$this->id_%prop%];
+    //     if ( $%prop% )
+    //         return %class%->get%fonc%
+    // }
+
     /**
      * @return string
      */
-//TODO : C'EST PAS DRY DU TOUT ! DÉDUPLIQUER CE CODE !
-//avec __GET() magique ?
+//TODO : THIS IS NOT "DRY" AT ALL! DEDUPLICATE THIS CODE!
+//with some  __GET() magical member?
     public function getSceneName(): string
     {
         $scene = static::$scenes[$this->id_scene -1];
-        if ( $scene )
+        if ($scene) {
             return $scene->getName();
-        else
+        } else {
             return 'Index de scène erroné : ' . $this->id_scene;
+        }
         return ;
     }
 
+//TODO : THIS IS NOT "DRY" AT ALL! DEDUPLICATE THIS CODE!
     /**
      * @return string
      */
-//TODO : C'EST PAS DRY DU TOUT ! DÉDUPLIQUER CE CODE !
     public function getArtistName(): string
     {
         $artist = Concert::$artists[$this->id_artist -1];
-        if ( $artist )
+        if ($artist) {
             return $artist->getName();
-        else
+        } else {
             return 'Index d\'artiste erroné : ' . $this->id_artist;
+        }
     }
 
-//TODO : C'EST PAS DRY DU TOUT ! DÉDUPLIQUER CE CODE !
+//TODO : THIS IS NOT "DRY" AT ALL! DEDUPLICATE THIS CODE!
     /**
      * @return string
      */
     public function getArtistStyle(): string
     {
         $artist = Concert::$artists[$this->id_artist -1];
-        if ( $artist )
+        if ($artist) {
             return $artist->getStyle();
-        else
+        } else {
             return 'Index d\'artiste erroné : ' . $this->id_artist;
+        }
     }
 
     /**

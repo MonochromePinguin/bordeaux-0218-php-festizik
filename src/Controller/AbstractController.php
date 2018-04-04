@@ -11,6 +11,7 @@ namespace Controller;
 
 use Twig_Loader_Filesystem;
 use Twig_Environment;
+use misc\ErrorStore as ErrorStore;
 
 /**
  *
@@ -29,7 +30,7 @@ abstract class AbstractController
      *  Initializes this class.
      * @param ErrorStore $errorStore
      */
-    public function __construct(\ErrorStore $errorStore)
+    public function __construct(ErrorStore $errorStore)
     {
         $loader = new Twig_Loader_Filesystem(APP_VIEW_PATH);
         $this->twig = new Twig_Environment(

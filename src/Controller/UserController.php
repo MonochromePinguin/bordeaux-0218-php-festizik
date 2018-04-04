@@ -10,31 +10,25 @@ use Model\ConcertManager;
  */
 class UserController extends AbstractController
 {
-    /**
-    * TEST : display items – no editing for now
-    */
-    public function articles()
+
+    public function testList()
     {
-//**TESTING PURPOSE ONLY**
-        $entries = [
-            [ 'name' => 'nom1', 'style' => 'aaaaa', 'about' => 'blablabla' ],
-            [ 'name' => 'nom2', 'style' => 'bbbbbb',
-                    'about' => 'lmejfmslfjsemljelfj' ],
-            [ 'name' => 'nom3', 'style' => 'cccccc',
-                    'about' => 'smelfkjse selmfk eslmjfemf !!!!' ],
-            [ 'name' => 'nom4', 'style' => 'dddddd',
-                    'about' => 'My Pen is Rich' ]
-        ];
+        $concertManager = new ConcertManager($this->errorStore);
+        $concerts = $concertManager->selectAll();
 
         return $this->twig->render(
-            'User/articles.html.twig',
+            'User/testList.html.twig',
             [
-                'artists' => $entries
+                'concerts' => $concerts,
+                'errorList' => $this->errorStore ?
+                    $this->errorStore->getAllMsg() : null
             ]
         );
     }
 
-
+    /**
+    * TEST : display items – no editing for now
+    */
     public function concerts()
     {
         $concertManager = new ConcertManager($this->errorStore);
@@ -45,9 +39,8 @@ class UserController extends AbstractController
             [
                 'concerts' => $concerts,
                 'errorList' => $this->errorStore ?
-                    $this->errorStore->getAllMsg() : NULL
+                    $this->errorStore->getAllMsg() : null
             ]
         );
     }
-
 }
