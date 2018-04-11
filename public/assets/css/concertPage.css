@@ -1,3 +1,16 @@
+/* common reused styles */
+
+.bordered {
+    border: 1px solid darkred;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+
+.sublined {
+    border-bottom: 2px solid darkred;
+}
+
 .card-columns {
     max-width: 95vw;
 }
@@ -6,13 +19,12 @@
     background-color: #394;
 }
 
-
-.bordered {
-    border: 1px solid darkred;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
+.cancelled {
+    text-align: right;
+    font-style: italic;
+    color: red;
+    text-transform: uppercase;
 }
-
 
 .card-title {
     font-size: 2rem;
@@ -28,11 +40,6 @@
     font-size: 1.5rem;
     font-style: italic;
     color: darkblue;
-}
-
-
-.card-body > header {
-    border-bottom: 2px solid darkred;
 }
 
 

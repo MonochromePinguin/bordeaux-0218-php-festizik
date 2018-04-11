@@ -14,7 +14,7 @@
 
 
 {% block content %}
-    <header>
+    <header class="sublined">
         <h1>Les concerts</h1>
     </header>
 
@@ -29,7 +29,7 @@
 
               <div class="card-body p-1">
 
-                <header>
+                <header class="sublined">
                     <h1 class="card-title">
                         {{ c.hour }}
                         <span class="pull-right text-muted">
@@ -41,7 +41,7 @@
                     </h2>
 
                     {% if 1 == c.cancelled %}
-                        <p class="righted">Annulé</p>
+                        <p class="cancelled">Annulé</p>
                     {% endif %}
                 </header>
 
@@ -51,15 +51,15 @@
 
                   {% if c.Artist.ImageURL %}
 
-                    <div class="col p-0">
+                    <div class="col-xs-1 col-lg p-0">
                         <img class="card-img-bottom"
                             src="{{ c.Artist.ImageURL }}"
-                            alt="The picture for c.Artist.Name is lacking – {{ c.Artist.Description }}">
+                            alt="L'image pour «{{ c.Artist.Name }}» est absente&nbsp;!">
                     </div>
 
                   {% endif %}
 
-                    <div class="col p-2">
+                    <div class="col-xs-1 col-lg p-2">
                         <p class="bordered">
                             {{ c.Artist.Name }} ({{ c.Artist.Style }}
     )
