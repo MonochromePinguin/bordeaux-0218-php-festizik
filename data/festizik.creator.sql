@@ -39,10 +39,10 @@ CREATE TABLE Artist (
     id_style int unsigned NOT NULL,
     about text,
     picture text,
-	CONSTRAINT FOREIGN KEY(id_style) REFERENCES style(id_style)
+	CONSTRAINT FOREIGN KEY(id_style) REFERENCES Style(id_style)
 );
 
-CREATE TABLE Scenes(
+CREATE TABLE Scene(
     id_scene int unsigned PRIMARY KEY AUTO_INCREMENT,
     name varchar(128) NOT NULL
 );
@@ -60,9 +60,9 @@ CREATE TABLE Concert (
     id_scene int unsigned NOT NULL,
     id_artist int unsigned NOT NULL,
     cancelled bool NOT NULL,
-    CONSTRAINT FOREIGN KEY(id_day) REFERENCES day(id_day),
-    CONSTRAINT FOREIGN KEY(id_scene) REFERENCES scenes(id_scene),
-    CONSTRAINT FOREIGN KEY(id_artist) REFERENCES artist(id_artist)
+    CONSTRAINT FOREIGN KEY(id_day) REFERENCES Day(id_day),
+    CONSTRAINT FOREIGN KEY(id_scene) REFERENCES Scene(id_scene),
+    CONSTRAINT FOREIGN KEY(id_artist) REFERENCES Artist(id_artist)
 );
 
 -- ● Will the table "page" ever be used ?
@@ -86,7 +86,7 @@ CREATE TABLE Article (
     id_page int unsigned NOT NULL,
     picture text,
     content text NOT NULL,
-	CONSTRAINT FOREIGN KEY(id_page) REFERENCES page(id_page)
+	CONSTRAINT FOREIGN KEY(id_page) REFERENCES Page(id_page)
 );
 
 --   surname : « nom de famille »
@@ -133,12 +133,12 @@ LOCK TABLES `Article` WRITE;
 INSERT INTO `Article` VALUES (3,'Elvis is back!','2018-12-02 12:22:00','2018-12-02 12:22:00','Elvis,Presley,return',1,NULL,'blabblabla&nbsp;?<br>Bla&nbsp;!'),(4,'Elvis is back!','2018-12-02 12:22:00','2018-12-02 12:22:00','Elvis,Presley,return',1,NULL,'blabblabla&nbsp;?<br>Bla&nbsp;!'),(5,'test article 1','2018-03-11 14:20:00','2018-03-16 10:00:00','test,muffins,goat',1,NULL,'mselkjsemlfksje  elkf?<br>mfslekjfseml fj<br>mslejkfsemlfkjsmel fj<br>');
 UNLOCK TABLES;
 
-LOCK TABLES `Scenes` WRITE;
-INSERT INTO `Scenes` VALUES (1,'Grand-scène'),(2,'Sid'),(3,'Cavalera'),(4,'maxi'),(5,'funkyTown');
+LOCK TABLES `Scene` WRITE;
+INSERT INTO `Scene` VALUES (1,'Grand-scène'),(2,'Sid'),(3,'Cavalera'),(4,'maxi'),(5,'funkyTown');
 UNLOCK TABLES;
 
 LOCK TABLES `Concert` WRITE;
-INSERT INTO `Concert` (id_day, hour, id_artist, id_scene, cancelled)
+INSERT INTO `Concert` (id_concert, id_day, hour, id_artist, id_scene, cancelled)
 VALUES
     (1,1,'21:00:00',3,1,0),
     (2,1,'23:00:00',3,2,0),
