@@ -1,0 +1,50 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block title %}Festizik – les concerts{% endblock %}
+
+{# TODO: ajouter les noms d'artistes dans les mots-clés #}
+{% block keywords %}festizik,concerts,événements,planning{% endblock %}
+
+
+{# TODO : use the common stylesheet instead! #}
+{% block stylesheet %}
+    <link rel="stylesheet" href="assets/css/test.css">
+{% endblock %}
+
+
+{% block content %}
+    <header>
+        <h1>Les concerts</h1>
+        <h2>planning des événements</h2>
+    </header>
+
+    <hr/>
+
+    <main>
+      {% for c in concerts %}
+        <article>
+            <header>
+                <h1>le {{ c.Date }} à {{ c.hour }}</h1>
+                <h2>scène «{{ c.sceneName | title }}»</h2>
+            </header>
+
+            {% if 1 == c.cancelled %}
+                <p class="righted">Annulé</p>
+            {% endif %}
+
+            <main>
+                <p>{{ c.ArtistName }} ({{ c.ArtistStyle }})</p>
+                <p>{{ c.about }}</p>
+            </main>
+        </article>
+
+        {% else %}
+            <article>
+                <p>Aucun événement enregistré</p>
+            </article>
+
+      {% endfor %}
+    </main>
+
+{% endblock %}

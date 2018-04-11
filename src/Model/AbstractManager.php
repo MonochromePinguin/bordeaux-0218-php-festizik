@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sylvain
- * Date: 07/03/18
- * Time: 20:52
- * PHP version 7
- */
 
 namespace Model;
 
@@ -16,7 +9,8 @@ use App\Connection;
  */
 abstract class AbstractManager
 {
-    protected $pdoConnection; //variable de connexion
+ //TODO : One connection to fetch them all
+    protected $pdoConnection;
 
     protected $table;
     protected $className;
@@ -26,12 +20,12 @@ abstract class AbstractManager
      *
      * @param string $table Table name of current model
      */
-    public function __construct(string $table)
+    public function __construct(string $table, string $className)
     {
         $connexion = new Connection();
         $this->pdoConnection = $connexion->getPdoConnection();
         $this->table = $table;
-        $this->className = __NAMESPACE__ . '\\' . ucfirst($table);
+        $this->className = __NAMESPACE__ . '\\' . $className;
     }
 
     /**
@@ -39,9 +33,14 @@ abstract class AbstractManager
      *
      * @return array
      */
+// TODO : ADD THE "ORDER BY" as an optional parameter
     public function selectAll(): array
     {
-        return $this->pdoConnection->query('SELECT * FROM ' . $this->table, \PDO::FETCH_CLASS, $this->className)->fetchAll();
+        return $this->pdoConnection->query(
+            'SELECT * FROM ' . $this->table,
+            \PDO::FETCH_CLASS,
+            $this->className
+        )->fetchAll();
     }
 
     /**
