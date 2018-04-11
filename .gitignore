@@ -1,4 +1,5 @@
 /vendor/
 /temp/*
+/untracked/
 *.cache
 app/db.php
