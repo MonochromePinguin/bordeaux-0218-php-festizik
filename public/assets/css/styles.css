@@ -3,7 +3,6 @@
 nav {
 	background-color: white;
 	display: block;
-	background-color: white;
 	z-index: 22222;
 }
 
@@ -54,6 +53,12 @@ nav li a:hover {
 
 .logoLink {
 	display: none;
+}
+
+/**********************BENEVOLES************************/
+
+.formBox {
+	border: 1px solid black;
 }
 
 
@@ -114,7 +119,7 @@ nav li a:hover {
 	/****************Footer***************/
 
 	.myFooter{
-	z-index: -10000;
+	z-index: 10000;
 	height: 100px;
 	}
 

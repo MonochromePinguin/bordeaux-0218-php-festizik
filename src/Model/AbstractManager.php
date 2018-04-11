@@ -72,18 +72,6 @@ abstract class AbstractManager
         //TODO : Implements SQL DELETE request
     }
 
-
-    /**
-     * INSERT one row in dataase
-     *
-     * @param Array $data
-     */
-    public function insert(array $data)
-    {
-        //TODO : Implements SQL INSERT request
-    }
-
-
     /**
      * @param int   $id   Id of the row to update
      * @param array $data $data to update
