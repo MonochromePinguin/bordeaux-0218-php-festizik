@@ -6,7 +6,7 @@ namespace Model;
  */
 class ConcertManager extends AbstractManager
 {
-    const TABLE = 'concerts';
+    const TABLE = 'Concert';
 
     /**
      *  Initializes this class.
@@ -14,6 +14,6 @@ class ConcertManager extends AbstractManager
     public function __construct()
     {
         Concert::initStatics();
-        parent::__construct(self::TABLE, 'Concert');
+        parent::__construct(self::TABLE);
     }
 }

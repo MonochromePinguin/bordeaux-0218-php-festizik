@@ -3,7 +3,7 @@ namespace Model;
 
 class ArtistManager extends AbstractManager
 {
-    const TABLE = 'artists';
+    const TABLE = 'Artist';
 
     /**
      *  Initializes this class.
@@ -11,6 +11,6 @@ class ArtistManager extends AbstractManager
     public function __construct()
     {
         Artist::initStatics();
-        parent::__construct(self::TABLE, 'Artist');
+        parent::__construct(self::TABLE);
     }
 }

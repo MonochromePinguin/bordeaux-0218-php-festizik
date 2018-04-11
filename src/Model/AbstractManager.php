@@ -20,12 +20,18 @@ abstract class AbstractManager
      *
      * @param string $table Table name of current model
      */
-    public function __construct(string $table, string $className)
+//TODO : add as parameter the PDO connection, so we create only one connection
+# per page load ...
+// My little heart is bleeding because my colleagues fear I keep the 2nd
+# parameter «$className» to the __constructor(c$table, $className),
+# to have totally decoupled class names and table names ...
+# As if it were hard work! I'm soooo downbeated!
+    public function __construct(string $table)
     {
         $connexion = new Connection();
         $this->pdoConnection = $connexion->getPdoConnection();
         $this->table = $table;
-        $this->className = __NAMESPACE__ . '\\' . $className;
+        $this->className = __NAMESPACE__ . '\\' . $table;
     }
 
     /**
