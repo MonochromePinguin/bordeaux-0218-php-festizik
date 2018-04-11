@@ -72,19 +72,6 @@ class Concert
     }
 
 
-# THIS COULD BE USED AS A TEMPLATE TO GENERATE THE NOT-DRY-AT-ALL FUNCTIONS
-# BELOW ↓ :
-    // public function get%fonc%(): string {
-    //     $%prop% = static::$%prop%s[$this->id_%prop%];
-    //     if ( $%prop% )
-    //         return %class%->get%fonc%
-    // }
-
-    /**
-     * @return string
-     */
-//TODO : THIS IS NOT "DRY" AT ALL! DEDUPLICATE THIS CODE!
-//with some  __GET() magical member?
     public function getSceneName(): string
     {
         $scene = static::$scenes[$this->id_scene -1];
@@ -96,32 +83,19 @@ class Concert
         return ;
     }
 
-//TODO : THIS IS NOT "DRY" AT ALL! DEDUPLICATE THIS CODE!
-    /**
-     * @return string
-     */
-    public function getArtistName(): string
-    {
-        $artist = Concert::$artists[$this->id_artist -1];
-        if ($artist) {
-            return $artist->getName();
-        } else {
-            return 'Index d\'artiste erroné : ' . $this->id_artist;
-        }
-    }
 
-//TODO : THIS IS NOT "DRY" AT ALL! DEDUPLICATE THIS CODE!
+    #For DRY reasons, just export the Artist object instead of hiding it
+    # and creating functions to access its datas
+
+    # As I'm doomed to use 7.0 instead of 7.1,
+    # I can't return a nullable type « ?Artist » ...
+
     /**
-     * @return string
+     * @return Artist|null
      */
-    public function getArtistStyle(): string
+    public function getArtist()
     {
-        $artist = Concert::$artists[$this->id_artist -1];
-        if ($artist) {
-            return $artist->getStyle();
-        } else {
-            return 'Index d\'artiste erroné : ' . $this->id_artist;
-        }
+        return Concert::$artists[$this->id_artist -1]  ??  null;
     }
 
     /**

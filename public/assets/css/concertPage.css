@@ -1,0 +1,47 @@
+.card-columns {
+    max-width: 95vw;
+}
+
+.card {
+    background-color: #394;
+}
+
+
+.bordered {
+    border: 1px solid darkred;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+
+.card-title {
+    font-size: 2rem;
+    color: darkred;
+}
+
+.card-title > .text-muted {
+    font-size: 1rem;
+    font-style: italic;
+}
+
+.card-subtitle {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: darkblue;
+}
+
+
+.card-body > header {
+    border-bottom: 2px solid darkred;
+}
+
+
+.card-text p {
+    text-indent: 1rem;
+}
+
+.card-text p:first-child {
+    font-weight: bold;
+    font-size: larger;
+    text-indent: inherit;
+}

@@ -9,42 +9,79 @@
 
 {# TODO : use the common stylesheet instead! #}
 {% block stylesheet %}
-    <link rel="stylesheet" href="assets/css/test.css">
+    <link rel="stylesheet" href="assets/css/concertPage.css">
 {% endblock %}
 
 
 {% block content %}
     <header>
         <h1>Les concerts</h1>
-        <h2>planning des événements</h2>
     </header>
 
     <hr/>
 
     <main>
-      {% for c in concerts %}
-        <article>
-            <header>
-                <h1>le {{ c.Date }} à {{ c.hour }}</h1>
-                <h2>scène «{{ c.sceneName | title }}»</h2>
-            </header>
+        <div class="card-columns">
 
-            {% if 1 == c.cancelled %}
-                <p class="righted">Annulé</p>
-            {% endif %}
+          {% for c in concerts %}
 
-            <main>
-                <p>{{ c.ArtistName }} ({{ c.ArtistStyle }})</p>
-                <p>{{ c.about }}</p>
-            </main>
-        </article>
+            <article class="card m-3 p-2">
 
-        {% else %}
-            <article>
-                <p>Aucun événement enregistré</p>
+              <div class="card-body p-1">
+
+                <header>
+                    <h1 class="card-title">
+                        {{ c.hour }}
+                        <span class="pull-right text-muted">
+                            {{ c.Date }}
+                        </span>
+                    </h1>
+                    <h2 class="card-subtitle">
+                        scène «{{ c.sceneName | title }}»
+                    </h2>
+
+                    {% if 1 == c.cancelled %}
+                        <p class="righted">Annulé</p>
+                    {% endif %}
+                </header>
+
+
+                <main class="card-text container-fluid">
+                  <div class="row p-2">
+
+                  {% if c.Artist.ImageURL %}
+
+                    <div class="col p-0">
+                        <img class="card-img-bottom"
+                            src="{{ c.Artist.ImageURL }}"
+                            alt="The picture for c.Artist.Name is lacking – {{ c.Artist.Description }}">
+                    </div>
+
+                  {% endif %}
+
+                    <div class="col p-2">
+                        <p class="bordered">
+                            {{ c.Artist.Name }} ({{ c.Artist.Style }}
+    )
+                        </p>
+                        <p class="bordered bg-light">{{ c.Artist.Description }}</p>
+                    </div>
+
+                  </div> <!-- .row -->
+                </main>
+
             </article>
 
-      {% endfor %}
+            {% else %}
+                <article>
+                    <p>Aucun événement enregistré</p>
+                </article>
+
+          {% endfor %}
+
+        </div> <!-- .row -->
+    </main>
+
     </main>
 
 {% endblock %}

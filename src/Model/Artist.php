@@ -48,4 +48,14 @@ class Artist
             return 'Index de style erroné : ' . $this->id_style;
         }
     }
+
+    public function getImageURL() : string
+    {
+        return $this->picture;
+    }
+
+    public function getDescription() : string
+    {
+        return $this->about;
+    }
 }
