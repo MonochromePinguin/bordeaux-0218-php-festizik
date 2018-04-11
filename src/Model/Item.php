@@ -59,5 +59,3 @@ class Item
         return $this;
     }
 }
-
-
