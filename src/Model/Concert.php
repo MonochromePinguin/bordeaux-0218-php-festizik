@@ -105,4 +105,29 @@ class Concert
     {
         return $this->cancelled;
     }
+
+
+    /*
+     sort functions for use into ConcertManager::sortArray()
+     all of them are callable callbacks for usort()
+     */
+    public static function cmpByScene(Concert $one, Concert $two) : int {
+        return strcmp( $one->getSceneName(), $two ->getSceneName() );
+    }
+
+    public static function cmpByArtistName(Concert $one, Concert $two) : int {
+        $artist1 = $one->getArtist();
+        $artist2 = $two->getArtist();
+
+        if ( isset($artist1) && isset($artist2) )
+            return strcmp( $artist1->getName(), $artist2->getName() );
+        else
+            return 0;
+    }
+
+    public static function cmpByDate(Concert $one, Concert $two) : int {
+//TODO : implement it !
+    }
+
+
 }

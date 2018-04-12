@@ -28,9 +28,10 @@ abstract class AbstractController
 
     /**
      *  Initializes this class.
-     * @param ErrorStore $errorStore
+     * @param ErrorStore|null
+     * the ErrorStore is optional because a class must work well without it
      */
-    public function __construct(ErrorStore $errorStore)
+    public function __construct($errorStore = null)
     {
         $loader = new Twig_Loader_Filesystem(APP_VIEW_PATH);
         $this->twig = new Twig_Environment(
@@ -43,5 +44,15 @@ abstract class AbstractController
         $this->twig->addExtension(new \Twig_Extension_Debug());
 
         $this->errorStore = $errorStore;
+    }
+
+
+    /**
+    * store an error message IF an errorStore is present
+    * @param string
+    */
+    protected function storeMsg( string $string ) {
+        if ( $this->errorStore )
+            $this->errorStore->storeMsg( $string );
     }
 }
