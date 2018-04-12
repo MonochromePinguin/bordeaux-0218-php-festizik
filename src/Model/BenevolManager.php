@@ -30,8 +30,6 @@ class BenevolManager extends AbstractManager
      */
      public function insertVolunteer(array $data)
     	{
-
-    		var_dump($data);
         $statement = $this->pdoConnection->prepare("INSERT INTO $this->table (name, surname, phone, disponibility_start, disponibility_end) VALUES (:name, :surname, :phone, :dispoStart, :dispoEnd)");
         $statement->setFetchMode(\PDO::FETCH_CLASS, $this->className);
         $statement->bindValue(':name', $data['name'] , \PDO::PARAM_STR);

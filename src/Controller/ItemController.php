@@ -87,10 +87,10 @@ class ItemController extends AbstractController
         return $this->twig->render('Item/index.html.twig');
     }
 
-    public function insertBenevol()
+    public function insertedBenevol()
     {
         $BenevolManager = new BenevolManager();
         $benevol = $BenevolManager->insertVolunteer($_POST);
-        return $this->twig->render('Item/insertBenevol.html.twig');
+        return $this->twig->render('Item/insertedBenevol.html.twig');
     }
 }
