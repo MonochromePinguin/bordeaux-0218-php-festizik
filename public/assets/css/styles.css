@@ -1,10 +1,13 @@
 
 /* -------- NAVBAR -------- */
 nav {
-	background-color: white;
-	display: block;
-	background-color: white; 
+
+	display: block; 
 	z-index: 22222;
+	border-right:  1px solid white;
+
+
+
 }
 
 .logo {
@@ -34,6 +37,7 @@ nav li a {
 
 nav li a:hover {
 	color: #3C3C3D;
+
 }
 
 .social-icons {
@@ -62,7 +66,9 @@ nav li a:hover {
 	nav {
 		min-width: 100px;
 		height: 100vh;
-		border-right: 1px solid black;
+
+
+
 	}
 
 	.logo {
@@ -82,15 +88,19 @@ nav li a:hover {
 	}
 
 	#navbarSupportedContent {
-		display: none !important;
+		display: none !important; 
 	}
 
 	nav:hover #navbarSupportedContent {
 		display: block !important;
+		background-color: black;
+
+
 	}
 
 	nav:hover .navbar-nav:first-child {
 		margin-top: 70%;
+
 	}
 
 	nav ul {
@@ -114,8 +124,11 @@ nav li a:hover {
 	/****************Footer***************/
 
 	.myFooter{
-	z-index: -10000;
-	height: 100px;
+		height: 100px;
+
+		border-top: 1px solid white; 
+		margin-top: 30px; 
+
 	}
 
 	.myNav {
