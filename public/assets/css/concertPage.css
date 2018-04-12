@@ -11,9 +11,20 @@
     border-bottom: 2px solid darkred;
 }
 
+
 /* ------- */
 
-header {
+#programmation  {
+    background: repeating-linear-gradient(
+          45deg,
+          #0D909E,
+          #019E57 100px,
+          #BBBFF0 100px,
+          #7781F0 200px )
+}
+
+
+#programmation header {
     position: relative;
 
     text-align: right;
@@ -21,7 +32,7 @@ header {
     font-weight: bold;
 }
 
-header svg {
+#programmation header > svg {
     position: absolute;
     z-index:  -1;
 
@@ -32,43 +43,43 @@ header svg {
 }
 
 
-.card-columns {
+#programmation .card-columns {
     max-width: 95vw;
 }
 
-.card {
+#programmation .card {
     background-color: #394;
 }
 
-.cancelled {
+#programmation .cancelled {
     text-align: right;
     font-style: italic;
     color: red;
     text-transform: uppercase;
 }
 
-.card-title {
+#programmation .card-title {
     font-size: 2rem;
     color: darkred;
 }
 
-.card-title > .text-muted {
+#programmation .card-title > .text-muted {
     font-size: 1rem;
     font-style: italic;
 }
 
-.card-subtitle {
+#programmation .card-subtitle {
     font-size: 1.5rem;
     font-style: italic;
     color: darkblue;
 }
 
 
-.card-text p {
+#programmation .card-text p {
     text-indent: 1rem;
 }
 
-.card-text p:first-child {
+#programmation .card-text p:first-child {
     font-weight: bold;
     font-size: larger;
     text-indent: inherit;

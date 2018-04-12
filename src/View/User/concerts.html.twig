@@ -13,6 +13,8 @@
 {% endblock %}
 
 
+{% block bodyProperties %} id="programmation" {% endblock %}
+
 {% block content %}
     <header class="sublined">
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -24,6 +26,27 @@
     </header>
 
     <hr/>
+
+
+    <aside>
+        <form method="GET" action="">
+TODO :
+• affichage par défaut : une section portant date / nom de jour par jour.
+à l'intérieur, tout par row.
+****
+• bouton de bascule : 1 section /jour (↑), 1 section /semaine, tout d'un coup sans distinction chronologique. → VIA POST., tri du tableau via usort() qui prends une f° de tri → tri suivant tout critères possibles !
+
+**** c'est pour le FILTRAGE qu'il y aura besoin de modifier la requête ...
+
+• bouton bascule : ligne / ligne  (cartes alignées verticalement),
+                1 entrée par ligne
+                ou compact (comme maintenant, dans une «.card-columns»)
+→ PAR JAVASCRIPT !
+Utiliser une seule connection PDO par page. « le faire en loucedé » !
+
+        </form>
+    </aside>
+
 
     <main>
         <div class="card-columns">
