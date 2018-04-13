@@ -16,4 +16,10 @@ $routes = [
         ['edit', '/item/edit/{id:\d+}', 'GET'], // action, url, method
         ['show', '/item/{id:\d+}', 'GET'], // action, url, method
     ],
+
+    'Admin' => [ // Controller
+        ['login', '/login', ['POST', 'GET']],  // action, url, method
+        ['admin', '/admin', ['POST', 'GET']],
+        ['logout', '/admin/logout', 'GET'],
+    ]
 ];
