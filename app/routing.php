@@ -15,6 +15,8 @@ $routes = [
         ['infos', '/item/infos', 'GET'], // action, url, method
         ['edit', '/item/edit/{id:\d+}', 'GET'], // action, url, method
         ['show', '/item/{id:\d+}', 'GET'], // action, url, method
+        ['benevol', '/benevol', 'GET'],
+        ['insertedBenevol', '/benevol', 'POST']
     ],
 
     'Admin' => [ // Controller
