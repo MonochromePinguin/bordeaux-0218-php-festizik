@@ -61,7 +61,18 @@ body {
 /**********************BENEVOLES************************/
 
 .formBox {
-	border: 1px solid black;
+	position: relative;
+    left : 4%;
+    top: 6.5%;
+    padding : 3%;
+    color : white;
+    width : 80%;
+}
+
+.welcome {
+    color : white;
+    text-align: center;
+    padding-top: 5%;
 }
 
 
