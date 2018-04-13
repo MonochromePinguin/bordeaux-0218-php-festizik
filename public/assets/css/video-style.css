@@ -1,9 +1,17 @@
+@font-face {
+    font-family: "neon";
+    src: url('/assets/fonts/neon_club_music/NEON CLUB MUSIC.otf');
+}
 
-
+.tittleHomePage
+{
+    font-family: neon;
+    font-size: 100px; 
+}
 
 #myVideo {
     position: fixed;
-    right: 0;
+    right: -100%;
     bottom: 0;
     min-width: 100%; 
     min-height: 100%;
@@ -19,3 +27,30 @@
     top: 31%;
     height: auto;
 }
+
+@media screen and (min-width: 992px) {
+
+    #myVideo{
+        right: 0;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translatey(0px);
+    }
+    50% {
+        transform: translatey(50px);
+    }
+    100% {
+        transform: translatey(0px);
+    }
+}
+
+
+.tittleHomePage{
+ top : 125px;
+ padding: 0px;
+ animation: float 4s ease-in-out infinite;
+}
+
