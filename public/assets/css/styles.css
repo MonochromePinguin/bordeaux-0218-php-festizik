@@ -36,7 +36,7 @@ body {
 }
 
 .barreNav li a:hover {
-	color: #3C3C3D;
+	color: white;
 }
 
 .social-icons {
@@ -105,7 +105,7 @@ body {
 	}
 
     .barreNav ul:first-child {
-	margin-top: 0;
+	    margin-top: 0;
 	}
 
 	.social-icons {
