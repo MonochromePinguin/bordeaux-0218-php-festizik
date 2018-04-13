@@ -65,10 +65,10 @@ class ItemController extends AbstractController
      *
      * @return string
      */
-    public function add()
+    public function infos()
     {
         // TODO : add a new item
-        return $this->twig->render('Item/add.html.twig');
+        return $this->twig->render('Item/infos.html.twig');
     }
 
     /**

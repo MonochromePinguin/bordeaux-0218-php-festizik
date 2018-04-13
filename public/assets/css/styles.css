@@ -1,6 +1,13 @@
+
 /* -------- NAVBAR -------- */
 nav {
-	display: block;
+
+	display: block; 
+	z-index: 22222;
+	border-right:  1px solid white;
+
+
+
 }
 
 .logo {
@@ -15,7 +22,7 @@ nav div {
 }
 
 nav ul:first-child {
-	margin-top: 15%;
+	margin-top: 2%;
 }
 
 nav li {
@@ -30,6 +37,7 @@ nav li a {
 
 nav li a:hover {
 	color: #3C3C3D;
+
 }
 
 .social-icons {
@@ -40,19 +48,32 @@ nav li a:hover {
 	margin: 5%;
 }
 
+/*********************FOOTER***************************/
+
+
+.myNav {
+	padding: 0;	
+}
+
+
+.logoLink {
+	display: none;
+}
+
 
 /* -------- MEDIA QUERIES -------- */
 @media screen and (min-width: 992px) {
 	nav {
 		min-width: 100px;
 		height: 100vh;
-		border-right: 1px solid black;
+
+
+
 	}
 
 	.logo {
 		background: url("/assets/images/favicon.png") no-repeat;
 		position: absolute;
-		top: 0;
 		height: 80px;
 		width: 74px;
 		top: 5%;
@@ -67,15 +88,19 @@ nav li a:hover {
 	}
 
 	#navbarSupportedContent {
-		display: none !important;
+		display: none !important; 
 	}
 
 	nav:hover #navbarSupportedContent {
 		display: block !important;
+
+
+
 	}
 
 	nav:hover .navbar-nav:first-child {
 		margin-top: 70%;
+
 	}
 
 	nav ul {
@@ -94,5 +119,37 @@ nav li a:hover {
 
 	.social-icons li {
 		margin: 0 5%;
+	}
+
+	/****************Footer***************/
+
+	.myFooter{
+		height: 100px;
+
+		border-top: 1px solid white; 
+		margin-top: 30px; 
+
+	}
+
+	.myNav {
+		padding-right: 0;
+		align-items: center;
+		height: 100px;
+	}
+
+	.myCopyright {
+		margin-left: 35px;
+	}
+
+	.logoLink {
+		display: block;
+		width: 10em;
+		height: 100%;
+	}
+
+	.footLogo {
+		background-repeat: no-repeat;
+		background-position: center;
+		height: 100%;
 	}
 }
