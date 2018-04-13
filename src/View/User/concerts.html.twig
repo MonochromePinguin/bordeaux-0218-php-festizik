@@ -40,11 +40,11 @@
     {% endif %}
 
     <nav>
-        <form method="GET" action="" class="">
-            <p>Trier&nbsp;...</p>
+        <form method="GET" action="" class="border border-info p-1">
+            <p class="mb-0 font-weight-bold font-weight-italic">Trier&nbsp;...</p>
 
             {% for prop in sortableProperties %}
-              <button type="submit" class="btn btn-primary"
+              <button type="submit" class="btn btn-info {% if prop.name == actualSort %}active{% endif %}"
                 title="recharger la page avec un ordre différent de tri"
                 name="sortBy" value="{{prop.name}}">
                   par {{prop.label}}
@@ -84,7 +84,7 @@
                     <h1 class="card-title">
                         {{ c.hour }}
                         <span class="pull-right text-muted">
-                            {{ c.Date }}
+                            {{ c.DateAsString }}
                         </span>
                     </h1>
                     <h2 class="card-subtitle">
