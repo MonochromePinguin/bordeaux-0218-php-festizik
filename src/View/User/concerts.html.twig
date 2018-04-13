@@ -1,0 +1,138 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block title %}Festizik – les concerts{% endblock %}
+
+{# TODO: ajouter les noms d'artistes dans les mots-clés #}
+{% block keywords %}festizik,concerts,événements,planning{% endblock %}
+
+
+{# TODO : use the common stylesheet instead! #}
+{% block stylesheet %}
+    <link rel="stylesheet" href="assets/css/concertPage.css">
+{% endblock %}
+
+
+{% block bodyProperties %} id="programmation" {% endblock %}
+
+
+{% block content %}
+    <header class="sublined">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polygon fill="orange" points="0,0 100,100 100,0"/>
+        </svg>
+
+        <h1>Les concerts</h1>
+    </header>
+
+    <hr/>
+
+
+    {% if errorList %}
+
+        <aside>
+            <div class="alert alert-warning">
+                {{ errorList | raw }}
+            </div>
+        </aside>
+
+    {% endif %}
+
+    <nav>
+        <form method="GET" action="" class="">
+            <p>Trier&nbsp;...</p>
+
+            {% for prop in sortableProperties %}
+              <button type="submit" class="btn btn-primary"
+                title="recharger la page avec un ordre différent de tri"
+                name="sortBy" value="{{prop.name}}">
+                  par {{prop.label}}
+              </button>
+
+            {% endfor %}
+
+        </form>
+{# TODO :
+• add a  «selected» class to the current selected button
+• affichage par défaut : une section portant date / nom de jour par jour.
+à l'intérieur, tout par row.
+****
+• bouton de bascule : 1 section /jour (↑), 1 section /semaine, tout d'un coup sans distinction chronologique. →
+
+**** c'est pour le FILTRAGE qu'il y aura besoin de modifier la requête ...
+
+• bouton bascule : ligne / ligne  (cartes alignées verticalement),
+                1 entrée par ligne
+                ou compact (comme maintenant, dans une «.card-columns»)
+→ PAR JAVASCRIPT !
+• Utiliser une seule connection PDO par page. « le faire en loucedé » ! #}
+    </nav>
+
+
+
+    <main>
+        <div class="card-columns">
+
+          {% for c in concerts %}
+
+            <article class="card m-3 p-2">
+
+              <div class="card-body p-1">
+
+                <header class="sublined">
+                    <h1 class="card-title">
+                        {{ c.hour }}
+                        <span class="pull-right text-muted">
+                            {{ c.Date }}
+                        </span>
+                    </h1>
+                    <h2 class="card-subtitle">
+                        scène «{{ c.sceneName | title }}»
+                    </h2>
+
+                    {% if 1 == c.cancelled %}
+                        <p class="cancelled">Annulé</p>
+                    {% endif %}
+                </header>
+
+
+                <main class="card-text container-fluid">
+                  <div class="row p-2">
+
+                  {% if c.Artist.ImageURL %}
+
+                    <div class="col-xs-1 col-lg p-0">
+                        <img class="card-img-bottom"
+                            src="{{ c.Artist.ImageURL }}"
+                            alt="L'image pour «{{ c.Artist.Name }}» est absente&nbsp;!">
+                    </div>
+
+                  {% endif %}
+
+                    <div class="col-xs-1 col-lg p-2">
+                        <p class="bordered">
+                            {{ c.Artist.Name }} ({{ c.Artist.Style }}
+    )
+                        </p>
+                        <p class="bordered bg-light">{{ c.Artist.Description }}</p>
+                    </div>
+
+                  </div> <!-- .row -->
+                </main>
+
+            </article>
+
+            {% else %}
+                <article>
+                    <p>Aucun événement enregistré</p>
+                </article>
+
+          {% endfor %}
+
+        </div> <!-- .row -->
+    </main>
+
+    </main>
+
+{% endblock %}

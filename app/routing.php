@@ -22,4 +22,12 @@ $routes = [
         ['admin', '/admin', ['POST', 'GET']],
         ['logout', '/admin/logout', 'GET'],
     ]
+    // 'Admin' => [ // Controller
+    //     ['concerts', '/admin/concerts', 'POST'],
+    //     ['articles', '/admin/articles', 'POST']
+    // ],
+    'User' => [
+        ['testList', '/testList', 'GET'], // ● TEST !
+        ['concerts', '/concerts', 'GET']
+    ]
 ];
