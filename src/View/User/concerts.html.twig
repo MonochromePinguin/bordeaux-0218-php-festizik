@@ -54,7 +54,6 @@
 
         </form>
 {# TODO :
-• add a  «selected» class to the current selected button
 • affichage par défaut : une section portant date / nom de jour par jour.
 à l'intérieur, tout par row.
 ****
@@ -66,7 +65,7 @@
                 1 entrée par ligne
                 ou compact (comme maintenant, dans une «.card-columns»)
 → PAR JAVASCRIPT !
-• Utiliser une seule connection PDO par page. « le faire en loucedé » ! #}
+• Utiliser une seule connection PDO par page. #}
     </nav>
 
 
@@ -74,7 +73,7 @@
     <main>
         <div class="card-columns">
 
-          {% for c in concerts %}
+          {% for concert in concerts %}
 
             <article class="card m-3 p-2">
 
@@ -82,16 +81,16 @@
 
                 <header class="sublined">
                     <h1 class="card-title">
-                        {{ c.hour }}
+                        {{ concert.hour }}
                         <span class="pull-right text-muted">
-                            {{ c.DateAsString }}
+                            {{ concert.DateAsString }}
                         </span>
                     </h1>
                     <h2 class="card-subtitle">
-                        scène «{{ c.sceneName | title }}»
+                        scène «{{ concert.sceneName | title }}»
                     </h2>
 
-                    {% if 1 == c.cancelled %}
+                    {% if 1 == concert.cancelled %}
                         <p class="cancelled">Annulé</p>
                     {% endif %}
                 </header>
@@ -100,22 +99,22 @@
                 <main class="card-text container-fluid">
                   <div class="row p-2">
 
-                  {% if c.Artist.ImageURL %}
+                  {% if concert.Artist.ImageURL %}
 
                     <div class="col-xs-1 col-lg p-0">
                         <img class="card-img-bottom"
-                            src="{{ c.Artist.ImageURL }}"
-                            alt="L'image pour «{{ c.Artist.Name }}» est absente&nbsp;!">
+                            src="{{ concert.Artist.ImageURL }}"
+                            alt="L'image pour «{{ concert.Artist.Name }}» est absente&nbsp;!">
                     </div>
 
                   {% endif %}
 
                     <div class="col-xs-1 col-lg p-2">
                         <p class="bordered">
-                            {{ c.Artist.Name }} ({{ c.Artist.Style }}
+                            {{ concert.Artist.Name }} ({{ concert.Artist.Style }}
     )
                         </p>
-                        <p class="bordered bg-light">{{ c.Artist.Description }}</p>
+                        <p class="bordered bg-light">{{ concert.Artist.Description }}</p>
                     </div>
 
                   </div> <!-- .row -->
