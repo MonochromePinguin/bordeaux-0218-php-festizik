@@ -1,0 +1,128 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block title %}Festizik – les concerts{% endblock %}
+
+{# TODO: ajouter les noms d'artistes dans les mots-clés #}
+{% block keywords %}festizik,concerts,événements,planning{% endblock %}
+
+
+{# TODO : use the common stylesheet instead! #}
+{% block stylesheet %}
+    <link rel="stylesheet" href="assets/css/concertPage.css">
+{% endblock %}
+
+
+{% block bodyProperties %} id="programmation" {% endblock %}
+
+
+{% block content %}
+    <header class="sublined">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polygon fill="orange" points="0,0 100,100 100,0"/>
+        </svg>
+
+        <h1>Les concerts</h1>
+    </header>
+
+    <hr/>
+
+    {% include 'errorList.html.twig' %}
+
+    <nav>
+        <form method="GET" action="" class="border border-info p-1">
+            <p class="mb-0 font-weight-bold font-weight-italic">Trier&nbsp;...</p>
+
+            {% for prop in sortableProperties %}
+              <button type="submit" class="btn btn-info {% if prop.name == actualSort %}active{% endif %}"
+                title="recharger la page avec un ordre différent de tri"
+                name="sortBy" value="{{prop.name}}">
+                  par {{prop.label}}
+              </button>
+
+            {% endfor %}
+
+        </form>
+{# TODO :
+• affichage par défaut : une section portant date / nom de jour par jour.
+à l'intérieur, tout par row.
+****
+• bouton de bascule : 1 section /jour (↑), 1 section /semaine, tout d'un coup sans distinction chronologique. →
+
+**** c'est pour le FILTRAGE qu'il y aura besoin de modifier la requête ...
+
+• bouton bascule : ligne / ligne  (cartes alignées verticalement),
+                1 entrée par ligne
+                ou compact (comme maintenant, dans une «.card-columns»)
+→ PAR JAVASCRIPT !
+• Utiliser une seule connection PDO par page. #}
+    </nav>
+
+
+
+    <main>
+        <div class="card-columns">
+
+          {% for concert in concerts %}
+
+            <article class="card m-3 p-2">
+
+              <div class="card-body p-1">
+
+                <header class="sublined">
+                    <h1 class="card-title">
+                        {{ concert.hour }}
+                        <span class="pull-right text-muted">
+                            {{ concert.DateAsString }}
+                        </span>
+                    </h1>
+                    <h2 class="card-subtitle">
+                        scène «{{ concert.sceneName | title }}»
+                    </h2>
+
+                    {% if 1 == concert.cancelled %}
+                        <p class="cancelled">Annulé</p>
+                    {% endif %}
+                </header>
+
+
+                <main class="card-text container-fluid">
+                  <div class="row p-2">
+
+                  {% if concert.Artist.ImageURL %}
+
+                    <div class="col-xs-1 col-lg p-0">
+                        <img class="card-img-bottom"
+                            src="{{ concert.Artist.ImageURL }}"
+                            alt="L'image pour «{{ concert.Artist.Name }}» est absente&nbsp;!">
+                    </div>
+
+                  {% endif %}
+
+                    <div class="col-xs-1 col-lg p-2">
+                        <p class="bordered">
+                            {{ concert.Artist.Name }} ({{ concert.Artist.Style }}
+    )
+                        </p>
+                        <p class="bordered bg-light">{{ concert.Artist.Description }}</p>
+                    </div>
+
+                  </div> <!-- .row -->
+                </main>
+
+            </article>
+
+            {% else %}
+                <article>
+                    <p>Aucun événement enregistré</p>
+                </article>
+
+          {% endfor %}
+
+        </div> <!-- .row -->
+    </main>
+
+    </main>
+
+{% endblock %}

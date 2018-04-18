@@ -1,0 +1,92 @@
+/* common reused styles */
+
+.bordered {
+    border: 1px solid darkred;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+
+.sublined {
+    border-bottom: 2px solid darkred;
+}
+
+
+/* ------- */
+
+#programmation header {
+    position: relative;
+
+    text-align: right;
+    color: darkred;
+    font-weight: bold;
+
+/* ●●● VENGEANCE IS MINE. EAT THIS BACKGROUND! ●●● */
+    background: repeating-linear-gradient( 45deg,
+                    transparent, transparent 20px, #d55 40px, #5dd 60px ),
+                /*en fond du précédent */
+/*                linear-gradient(to bottom, #fff, #ccc 50%, #555);
+*/
+}
+
+#programmation header > svg {
+    position: absolute;
+    z-index:  0;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+#programmation header > :not(svg) {
+    position: relative;
+}
+
+
+#programmation > aside,
+#programmation > nav {
+    margin: 3%;
+}
+
+
+#programmation .card-columns {
+    max-width: 95vw;
+}
+
+#programmation .card {
+    background-color: #394;
+}
+
+#programmation .cancelled {
+    text-align: right;
+    font-style: italic;
+    color: red;
+    text-transform: uppercase;
+}
+
+#programmation .card-title {
+    font-size: 2rem;
+    color: darkred;
+}
+
+#programmation .card-title > .text-muted {
+    font-size: 1rem;
+    font-style: italic;
+}
+
+#programmation .card-subtitle {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: darkblue;
+}
+
+
+#programmation .card-text p {
+    text-indent: 1rem;
+}
+
+#programmation .card-text p:first-child {
+    font-weight: bold;
+    font-size: larger;
+    text-indent: inherit;
+}

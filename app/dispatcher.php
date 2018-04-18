@@ -8,7 +8,7 @@
  *
  * @link     https://github.com/WildCodeSchool/simple-mvc
  */
-
+use Misc\ErrorStore as ErrorStore;
 
 require_once __DIR__ . '/routing.php';
 $routesCollection = function (FastRoute\RouteCollector $r) use ($routes) {
@@ -47,6 +47,11 @@ switch ($routeInfo[0]) {
         $vars = $routeInfo[2];
         list($class, $method) = explode("/", $handler, 2);
         $class = APP_CONTROLLER_NAMESPACE . $class . APP_CONTROLLER_SUFFIX;
-        echo call_user_func_array([new $class(), $method], $vars);
+
+//TODO : error handling. The whole page should work WITHOUT an error store
+        $errorStore = new ErrorStore();
+
+//TODO : the PDO connection should be given to the new $class() here !
+        echo call_user_func_array([new $class($errorStore), $method], $vars);
         break;
 }
