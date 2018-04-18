@@ -1,19 +1,17 @@
 {% extends 'layout.html.twig' %}
-
-    {% block stylesheet %}
-      <link rel="stylesheet" type="text/css" href="/assets/css/video-style.css">
-    {% endblock %}
-
-    {% block content %}
+{% block title %}Festizik - Festival de musique{% endblock %}
 
 
-            <div class="video">
-                <video autoplay="autoplay" loop="loop" id="myVideo" class="fillWidth fadeIn animated"  id="video-background gone">
-                  <source src="/assets/images/Concert-1630.mp4" type="video/mp4">Gone to a beer pong challenge!!!!!
-                </video>
-            </div>
-            <div class="content">
-              <h1>FESTIZIK</h1>
-            </div>
+{% block content %}
 
-    {% endblock %}
+
+    <div class="video">
+        <video autoplay="autoplay" loop="loop" id="myVideo" class="fillWidth fadeIn animated">
+          <source src="/assets/images/Concert-1630.mp4" type="video/mp4">Gone to a beer pong challenge!!!!!
+        </video>
+    </div>
+    <div class="content">
+      <img src="/assets/images/logo.png">
+    </div>
+
+{% endblock %}

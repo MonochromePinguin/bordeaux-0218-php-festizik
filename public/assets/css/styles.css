@@ -1,3 +1,10 @@
+/* -------- TYPOGRAPHY -------- */
+@font-face {
+    font-family: "neon";
+    src: url('/assets/fonts/neon_club_music/NEON CLUB MUSIC.otf');
+}
+
+/* -------- BODY -------- */
 body {
     background-image : url('https://www.toptal.com/designers/subtlepatterns/patterns/gray_sand.png');
 }
@@ -47,27 +54,71 @@ body {
 	margin: 5%;
 }
 
-/*********************FOOTER***************************/
+/* -------- VIDEO --------*/
+#myVideo {
+    position: fixed;
+    right: -100%;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+
+.content {
+    text-align: center;
+    position: fixed;
+    color: black;
+    width: 100%;
+    top: 31%;
+    height: auto;
+}
+
+.content img {
+    width: 50%;
+}
+
+/* -------- FOOTER -------- */
 
 .myNav {
 	padding: 0;
 }
 
-
-.logoLink {
-	display: none;
+.myNav a {
+    color: white;
 }
 
-/**********************BENEVOLES************************/
+
+
+/* -------- BENEVOLES -------- */
 
 .formBox {
 	position: relative;
-    left : 4%;
     top: 6.5%;
     padding : 3%;
     color : white;
     width : 80%;
 }
+
+.formBox h1 {
+    text-align: center;
+}
+
+.formBox h2 {
+    font-size: 1.6rem;
+}
+
+.formBox h2 {
+    font-size: 1.5rem;
+}
+
+.formBox p {
+    text-align: justify;
+}
+
+.formBox hr {
+    margin: 2rem auto;
+}
+
 
 .welcome {
     color : white;
@@ -75,84 +126,167 @@ body {
     padding-top: 5%;
 }
 
+/* -------- INFOS PRATIQUES ------- */
+.presentation {
+    text-align : center;
+    padding    : 2% 4%;
+}
+
+.titleInfos {
+    font-size   : 3rem;
+    font-family : neon;
+    color       : #FDB940;
+    margin      : 6% auto;
+}
+
+.txtTitleInfos {
+    color     : white;
+    font-size : 1em;
+    text-align: justify;
+}
+
+.date {
+    font-family   : neon;
+    font-size     : 1.6em;
+    margin-bottom : 8%;
+    margin-left   : 5%;
+    color         : #FDB940;
+}
+
+.infos {
+    display    : inline-block;
+    color      : white;
+    font-size  : 1em;
+    text-align : justify;
+    padding : 10%;
+}
+
+.billetterie {
+    color : #FDB940;
+}
+.billetterie:hover {
+    color : white;
+    text-decoration: none;
+}
 
 /* -------- MEDIA QUERIES -------- */
-@media screen and (min-width: 992px) {
-    .barreNav {
-		min-width: 7.5%;
-		height: 100vh;
-		border-right: 1px solid black;
-	}
 
-	.logo {
-		background: url("/assets/images/favicon.png") no-repeat round;
-		position: absolute;
-		height: 10%;
-		width: 80px;
-	}
+@media screen and (min-width: 992px) {
+    /* -------- NAVBAR -------- */
+    .barreNav {
+        min-width    : 7.5%;
+        height       : 100vh;
+        border-right : 1px solid black;
+        float        : left;
+        position     : fixed;
+    }
+
+    .logo {
+        background : url("/assets/images/favicon.png") no-repeat round;
+        position   : absolute;
+        height     : 10%;
+        width      : 100%;
+    }
 
     .barreNav:hover .logo {
-		background: url("/assets/images/logo.png") no-repeat round;
-		height: 13%;
-		width: 100px;
-		margin-left: 15%;
-        top : 10px;
-	}
+        background : url("/assets/images/logo.png") no-repeat round;
+        height     : 13%;
+        width      : 55%;
+        margin     : 8% 14%;
+    }
 
-	#navbarSupportedContent {
-		display: none !important;
-	}
+    #navbarSupportedContent {
+        display : none !important;
+    }
 
     .barreNav:hover #navbarSupportedContent {
-		display: block !important;
-	}
+        display : block !important;
+    }
 
     .barreNav:hover .navbar-nav:first-child {
-		margin-top: 70%;
-	}
+        margin-top : 100%;
+    }
 
     .barreNav ul {
-		display: block !important;
-	}
+        display : block !important;
+    }
 
     .barreNav ul:first-child {
-	    margin-top: 0;
-	}
+        margin-top : 0;
+    }
 
-	.social-icons {
-		position: absolute;
-		top: 90%;
-		width: 80%;
-	}
+    .social-icons {
+        position : absolute;
+        top      : 90%;
+        width    : 80%;
+    }
 
-	.social-icons li {
-		margin: 0 5%;
-	}
+    .social-icons li {
+        margin : 0 5%;
+    }
 
-	/****************Footer***************/
-	.myFooter{
-        z-index: 10000;
+    /* -------- VIDEO -------- */
+    #myVideo {
+        right : 0;
+    }
 
-	}
+    .content img {
+        width : auto;
+        top   : 30%;
+    }
 
-	.myNav {
-		padding-right: 0;
-		align-items: center;
-	}
+    /* -------- FOOTER -------- */
+    .myFooter {
+        z-index : 10000;
+    }
 
-	.myCopyright {
-		margin-left: 35px;
-	}
+    .myNav {
+        padding-right : 0;
+        align-items   : center;
+    }
 
-	.logoLink {
-		display: block;
-		width: 10em;
-		height: 100%;
-	}
+    .myCopyright {
+        margin-left : 35px;
+    }
 
-	.footLogo {
-		background-repeat: no-repeat;
-		background-position: center;
-		height: 100%;
-	}
+    .nav-link:hover {
+        color : #FDB940;
+    }
+
+    /* -------- BENEVOLES -------- */
+    .formBox {
+        left : 4%;
+    }
+
+    .formBox img {
+        width : inherit;
+        box-shadow: 2px 2px 20px black;
+    }
+
+    /* -------- INFOS PRATIQUES ------- */
+    .presentation {
+        width: 80%;
+        margin-left: 13%;
+    }
+
+    .date {
+        margin-left: 38%;
+        margin-bottom: 5%;
+    }
+
+    .maps {
+        margin-left: 10%;
+        margin-bottom: 5%;
+    }
+
+    .infos {
+        padding : 2%;
+        background-color: rgba(58,52,62, 0.6);
+        box-shadow: 5px 5px 20px black;
+    }
+
+    .titleInfos {
+        margin: 4% auto;
+    }
 }
+
