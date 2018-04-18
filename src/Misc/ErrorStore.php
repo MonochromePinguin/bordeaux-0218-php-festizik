@@ -1,5 +1,5 @@
 <?php
-namespace misc;
+namespace Misc;
 
 /**
 * This class is used to store errors coming from various sources,
