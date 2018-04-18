@@ -22,9 +22,10 @@ abstract class AbstractController
 
     /**
     * @var ErrorStore $errorStore store the list of generated errors.
-    * not static because we could want more than one errorStore.
+    * not static because we could want more than one errorStore,
+    * and nulled in the constructor by default because we can live without it
     */
-    protected $errorStore;
+    protected $errorStore ;
 
     /**
      *  Initializes this class.
