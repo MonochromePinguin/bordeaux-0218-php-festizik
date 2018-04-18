@@ -22,12 +22,7 @@ $routes = [
         ['admin', '/admin', ['POST', 'GET']],
         ['logout', '/admin/logout', 'GET'],
     ],
-    // 'Admin' => [
-    //     ['concerts', '/admin/concerts', 'POST'],
-    //     ['articles', '/admin/articles', 'POST']
-    // ],
-    'User' => [
-        ['testList', '/testList', 'GET'], // ● Test route
+     'User' => [
         ['concerts', '/concerts', 'GET']
 ];
 
