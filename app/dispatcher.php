@@ -8,7 +8,7 @@
  *
  * @link     https://github.com/WildCodeSchool/simple-mvc
  */
-use misc\ErrorStore as ErrorStore;
+use Misc\ErrorStore as ErrorStore;
 
 require_once __DIR__ . '/routing.php';
 $routesCollection = function (FastRoute\RouteCollector $r) use ($routes) {

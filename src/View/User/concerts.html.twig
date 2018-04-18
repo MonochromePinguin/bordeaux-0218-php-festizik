@@ -28,16 +28,7 @@
 
     <hr/>
 
-
-    {% if errorList %}
-
-        <aside>
-            <div class="alert alert-warning">
-                {{ errorList | raw }}
-            </div>
-        </aside>
-
-    {% endif %}
+    {% include 'errorList.html.twig' %}
 
     <nav>
         <form method="GET" action="" class="border border-info p-1">

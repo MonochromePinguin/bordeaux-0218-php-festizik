@@ -11,7 +11,7 @@ namespace Controller;
 
 use Twig_Loader_Filesystem;
 use Twig_Environment;
-use misc\ErrorStore as ErrorStore;
+use Misc\ErrorStore as ErrorStore;
 
 /**
  *
