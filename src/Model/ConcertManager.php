@@ -16,8 +16,6 @@ class ConcertManager extends AbstractManager
     ];
 
 
-//TODO: this should be generalized to all tables into AbstractManager
-
     /**
      *  Initializes this class.
      */
@@ -27,7 +25,7 @@ class ConcertManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
-
+//TODO: this should be generalized to all tables into AbstractManager
     /**
     * returns an array of all sort criteria usable in sortConcertArray()
     */
