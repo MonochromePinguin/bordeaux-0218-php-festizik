@@ -1,7 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 
-{% block title %}Festizik – administration des concerts{% endblock %}
+{% block title %}Festizik – les concerts{% endblock %}
 
 {# TODO: ajouter les noms d'artistes dans les mots-clés #}
 {% block keywords %}festizik,concerts,événements,planning{% endblock %}
@@ -62,66 +62,55 @@
 
 
     <main>
-        <div class="card-columns">
+        {% for concert in concerts %}
+            <article class="bordered">
+                <div>
+                    <p>Heure&nbsp;</p>
+                    <p>{{ concert.hour }}</p>
+                </div>
 
-            {% for concert in concerts %}
+                <div>
+                    <p>Date&nbsp;</p>
+                    <p>{{ concert.DateAsString }}</p>
+                </div>
 
-                <article class="card m-3 p-2">
+                <div>
+                    <p>Scène&nbsp;</p>
+                    <p>{{ concert.sceneName }}</p>
+                </div>
 
-                    <div class="card-body p-1">
+                <div>
+                    <p>Artiste&nbsp;</p>
+                    <p>{{ concert.Artist.Name }}</p>
 
-                        <header class="sublined">
-                            <h1 class="card-title">
-                                {{ concert.hour }}
-                                <span class="pull-right text-muted">
-                            {{ concert.DateAsString }}
-                        </span>
-                            </h1>
-                            <h2 class="card-subtitle">
-                                scène «{{ concert.sceneName | title }}»
-                            </h2>
+                    {% if concert.Artist.ImageURL %}
 
-                            {% if 1 == concert.cancelled %}
-                                <p class="cancelled">Annulé</p>
-                            {% endif %}
-                        </header>
+                        <div class="col-xs-1 col-lg p-0">
+                            <img class="card-img-bottom"
+                                 src="{{ concert.Artist.ImageURL }}"
+                                 alt="L'image pour «{{ concert.Artist.Name }}» est absente&nbsp;!">
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <form action="updateDB" method="POST">
+                    {% if 1 == concert.cancelled %}
+                        <p class="cancelled">Annulé</p>
+                    {% endif %}
+
+                </form>
 
 
-                        <main class="card-text container-fluid">
-                            <div class="row p-2">
+            </article>
 
-                                {% if concert.Artist.ImageURL %}
+        {% else %}
+            <article>
+                <p>Aucun événement enregistré</p>
+            </article>
 
-                                    <div class="col-xs-1 col-lg p-0">
-                                        <img class="card-img-bottom"
-                                             src="{{ concert.Artist.ImageURL }}"
-                                             alt="L'image pour «{{ concert.Artist.Name }}» est absente&nbsp;!">
-                                    </div>
-
-                                {% endif %}
-
-                                <div class="col-xs-1 col-lg p-2">
-                                    <p class="bordered">
-                                        {{ concert.Artist.Name }} ({{ concert.Artist.Style }}
-                                        )
-                                    </p>
-                                    <p class="bordered bg-light">{{ concert.Artist.Description }}</p>
-                                </div>
-
-                            </div> <!-- .row -->
-                        </main>
-
-                </article>
-
-            {% else %}
-                <article>
-                    <p>Aucun événement enregistré</p>
-                </article>
-
-            {% endfor %}
-
-        </div> <!-- .row -->
-    </main>
+        {% endfor %}
 
     </main>
 
