@@ -21,9 +21,9 @@ $routes = [
         ['login', '/login', ['POST', 'GET']],  // action, url, method
         ['admin', '/admin', ['POST', 'GET']],
         ['logout', '/admin/logout', 'GET'],
+        ['concerts', '/admin/concerts', ['POST', 'GET']]
     ],
-     'User' => [
+    'User' => [
         ['concerts', '/concerts', 'GET']
+    ]
 ];
-
-
