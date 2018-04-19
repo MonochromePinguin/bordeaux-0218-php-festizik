@@ -34,10 +34,10 @@ class Day
      * return an unformated string as obtained by the DB engine
      * @return string
      */
-     public function getDateAsRaw(): string
-     {
-         return $this->date;
-     }
+    public function getDateAsRaw(): string
+    {
+        return $this->date;
+    }
 
     /**
      * @return string
@@ -57,7 +57,4 @@ class Day
     {
         return strtotime($this->date);
     }
-
-
-
 }
