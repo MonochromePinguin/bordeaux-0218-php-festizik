@@ -1,0 +1,78 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+
+	<h1 class="billetterieTitle">Achetez vos billets</h1>
+
+	<div class="container-fluid bjr">
+		<div class="row days">		
+			<div class="hoverable firstDay col-lg-3 col-md-12 col-sm-12 col-12">
+				<span class="cadre-block cadreTitle">
+					<h2 class="titleDay">Pass 1 jour</h2>
+				</span>
+
+				<div class="choice">27, 28 ou 29 au choix</div>
+
+				<div class="separation">
+					<div class="separator"></div>
+					<div class="lign"></div>
+				</div>
+				<p class="price">45 euros</p>
+				<p class="announcement">Frais de camping inclus</p>
+
+
+			</div>
+			<div class="secondDay hoverable col-lg-3 col-md-12 col-sm-12 col-12">
+				<span class="cadreTitle">
+					<h2 class="titleDay">Pass 2 jours</h2>
+				</span>
+
+				<div class="choice">27-28 ou 28-29 au choix</div>
+
+				<div class="separation">
+					<div class="separator"></div>
+					<div class="lign"></div>
+				</div>
+				<p class="price">80 euros</p>
+				<p class="announcement">Frais de camping inclus</p>
+			</div>
+			<div class="thirdDay hoverable col-lg-3 col-md-12 col-sm-12 col-12"
+			>
+				<span class="cadreTitle">
+					<h2 class="titleDay">Pass 3 jours</h2>
+				</span>
+				<div class="choice">27-28-29 Juillet</div>
+
+				<div class="separation">
+					<div class="separator"></div>
+					<div class="lign"></div>
+				</div>
+				<p class="price">110 euros</p>
+				<p class="announcement">Frais de camping inclus</p>
+
+				
+			</div>
+		</div>
+	</div>
+
+	<nav class="container-fluid btnNav">
+		<div class="row btnRow">
+			<p class="btn">
+				<a href="http://www.fnacspectacles.com/"><button class="btn btn-1 btnReservation">Fnac</button></a>
+			
+				<a href="https://www.spectacles.carrefour.fr/?origine=GoogleCrf&origine=Googlecrf_Spectacles-Marque-IDF&gclid=Cj0KCQjw_ODWBRCTARIsAE2_EvU98cjjZZ9u4Vzc97p28U9UFIcjgBoL0uh4w7HqaaMZxJmKbwD8MIEaAv_8EALw_wcB"><button class="btn btn-2 btnReservation">Carrefour</button></a>
+			
+				<a href="https://billetterie.auchan.fr/"><button class="btn btn-3 btnReservation">Auchan</button></a>
+			
+				<a href="https://billetterie.cultura.com/"><button class="btn btn-4 btnReservation">Cultura</button></a>
+
+				<a href="https://www.ticketmaster.fr/"><button class="btn btn-5 btnReservation">Ticket Master</button></a>
+
+				<a href="https://www.digitick.com/fr"><button class="btn btn-6 btnReservation">Digitick</button></a>
+			</p>
+		</div>
+	</nav>
+
+
+
+{% endblock %}
