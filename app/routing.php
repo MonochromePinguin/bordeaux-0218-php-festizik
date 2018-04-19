@@ -25,5 +25,6 @@ $routes = [
         ['benevol', '/benevole', 'GET'],
         ['insertedBenevol', '/benevole', 'POST'],
         ['billetterie', '/billetterie', 'GET']
+        ['concerts', '/concerts', 'GET']
     ]
 ];

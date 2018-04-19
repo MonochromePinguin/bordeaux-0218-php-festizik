@@ -20,6 +20,9 @@ class Concert
     private $id_artist;
     private $cancelled;
 
+    /* this one is just a cache */
+    private $dateObject = null;
+
     private static $artists;
     private static $scenes;
     private static $days;
@@ -40,18 +43,39 @@ class Concert
         return $this->id_concert;
     }
 
+    public function getDate(): \DateTime
+    {
+         $day = static::$days[$this->id_day -1];
+        return $day ?
+            new \DateTime( $day->getDateAsRaw() )
+            # if an error occurend, returns an as-null-as-possible Date
+            : \DateTime::createFromFormat('Y-m-d', '0000-01-01');
+    }
+
     /**
      * @return string
      */
-    public function getDate(): string
+    public function getDateAsString(): string
     {
         $day = static::$days[$this->id_day -1];
-        if ($day) {
-            return $day->getDateAsString();
-        } else {
-            return 'Index de jour erroné : ' . $this->id_day;
+        return $day ?
+            $day->getDateAsString()
+            :  'Index de jour erroné : ' . $this->id_day;
+    }
+
+    public function getDateTime() : \DateTime
+    {
+        if ( ! isset($this->dateObject) ) {
+
+            $day = static::$days[$this->id_day -1];
+            if ( isset($day) )
+                $theDate = $day->getDateAsRaw();
+            else
+                $theDate = '0000-01-01';
+
+            $this->dateObject = new \DateTime( $theDate . ' ' . $this->getHour() );
         }
-        return ;
+        return $this->dateObject;
     }
 
 //TODO : seems unneeded. Delete it if no-one want it.
@@ -75,12 +99,9 @@ class Concert
     public function getSceneName(): string
     {
         $scene = static::$scenes[$this->id_scene -1];
-        if ($scene) {
-            return $scene->getName();
-        } else {
-            return 'Index de scène erroné : ' . $this->id_scene;
-        }
-        return ;
+        return ($scene) ?
+            $scene->getName()
+            :  'Index de scène erroné : ' . $this->id_scene;
     }
 
 
@@ -125,8 +146,16 @@ class Concert
             return 0;
     }
 
-    public static function cmpByDate(Concert $one, Concert $two) : int {
-//TODO : implement it !
+    public static function cmpByDay(Concert $one, Concert $two) : int {
+       $date1 = $one->getDateTime();
+       $date2 = $two->getDateTime();
+
+       if ($date1 > $date2)
+           return 1;
+       elseif ($date1 < $date2)
+            return -1;
+       else
+           return 0;
     }
 
 
