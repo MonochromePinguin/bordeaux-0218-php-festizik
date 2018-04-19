@@ -39,7 +39,7 @@ CREATE TABLE Artist (
     id_style int unsigned NOT NULL,
     about text,
     picture text,
-	CONSTRAINT FOREIGN KEY(id_style) REFERENCES Style(id_style)
+     CONSTRAINT FOREIGN KEY(id_style) REFERENCES Style(id_style)
 );
 
 CREATE TABLE Scene(
@@ -75,7 +75,7 @@ CREATE TABLE Page (
 --   same as above – picture is a server local path
 -- ● should the field "content" be native HTML, with only quotes escaped ?
 -- ● keywords_list would better be replaced by an intermediary table linking to
---		a "tags" table
+--          a "tags" table
 CREATE TABLE Article (
     id_article int unsigned PRIMARY KEY AUTO_INCREMENT,
     title text NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE Article (
     id_page int unsigned NOT NULL,
     picture text,
     content text NOT NULL,
-	CONSTRAINT FOREIGN KEY(id_page) REFERENCES Page(id_page)
+     CONSTRAINT FOREIGN KEY(id_page) REFERENCES Page(id_page)
 );
 
 --   surname : « nom de famille »
@@ -96,8 +96,8 @@ CREATE TABLE Volunteer (
     id_volunteer int unsigned PRIMARY KEY AUTO_INCREMENT,
     name varchar(128)  NOT NULL,
     surname varchar(128)  NOT NULL,
-    phone_number_fix varchar(13),
-    phone_number_mobile varchar(13),
+    email varchar(128),
+    phone varchar(13),
     disponibility_start date NOT NULL,
     disponibility_end date NOT NULL,
     constraint check( disponibility_end >= disponibility_start )
@@ -107,15 +107,20 @@ CREATE TABLE Volunteer (
 --    the hash function need to be defined – after implementing the connection page ?
 DROP TABLE IF EXISTS Administration;
 CREATE TABLE Administration (
-    username varchar(128) NOT NULL,
-    host varchar(128) NOT NULL,
+    user varchar(128) NOT NULL,
     password varchar(256) NOT NULL
+);
+
+DROP TABLE IF EXISTS Item;
+CREATE TABLE Item (
+    id int unsigned PRIMARY KEY AUTO_INCREMENT,
+    title varchar(256)  NOT NULL
 );
 
 
 -- REMPLISSAGE ...
 LOCK TABLES `Style` WRITE;
-INSERT INTO `Style`  VALUES (1,'Pop'),(2,'Heavy Metal'),(3,'Classical'),(4,'Jazz'),(5,'Fusion');
+INSERT INTO `Style`  VALUES (1,'Pop'),(2,'Heavy Metal'),(3,'Classical'),(4,'Jazz'),(5,'Fusion'),(6,'Folk');
 UNLOCK TABLES;
 
 LOCK TABLES `Artist` WRITE;
@@ -149,8 +154,8 @@ UNLOCK TABLES;
 
 LOCK TABLES `Volunteer` WRITE;
 INSERT INTO `Volunteer` VALUES
-  (1,'Jack','Chirac','0554525447',NULL,'2018-06-15','2018-07-30'),
-  (2,'Éric','Dupont',NULL,'0671548456','2018-03-01','2018-03-21');
+  (1,'Jack','Chirac','ecoutaize@yopmail.com',NULL,'2018-06-15','2018-07-30'),
+  (2,'Éric','Dupont','DupontLeBlond@yopmail.net','0671548456','2018-03-01','2018-03-21');
 UNLOCK TABLES;
 
 
