@@ -1,8 +1,11 @@
 <?php
 namespace Controller;
 
+use Model\ArtistManager;
 use Model\Concert;
 use Model\ConcertManager;
+use Model\Benevol;
+use Model\BenevolManager;
 
 /**
  * Class UserController
@@ -10,6 +13,10 @@ use Model\ConcertManager;
  */
 class UserController extends AbstractController
 {
+    public function index()
+    {
+        return $this->twig->render('User/index.html.twig');
+    }
 
     public function testList()
     {
@@ -71,5 +78,33 @@ class UserController extends AbstractController
                         $this->errorStore->formatAllMsg() : null
             ]
         );
+    }
+
+    public function artists() {
+        $artistManager = new ArtistManager();
+        $artists = $artistManager->selectAll();
+        return $this->twig->render('User/artist.html.twig', ['artists' => $artists]);
+    }
+
+    public function benevol()
+    {
+        return $this->twig->render('User/benevol.html.twig');
+    }
+
+    public function billetterie()
+    {
+        return $this->twig->render('User/billetterie.html.twig');
+    }
+
+    public function insertedBenevol()
+    {
+        $BenevolManager = new BenevolManager();
+        $benevol = $BenevolManager->insertVolunteer($_POST);
+        return $this->twig->render('User/insertedBenevol.html.twig');
+    }
+
+    public function infos()
+    {
+        return $this->twig->render('User/infos.html.twig');
     }
 }
