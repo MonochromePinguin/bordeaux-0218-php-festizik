@@ -40,7 +40,7 @@ class AdminController extends AbstractController
                 echo $e->getMessage();
             }
         }
-        if (!isset($_SESSION['username']) || !empty($errors)) {
+        if (!isset($_SESSION['username'])) {
             return $this->twig->render('Admin/login.html.twig', ['errors' => $errors]);
         } else {
             header('Location: /admin');
@@ -58,8 +58,8 @@ class AdminController extends AbstractController
 
     public function logout()
     {
-        unset($_SESSION['username']);
-        //session_destroy();
+        session_unset();
+        session_destroy();
         header('Location: /login');
 
     }
