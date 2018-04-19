@@ -14,14 +14,6 @@
 
 /* ------- */
 
-#programmation  {
-    background: repeating-linear-gradient(
-          45deg,
-          #0D909E,
-          #019E57 100px,
-          #BBBFF0 100px,
-          #7781F0 200px )
-}
 
 #programmation header {
     position: relative;
@@ -29,13 +21,6 @@
     text-align: right;
     color: darkred;
     font-weight: bold;
-
-/* ●●● VENGEANCE IS MINE. EAT THIS BACKGROUND! ●●● */
-    background: repeating-linear-gradient( 45deg,
-                    transparent, transparent 20px, #d55 40px, #5dd 60px ),
-                /*en fond du précédent */
-/*                linear-gradient(to bottom, #fff, #ccc 50%, #555);
-*/
 }
 
 #programmation header > svg {
