@@ -1,3 +1,9 @@
+@font-face {
+    font-family: "neon";
+    src: url('/assets/fonts/neon_club_music/NEON CLUB MUSIC.otf');
+}
+
+
 body {
     background-image : url('https://www.toptal.com/designers/subtlepatterns/patterns/gray_sand.png');
 }
@@ -8,6 +14,7 @@ body {
 	display: block;
 	z-index: 22222;
     overflow: hidden;
+
 }
 
 .logo {
@@ -82,21 +89,25 @@ body {
 		min-width: 7.5%;
 		height: 100vh;
 		border-right: 1px solid black;
+
 	}
 
 	.logo {
 		background: url("/assets/images/favicon.png") no-repeat round;
 		position: absolute;
 		height: 10%;
-		width: 80px;
+		width: 100%;
+		
+
 	}
 
     .barreNav:hover .logo {
 		background: url("/assets/images/logo.png") no-repeat round;
 		height: 13%;
-		width: 100px;
-		margin-left: 12%;
+		width: 100%;
+		margin-left: 5%;
         top : 10px;
+
 	}
 
 	#navbarSupportedContent {
@@ -108,7 +119,7 @@ body {
 	}
 
     .barreNav:hover .navbar-nav:first-child {
-		margin-top: 70%;
+		margin-top: 100%;
 	}
 
     .barreNav ul {
@@ -155,4 +166,181 @@ body {
 		background-position: center;
 		height: 100%;
 	}
+}
+
+
+
+
+
+
+
+	/****************Billetterie***************/
+
+
+.billetterieTitle{
+	text-align: center;
+	font-family: neon;
+	color: #FDB940;
+}
+
+.days{
+	justify-content: center;
+	height: 50vh;
+	justify-content: space-around;
+
+}
+
+.firstDay, .secondDay, .thirdDay{
+	height: 45vh;
+	color: #FCFDBC;
+}
+
+.firstDay{
+	background-color: #00B6A2;
+}
+
+.secondDay{
+	background-color: #009685; 
+	
+}
+
+.thirdDay{
+	background-color: #007a84; 
+}
+
+.bjr{
+	margin-top: 10%;
+}
+
+.cadreTitle{
+	text-align: center;
+}
+
+
+.hoverable{
+	border-radius: 3%;
+    box-shadow: 0 8px 17px 0 rgba(0,0,0,.3), 0 6px 20px 0 rgba(0,0,0,.7);
+}
+
+.choice{
+	margin-top: 3rem;
+	font-style: italic; 
+}
+
+.separator{	
+	margin-top: 10%;
+	height: 1px;
+	background-color: #FDB940;
+	width: 5vw;
+	margin-left: 2rem;
+}
+
+.lign{	
+	margin-top: 10%;
+	height: 1px;
+	background-color: #FDB940;
+	width: 5vw;
+	margin-right: 2rem;
+}
+
+.separation{
+	display: flex;
+	justify-content: space-between;
+}
+
+
+.price{
+	position: relative;	
+	font-size: 3em;
+	margin-top: 2rem; 
+	margin-bottom: 0px; 
+
+}
+
+.announcement{
+	font-style: italic;	
+}
+
+
+
+.titleDay
+{
+	margin-top: 20px; 
+}
+
+
+.btnNav{
+
+}
+
+.btnRow{
+
+    position: fixed;
+    color: black; 
+    width: 100%;
+    top: 76%;
+    height: auto;
+  	margin: auto;
+	justify-content: space-around;
+}
+
+.btnReservation{
+
+	width: 8vw;
+	height: 8vh;
+
+}
+
+.btn-1{
+	background-color: #00B6A2;
+}
+
+.btn-2{
+	background-color: #00B6A2;
+}
+
+
+.btn-1:hover{
+	background-color: #007a84;
+}
+
+.btn-2:hover{
+	background-color: #007a84;
+}
+
+
+
+.btn-3{
+	background-color: #009685;
+}
+
+.btn-4{
+	background-color: #009685;
+}
+.btn-3:hover{
+	background-color: #00B6A2;
+}
+
+.btn-4:hover{
+	background-color: #00B6A2;
+}
+
+
+
+.btn-5{
+	background-color: #007a84;
+}
+
+.btn-6{
+	background-color: #007a84;
+}
+
+
+
+.btn-5:hover{
+	background-color: #009685;
+}
+
+.btn-6:hover{
+	background-color: #009685;
 }
