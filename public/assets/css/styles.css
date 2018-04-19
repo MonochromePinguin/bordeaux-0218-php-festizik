@@ -1,19 +1,20 @@
 /* -------- TYPOGRAPHY -------- */
 @font-face {
-    font-family: "neon";
-    src: url('/assets/fonts/neon_club_music/NEON CLUB MUSIC.otf');
+    font-family : "neon";
+    src         : url('/assets/fonts/neon_club_music/NEON CLUB MUSIC.otf');
 }
+
 @font-face {
-    font-family: "Open Sans";
-    src: url('https://fonts.googleapis.com/css?family=Open+Sans');
+    font-family : "Open Sans";
+    src         : url('https://fonts.googleapis.com/css?family=Open+Sans');
 }
 
 p, .barreNav a {
-    font-family: 'Open Sans', sans-serif;
+    font-family : 'Open Sans', sans-serif;
 }
 
-.date, .titleInfos {
-    font-family: 'neon';
+.date, .titleInfos, .titleDay {
+    font-family : 'neon';
 }
 
 /* -------- BODY -------- */
@@ -23,127 +24,128 @@ body {
 
 /* -------- NAVBAR -------- */
 .barreNav {
-	background-color: rgba(253, 185, 64, 0.9);
-	display: block;
-	z-index: 22222;
-    overflow: hidden;
+    background-color : rgba(253, 185, 64, 0.9);
+    z-index          : 22222;
+    overflow         : hidden;
+    height           : 100vh;
 }
 
 .logo {
-	background: url("/assets/images/logo_mini.png") no-repeat;
-	height: 40px;
-	width: 70%;
+    background : url("/assets/images/logo_mini.png") no-repeat;
+    height     : 40px;
+    width      : 70%;
+    display    : inline-block;
 }
 
 .barreNav div {
-	height: 85vh;
-	text-align: center;
+    height     : 85vh;
+    text-align : center;
 }
 
 .barreNav ul:first-child {
-	margin-top: 2%;
+    margin-top : 2%;
 }
 
 .barreNav li {
-	list-style-type: none;
-	height: 10vh;
+    list-style-type : none;
+    height          : 10vh;
 }
 
 .barreNav li a {
-	color: #FDB940;
-	padding-top: 5%;
+    color       : white;
+    padding-top : 5%;
 }
 
 .barreNav li a:hover {
-	color: #00B6A2;
+    color : #00B6A2;
 }
 
 .social-icons {
-	display: inline;
+    display : inline;
 }
+
 .social-icons li {
-	display: inline-flex;
-	margin: 5%;
+    display : inline-flex;
+    margin  : 5%;
 }
 
 /* -------- VIDEO --------*/
 #myVideo {
-    position: fixed;
-    right: -100%;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
+    position   : fixed;
+    right      : -100%;
+    bottom     : 0;
+    min-width  : 100%;
+    min-height : 100%;
 }
 
-
 .content {
-    text-align: center;
-    position: fixed;
-    color: black;
-    width: 100%;
-    top: 31%;
-    height: auto;
+    text-align : center;
+    position   : fixed;
+    color      : black;
+    width      : 100%;
+    top        : 31%;
+    height     : auto;
 }
 
 .content img {
-    width: 50%;
+    width : 50%;
 }
 
 /* -------- FOOTER -------- */
 
 .myNav {
-	padding: 0;
+    padding : 0;
 }
 
 .myNav a {
-    color: white;
+    color : white;
 }
 
 /* -------- BENEVOLES -------- */
 
 .formBox {
-	position: relative;
-    top: 6.5%;
-    color : white;
-    width : 80%;
+    position : relative;
+    top      : 6.5%;
+    color    : white;
+    width    : 80%;
 }
 
 .benevole-header {
-    text-align: justify;
+    text-align : justify;
 }
 
 .formBox .row {
-    padding: 3%;
+    padding : 3%;
 }
 
 .formBox h2 {
-    font-size: 1.5rem;
-    color : #009685;
-    text-align: center;
+    font-size  : 1.5rem;
+    color      : #009685;
+    text-align : center;
 }
 
 .formBox h3 {
-    font-size: 1.4rem;
+    font-size : 1.4rem;
 }
 
 .formBox p {
-    text-align: justify;
+    text-align : justify;
 }
 
 .formBox hr {
-    margin: 2rem auto;
+    margin : 2rem auto;
 }
 
 .formBox .btn {
-    background-color: #FDB940;
-    border-color: #FDB940;
-    color : black;
+    background-color : #FDB940;
+    border-color     : #FDB940;
+    color            : black;
 }
 
 .welcome {
-    color : white;
-    text-align: center;
-    padding-top: 5%;
+    color       : white;
+    text-align  : center;
+    padding-top : 5%;
 }
 
 /* -------- INFOS PRATIQUES ------- */
@@ -153,20 +155,20 @@ body {
 }
 
 .infos-header {
-    color: white;
+    color : white;
 }
 
 .titleInfos {
-    font-size   : 3rem;
-    color       : #FDB940;
-    margin      : 6% auto;
+    font-size : 3rem;
+    color     : #FDB940;
+    margin    : 6% auto;
 }
 
 .txtTitleInfos {
-    color     : white;
-    font-size : 1em;
-    text-align: justify;
-    padding: 1% 3%;
+    color      : white;
+    font-size  : 1em;
+    text-align : justify;
+    padding    : 1% 3%;
 }
 
 .date {
@@ -181,34 +183,150 @@ body {
     color      : white;
     font-size  : 1em;
     text-align : justify;
-    padding : 10%;
+    padding    : 10%;
 }
 
-.infos p:first-child{
-    padding-top: 2%;
+.infos p:first-child {
+    padding-top : 2%;
 }
 
 .icons {
-    padding-bottom: 2%;
+    padding-bottom : 2%;
 }
 
 .billetterie {
     color : #009685;
 }
+
 .billetterie:hover {
-    color : white;
-    text-decoration: none;
+    color           : white;
+    text-decoration : none;
+}
+
+/* -------- BILLETTERIE -------- */
+.billetterieTitle {
+    text-align : center;
+    color      : #FDB940;
+    margin-top : 5%;
+}
+
+.days {
+    justify-content : space-evenly;
+}
+
+.firstDay {
+    background-color : #00B6A2;
+}
+
+.secondDay {
+    background-color : #009685;
+    margin           : 15px 0;
+}
+
+.thirdDay {
+    background-color : #007A84;
+}
+
+.bjr {
+    margin-top : 10%;
+}
+
+.cadreTitle {
+    text-align : center;
+}
+
+.hoverable {
+    border-radius : 3%;
+    box-shadow    : 0 8px 17px 0 rgba(0, 0, 0, .3), 0 6px 20px 0 rgba(0, 0, 0, .7);
+    height        : 40vh;
+    color         : #FCFDBC;
+}
+
+.choice {
+    margin-top : 3rem;
+    font-style : italic;
+    text-align : center;
+}
+
+.separator {
+    margin-top       : 10%;
+    height           : 1px;
+    background-color : #FDB940;
+    width            : 5vw;
+    margin-left      : 2rem;
+}
+
+.lign {
+    margin-top       : 10%;
+    height           : 1px;
+    background-color : #FDB940;
+    width            : 5vw;
+    margin-right     : 2rem;
+}
+
+.separation {
+    display         : flex;
+    justify-content : space-evenly;
+}
+
+.price {
+    position      : relative;
+    font-size     : 3em;
+    margin-top    : 2rem;
+    margin-bottom : 0px;
+}
+
+.announcement {
+    font-style : italic;
+}
+
+.titleDay {
+    margin-top : 20px;
+}
+
+.btnRow {
+    color           : black;
+    width           : 100%;
+    height          : auto;
+    margin          : 6% auto;
+    justify-content : space-around;
+}
+
+.btnReservation {
+    height      : 8vh;
+    white-space : normal;
+    position    : relative;
+    left        : 11%;
+}
+
+.btn-1, .btn-2 {
+    background-color : #00B6A2;
+}
+
+.btn-3 {
+    background-color : #009685;
+}
+
+.btn-4 {
+    background-color : #009685;
+    margin-top       : 3%;
+}
+
+.btn-5, .btn-6 {
+    background-color : #007A84;
+    margin-top       : 3%;
 }
 
 /* -------- MEDIA QUERIES -------- */
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width : 992px) {
 
     .container {
         position : relative;
-        left : 4%;
-        width: 80%;
+        left     : 4%;
+        width    : 80%;
     }
+
     /* -------- NAVBAR -------- */
     .barreNav {
         min-width        : 7.5%;
@@ -241,21 +359,21 @@ body {
         display : block !important;
     }
 
-    .barreNav:hover .navbar-nav:first-child {
-        margin-top : 100%;
-    }
-
     .barreNav ul {
         display : block !important;
     }
 
     .barreNav ul:first-child {
-        margin-top : 0;
+        margin-top : -5%;
+    }
+
+    .nav-item-infos {
+        margin-top: 55%;
     }
 
     .social-icons {
         position : absolute;
-        top      : 90%;
+        top      : 93%;
         width    : 80%;
     }
 
@@ -264,6 +382,9 @@ body {
     }
 
     /* -------- VIDEO -------- */
+    .video {
+        height : 92vh;
+    }
     #myVideo {
         right : 0;
     }
@@ -292,17 +413,16 @@ body {
     }
 
     /* -------- BENEVOLES -------- */
-
-    .benevole-header, .infos-header {
-        text-align: center;
-        background-color: #FDB940;
-        padding-top: 2%;
-        box-shadow: 1px 1px 8px black;
+    .benevole-header, .infos-header, .artist-header, .billetterie-header {
+        text-align       : center;
+        background-color : #FDB940;
+        padding-top      : 2%;
+        box-shadow       : 1px 1px 8px black;
     }
 
     .formBox img {
-        width : inherit;
-        box-shadow: 2px 2px 20px black;
+        width      : inherit;
+        box-shadow : 2px 2px 20px black;
     }
 
     .formBox h2 {
@@ -310,38 +430,79 @@ body {
     }
 
     .formBox p, .formBox form {
-        padding-bottom: 2%;
+        padding-bottom : 2%;
     }
+
     .postuler {
-        background-color: rgba(58,52,62, 0.6);
-        box-shadow: 5px 5px 20px black;
+        background-color : rgba(58, 52, 62, 0.6);
+        box-shadow       : 5px 5px 20px black;
+        border-radius    : 3%;
     }
 
     .rejoindre {
-        padding-right: 5%;
+        padding-right : 5%;
     }
 
     /* -------- INFOS PRATIQUES ------- */
     .date {
-        margin-left: 24vw;
-        margin-bottom: 5%;
+        margin-left   : 24vw;
+        margin-bottom : 5%;
     }
 
     .presentation {
         padding : 0;
     }
+
     .maps {
-        margin-bottom: 5%;
+        margin-bottom : 5%;
     }
 
     .infos {
-        padding : 2%;
-        background-color: rgba(58,52,62, 0.6);
-        box-shadow: 5px 5px 20px black;
+        padding          : 2%;
+        background-color : rgba(58, 52, 62, 0.6);
+        box-shadow       : 5px 5px 20px black;
+        border-radius    : 3%;
     }
 
     .titleInfos {
-        margin: 4% auto;
+        margin : 4% auto;
     }
+
+    /* -------- BILLETTERIE -------- */
+    .bjr, .btn-4, .btn-5, .btn-6 {
+        margin-top : 0;
+    }
+
+    .billetterieTitle {
+        color      : white;
+        margin-top : 0;
+    }
+
+    .days {
+        height     : 50vh;
+        margin-top : 10%;
+    }
+
+    .hoverable {
+        height : 49vh;
+        margin : 0;
+    }
+
+    .btnReservation {
+        width : 8vw;
+    }
+
+    .btn-1:hover, .btn-2:hover {
+        background-color : #007A84;
+    }
+
+    .btn-3:hover, .btn-4:hover {
+        background-color : #00B6A2;
+    }
+
+    .btn-5:hover, .btn-6:hover {
+        background-color : #009685;
+    }
+
 }
 
