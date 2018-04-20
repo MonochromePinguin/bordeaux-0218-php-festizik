@@ -40,7 +40,7 @@ abstract class AbstractManager
      * @return array
      */
 // TODO : ADD THE "ORDER BY" as an optional parameter
-    public function selectAll(): array
+    public function selectAll() : array
     {
         return $this->pdoConnection->query(
             'SELECT * FROM ' . $this->table,

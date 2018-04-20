@@ -28,10 +28,7 @@ class ItemController extends AbstractController
      */
     public function index()
     {
-        $itemManager = new ItemManager();
-        $items = $itemManager->selectAll();
-
-        return $this->twig->render('Item/index.html.twig', ['items' => $items]);
+        return $this->twig->render('Item/index.html.twig');
     }
 
     /**
@@ -62,17 +59,7 @@ class ItemController extends AbstractController
         return $this->twig->render('Item/edit.html.twig', ['item', $id]);
     }
 
-    /**
-     * Display item creation page
-     *
-     * @return string
-     */
 
-    public function infos()
-    {
-        // TODO : add a new item
-        return $this->twig->render('Item/infos.html.twig');
-    }
 
     public function benevol()
     {
@@ -100,5 +87,11 @@ class ItemController extends AbstractController
         $BenevolManager = new BenevolManager();
         $benevol = $BenevolManager->insertVolunteer($_POST);
         return $this->twig->render('Item/insertedBenevol.html.twig');
+    }
+
+    public function infos()
+    {
+        // TODO : add a new item
+        return $this->twig->render('Item/infos.html.twig');
     }
 }
