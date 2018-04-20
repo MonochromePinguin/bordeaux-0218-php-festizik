@@ -14,15 +14,6 @@
 
 /* ------- */
 
-#programmation  {
-    background: repeating-linear-gradient(
-          45deg,
-          #0D909E,
-          #019E57 100px,
-          #BBBFF0 100px,
-          #7781F0 200px )
-}
-
 #programmation header {
     position: relative;
 
