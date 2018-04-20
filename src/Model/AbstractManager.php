@@ -44,7 +44,9 @@ abstract class AbstractManager
      * @param string|null $orderBy optional "order by" parameter for the SQL request
      * @return array
      */
+
     public function selectAll($orderBy = null): array
+
     {
         $queryString = 'SELECT * FROM ' . $this->table;
         if (null != $orderBy) {
