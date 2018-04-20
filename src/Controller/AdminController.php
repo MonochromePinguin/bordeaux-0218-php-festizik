@@ -65,6 +65,12 @@ class AdminController extends AbstractController
 
     public function concerts()
     {
+ //TODO: ADD SESSION TIMING-OUT AND REFRESHING
+        session_start();
+        if ( empty($_SESSION['username']))
+            return $this->twig->render('Admin/login.html.twig',
+                    ['errors' => [ 'La page d\'administration des concerts n\'est pas accessible sans identification'] ] );
+
         $concertManager = new ConcertManager($this->errorStore);
         $concerts = $concertManager->selectAll();
 
@@ -95,7 +101,7 @@ class AdminController extends AbstractController
 
 
         if ( 0 !== count($_POST) )
-            $this->storeMsg('TODO : Cette page n\'est pas encore fonctionelle avec la méthode POST');
+            $this->storeMsg('TODO : Cette page n\'est pas encore fonctionnelle avec la méthode POST');
 
         return $this->twig->render( 'Admin/concerts.html.twig',
             [
@@ -108,5 +114,6 @@ class AdminController extends AbstractController
 
         );
     }
+
 }
 
