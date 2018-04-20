@@ -24,7 +24,6 @@ class AdminController extends AbstractController
     {
         $errors = [];
         if ($_POST) {
-
             $username = $_POST['username'];
             $password = $_POST['password'];
 
@@ -35,9 +34,7 @@ class AdminController extends AbstractController
                 } else {
                     $errors[] = 'Le nom d\'utilisateur et/ou le mot de passe est incorrect.';
                 }
-            }
-            catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 echo $e->getMessage();
             }
         }
@@ -67,9 +64,12 @@ class AdminController extends AbstractController
     {
  //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
-        if ( empty($_SESSION['username']))
-            return $this->twig->render('Admin/login.html.twig',
-                    ['errors' => [ 'La page d\'administration des concerts n\'est pas accessible sans identification'] ] );
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render(
+                'Admin/login.html.twig',
+                ['errors' => [ 'La page d\'administration des concerts n\'est pas accessible sans identification'] ]
+            );
+        }
 
         $concertManager = new ConcertManager($this->errorStore);
         $concerts = $concertManager->selectAll();
@@ -79,31 +79,34 @@ class AdminController extends AbstractController
         #allow to sort data out of the model, so we save an SQL request
         static $props = null;
 
-        if ( null === $props )
+        if (null === $props) {
             $props = $concertManager::getAvailableSortCriterias();
+        }
 
-        if ( 0 !== count($_GET) ) {
-
+        if (0 !== count($_GET)) {
             ## the goal of a GET method is to sort the available datas
             # into the controller, thus saving some SQL different requests
-            if ( isset( $_GET['sortBy'] ) )
-            {
+            if (isset($_GET['sortBy'])) {
                 $sortBy = $_GET['sortBy'];
 
-                if ( ! $concertManager->sortArray($concerts, $sortBy) )
+                if (! $concertManager->sortArray($concerts, $sortBy)) {
                     $this->storeMsg(
                         'Le paramètre de tri «' . $sortBy
-                        . '» n\'est pas valide' );
-            }
-            else
-                $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');;
+                        . '» n\'est pas valide'
+                    );
+                }
+            } else {
+                $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');
+            };
         }
 
 
-        if ( 0 !== count($_POST) )
+        if (0 !== count($_POST)) {
             $this->storeMsg('TODO : Cette page n\'est pas encore fonctionnelle avec la méthode POST');
+        }
 
-        return $this->twig->render( 'Admin/concerts.html.twig',
+        return $this->twig->render(
+            'Admin/concerts.html.twig',
             [
                 'sortableProperties' => $props,
                 'concerts' => $concerts,
@@ -111,9 +114,6 @@ class AdminController extends AbstractController
                 'errorList' => $this->errorStore ?
                     $this->errorStore->formatAllMsg() : null
             ]
-
         );
     }
-
 }
-

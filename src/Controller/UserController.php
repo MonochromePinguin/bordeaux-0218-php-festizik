@@ -21,29 +21,31 @@ class UserController extends AbstractController
         static $props = null;
 
 
-        if ( null === $props )
+        if (null === $props) {
             $props = $concertManager::getAvailableSortCriterias();
+        }
 
-        if ( 0 !== count($_GET) ) {
-
+        if (0 !== count($_GET)) {
             ## the goal of a GET method is to sort the available datas
             # into the controller, thus saving some SQL different requests
-            if ( isset( $_GET['sortBy'] ) )
-            {
-               $sortBy = $_GET['sortBy'];
+            if (isset($_GET['sortBy'])) {
+                $sortBy = $_GET['sortBy'];
 
-               if ( ! $concertManager->sortArray($concerts, $sortBy) )
+                if (! $concertManager->sortArray($concerts, $sortBy)) {
                     $this->storeMsg(
                         'Le paramètre de tri «' . $sortBy
-                        . '» n\'est pas valide' );
-            }
-            else
-                $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');;
+                        . '» n\'est pas valide'
+                    );
+                }
+            } else {
+                $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');
+            };
         }
 
 
-        if ( 0 !== count($_POST) )
+        if (0 !== count($_POST)) {
             $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec la méthode POST');
+        }
 
 
         return $this->twig->render(
@@ -55,7 +57,6 @@ class UserController extends AbstractController
                 'errorList' => $this->errorStore ?
                         $this->errorStore->formatAllMsg() : null
             ]
-
         );
     }
 }
