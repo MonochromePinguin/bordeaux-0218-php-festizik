@@ -6,13 +6,9 @@
     padding: 0.5rem;
 }
 
-
 .sublined {
     border-bottom: 2px solid darkred;
 }
-
-
-/* ------- */
 
 #programmation header {
     position: relative;
@@ -20,13 +16,6 @@
     text-align: right;
     color: darkred;
     font-weight: bold;
-
-/* ●●● VENGEANCE IS MINE. EAT THIS BACKGROUND! ●●● */
-    background: repeating-linear-gradient( 45deg,
-                    transparent, transparent 20px, #d55 40px, #5dd 60px ),
-                /*en fond du précédent */
-/*                linear-gradient(to bottom, #fff, #ccc 50%, #555);
-*/
 }
 
 #programmation header > svg {
@@ -42,12 +31,10 @@
     position: relative;
 }
 
-
 #programmation > aside,
 #programmation > nav {
     margin: 3%;
 }
-
 
 #programmation .card-columns {
     max-width: 95vw;
@@ -79,7 +66,6 @@
     font-style: italic;
     color: darkblue;
 }
-
 
 #programmation .card-text p {
     text-indent: 1rem;

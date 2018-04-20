@@ -4,3 +4,4 @@
 /untracked/
 *.cache
 app/db.php
+.idea

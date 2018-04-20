@@ -3,8 +3,11 @@ namespace Controller;
 
 require_once __DIR__ . '/../Misc/functions.php';
 
+use Model\ArtistManager;
 use Model\Concert;
 use Model\ConcertManager;
+use Model\Benevol;
+use Model\BenevolManager;
 
 /**
  * Class UserController
@@ -12,6 +15,30 @@ use Model\ConcertManager;
  */
 class UserController extends AbstractController
 {
+    public function index()
+    {
+        return $this->twig->render('User/index.html.twig');
+    }
+
+    public function testList()
+    {
+        $concertManager = new ConcertManager($this->errorStore);
+        $concerts = $concertManager->selectAll();
+
+        return $this->twig->render(
+            'User/testList.html.twig',
+            [
+                'concerts' => $concerts,
+                'errorList' => $this->errorStore ?
+                    $this->errorStore->getAllMsg() : null
+            ]
+        );
+    }
+
+
+    /**
+    * TEST : display items – no editing for now
+    */
     public function concerts()
     {
         try {
@@ -67,5 +94,33 @@ class UserController extends AbstractController
             ]
 
         );
+    }
+
+    public function artists() {
+        $artistManager = new ArtistManager();
+        $artists = $artistManager->selectAll();
+        return $this->twig->render('User/artist.html.twig', ['artists' => $artists]);
+    }
+
+    public function benevol()
+    {
+        return $this->twig->render('User/benevol.html.twig');
+    }
+
+    public function billetterie()
+    {
+        return $this->twig->render('User/billetterie.html.twig');
+    }
+
+    public function insertedBenevol()
+    {
+        $BenevolManager = new BenevolManager();
+        $benevol = $BenevolManager->insertVolunteer($_POST);
+        return $this->twig->render('User/insertedBenevol.html.twig');
+    }
+
+    public function infos()
+    {
+        return $this->twig->render('User/infos.html.twig');
     }
 }
