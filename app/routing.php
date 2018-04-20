@@ -18,7 +18,6 @@ $routes = [
 
     'User' => [
         ['index', '/', 'GET'],
-        ['testList', '/testList', 'GET'], // ● TEST !
         ['concerts', '/concerts', 'GET'],
         ['artists', '/artistes', 'GET'],
         ['infos', '/infos', 'GET'],
