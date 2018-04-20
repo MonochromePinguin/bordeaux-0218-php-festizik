@@ -1,6 +1,8 @@
 <?php
 namespace Controller;
 
+require_once __DIR__ . '/../Misc/functions.php';
+
 use Model\ArtistManager;
 use Model\Concert;
 use Model\ConcertManager;
@@ -20,8 +22,17 @@ class UserController extends AbstractController
 
     public function concerts()
     {
-        $concertManager = new ConcertManager($this->errorStore);
-        $concerts = $concertManager->selectAll();
+        try {
+            $concertManager = new ConcertManager($this->errorStore);
+            $concerts = $concertManager->selectAll();
+
+        } catch ( \Exception $e ) {
+//TODO: TEST IT WORKS ALSO WITH PDO IN PRODUCTION ENV
+            #if something went wrong, show the user some apologies
+            echo emergencyPage( 'Désolé ! Une erreur critique est survenue',
+                                $e->getMessage() );
+            exit;
+        }
 
         $sortBy = null;
 
@@ -50,9 +61,18 @@ class UserController extends AbstractController
             $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec la méthode POST');
 
 
+        # retrieve a list of actually used artist names...
+        $artistNames = [];
+        foreach ($concerts as $concert) {
+            $artistNames[] = $concert->getArtist()->getName();
+        }
+        $artistNames = array_unique($artistNames);
+        sort($artistNames);
+
         return $this->twig->render(
             'User/concerts.html.twig',
             [
+                'artistNames' => $artistNames,
                 'sortableProperties' => $props,
                 'concerts' => $concerts,
                 'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
