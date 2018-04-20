@@ -25,7 +25,6 @@ class UserController extends AbstractController
         try {
             $concertManager = new ConcertManager($this->errorStore);
             $concerts = $concertManager->selectAll();
-
         } catch ( \Exception $e ) {
 //TODO: TEST IT WORKS ALSO WITH PDO IN PRODUCTION ENV
             #if something went wrong, show the user some apologies
@@ -102,7 +101,7 @@ class UserController extends AbstractController
     public function insertedBenevol()
     {
         $BenevolManager = new BenevolManager();
-        $benevol = $BenevolManager->insertVolunteer($_POST);
+        $benevol = $BenevolManager->insertBenevol($_POST);
         return $this->twig->render('User/insertedBenevol.html.twig');
     }
 
