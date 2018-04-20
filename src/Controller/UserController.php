@@ -20,25 +20,6 @@ class UserController extends AbstractController
         return $this->twig->render('User/index.html.twig');
     }
 
-    public function testList()
-    {
-        $concertManager = new ConcertManager($this->errorStore);
-        $concerts = $concertManager->selectAll();
-
-        return $this->twig->render(
-            'User/testList.html.twig',
-            [
-                'concerts' => $concerts,
-                'errorList' => $this->errorStore ?
-                    $this->errorStore->getAllMsg() : null
-            ]
-        );
-    }
-
-
-    /**
-    * TEST : display items – no editing for now
-    */
     public function concerts()
     {
         try {
@@ -59,28 +40,24 @@ class UserController extends AbstractController
         static $props = null;
 
 
-        if ( null === $props )
+        if (null === $props)
             $props = $concertManager::getAvailableSortCriterias();
 
-        if ( 0 !== count($_GET) ) {
+        if (0 !== count($_GET)) {
 
             ## the goal of a GET method is to sort the available datas
             # into the controller, thus saving some SQL different requests
-            if ( isset( $_GET['sortBy'] ) )
-            {
-                $sortBy = $_GET['sortBy'];
-
-                if ( ! $concertManager->sortArray($concerts, $sortBy) )
+            if (isset($_GET['sortBy'])) {
+                if (!$concertManager->sortArray($concerts, $_GET['sortBy']))
                     $this->storeMsg(
-                        'Le paramètre de tri «' . $sortBy
-                        . '» n\'est pas valide' );
-            }
-            else
+                        'Le paramètre de tri «' . $_GET['sortBy']
+                        . '» n\'est pas valide');
+            } else
                 $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');;
         }
 
 
-        if ( 0 !== count($_POST) )
+        if (0 !== count($_POST))
             $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec la méthode POST');
 
 
@@ -100,13 +77,13 @@ class UserController extends AbstractController
                 'concerts' => $concerts,
                 'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
                 'errorList' => $this->errorStore ?
-                        $this->errorStore->formatAllMsg() : null
+                    $this->errorStore->formatAllMsg() : null
             ]
-
         );
     }
 
-    public function artists() {
+    public function artists()
+    {
         $artistManager = new ArtistManager();
         $artists = $artistManager->selectAll();
         return $this->twig->render('User/artist.html.twig', ['artists' => $artists]);
@@ -125,7 +102,7 @@ class UserController extends AbstractController
     public function insertedBenevol()
     {
         $BenevolManager = new BenevolManager();
-        $benevol = $BenevolManager->insertVolunteer($_POST);
+        $benevol = $BenevolManager->insertBenevol($_POST);
         return $this->twig->render('User/insertedBenevol.html.twig');
     }
 

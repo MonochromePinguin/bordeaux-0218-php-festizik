@@ -14,7 +14,7 @@ namespace Model;
  */
 class BenevolManager extends AbstractManager
 {
-    const TABLE = 'volunteers';
+    const TABLE = 'Volunteers';
 
     /**
      *  Initializes this class.
@@ -28,7 +28,7 @@ class BenevolManager extends AbstractManager
      *
      * @param Array $data
      */
-     public function insertVolunteer(array $data)
+     public function insertBenevol(array $data)
     	{
         $statement = $this->pdoConnection->prepare("INSERT INTO $this->table (name, surname, phone, disponibility_start, disponibility_end) VALUES (:name, :surname, :phone, :dispoStart, :dispoEnd)");
         $statement->setFetchMode(\PDO::FETCH_CLASS, $this->className);
