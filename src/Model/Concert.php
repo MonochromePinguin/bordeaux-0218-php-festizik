@@ -47,7 +47,7 @@ class Concert
     {
          $day = static::$days[$this->id_day -1];
         return $day ?
-            new \DateTime( $day->getDateAsRaw() )
+            new \DateTime($day->getDateAsRaw())
             # if an error occurend, returns an as-null-as-possible Date
             : \DateTime::createFromFormat('Y-m-d', '0000-01-01');
     }
@@ -65,15 +65,15 @@ class Concert
 
     public function getDateTime() : \DateTime
     {
-        if ( ! isset($this->dateObject) ) {
-
+        if (! isset($this->dateObject)) {
             $day = static::$days[$this->id_day -1];
-            if ( isset($day) )
+            if (isset($day)) {
                 $theDate = $day->getDateAsRaw();
-            else
+            } else {
                 $theDate = '0000-01-01';
+            }
 
-            $this->dateObject = new \DateTime( $theDate . ' ' . $this->getHour() );
+            $this->dateObject = new \DateTime($theDate . ' ' . $this->getHour());
         }
         return $this->dateObject;
     }
@@ -132,31 +132,34 @@ class Concert
      sort functions for use into ConcertManager::sortArray()
      all of them are callable callbacks for usort()
      */
-    public static function cmpByScene(Concert $one, Concert $two) : int {
-        return strcmp( $one->getSceneName(), $two ->getSceneName() );
+    public static function cmpByScene(Concert $one, Concert $two) : int
+    {
+        return strcmp($one->getSceneName(), $two ->getSceneName());
     }
 
-    public static function cmpByArtistName(Concert $one, Concert $two) : int {
+    public static function cmpByArtistName(Concert $one, Concert $two) : int
+    {
         $artist1 = $one->getArtist();
         $artist2 = $two->getArtist();
 
-        if ( isset($artist1) && isset($artist2) )
-            return strcmp( $artist1->getName(), $artist2->getName() );
-        else
+        if (isset($artist1) && isset($artist2)) {
+            return strcmp($artist1->getName(), $artist2->getName());
+        } else {
             return 0;
+        }
     }
 
-    public static function cmpByDay(Concert $one, Concert $two) : int {
-       $date1 = $one->getDateTime();
-       $date2 = $two->getDateTime();
+    public static function cmpByDay(Concert $one, Concert $two) : int
+    {
+        $date1 = $one->getDateTime();
+        $date2 = $two->getDateTime();
 
-       if ($date1 > $date2)
-           return 1;
-       elseif ($date1 < $date2)
+        if ($date1 > $date2) {
+            return 1;
+        } elseif ($date1 < $date2) {
             return -1;
-       else
-           return 0;
+        } else {
+            return 0;
+        }
     }
-
-
 }

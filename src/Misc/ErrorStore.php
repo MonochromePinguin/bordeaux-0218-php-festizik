@@ -42,20 +42,20 @@ class ErrorStore
         $res = '';
 
         if (is_callable($formater)) {
-            foreach ($this->messages as $msg)
+            foreach ($this->messages as $msg) {
                 $res .= $formater($msg);
+            }
 
             $this->messages = [];
             return $res;
-
-        } elseif ( null === $formater ) {
+        } elseif (null === $formater) {
             #return a standard formating
-            foreach ($this->messages as $msg)
+            foreach ($this->messages as $msg) {
                 $res .= '<p>' . $msg . "</p>\n" ;
+            }
 
             $this->messages = [];
             return $res;
-
         } else {
             #$formater need to be a callable function ...
             $res = <<< EOT
