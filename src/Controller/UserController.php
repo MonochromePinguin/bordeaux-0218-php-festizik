@@ -1,5 +1,4 @@
 <?php
-
 namespace Controller;
 
 use Model\ArtistManager;
@@ -23,6 +22,8 @@ class UserController extends AbstractController
     {
         $concertManager = new ConcertManager($this->errorStore);
         $concerts = $concertManager->selectAll();
+
+        $sortBy = null;
 
         #allow to sort data out of the model, so we save an SQL request
         static $props = null;
@@ -54,6 +55,7 @@ class UserController extends AbstractController
             [
                 'sortableProperties' => $props,
                 'concerts' => $concerts,
+                'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
                 'errorList' => $this->errorStore ?
                     $this->errorStore->formatAllMsg() : null
             ]
