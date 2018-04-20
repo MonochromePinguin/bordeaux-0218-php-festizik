@@ -91,7 +91,7 @@ class UserController extends AbstractController
     public function insertedBenevol()
     {
         $BenevolManager = new BenevolManager();
-        $benevol = $BenevolManager->insertVolunteer($_POST);
+        $benevol = $BenevolManager->insertBenevol($_POST);
         return $this->twig->render('User/insertedBenevol.html.twig');
     }
 
