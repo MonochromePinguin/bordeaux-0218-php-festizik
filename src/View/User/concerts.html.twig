@@ -4,7 +4,7 @@
 {% block title %}Festizik – les concerts{% endblock %}
 
 {# TODO: ajouter les noms d'artistes dans les mots-clés #}
-{% block keywords %}festizik,concerts,événements,planning{% endblock %}
+{% block keywords %}festizik,concerts,événements,planning{% for name in artistNames %},{{ name }}{% endfor %}{% endblock %}
 
 
 {# TODO : use the common stylesheet instead! #}

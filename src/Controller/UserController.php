@@ -17,10 +17,11 @@ class UserController extends AbstractController
         try {
             $concertManager = new ConcertManager($this->errorStore);
             $concerts = $concertManager->selectAll();
+
         } catch ( \Exception $e ) {
 //TODO: TEST IT WORKS ALSO WITH PDO IN PRODUCTION ENV
             #if something went wrong, show the user some apologies
-           echo emergencyPage( 'Désolé ! Une erreur critique est survenue',
+            echo emergencyPage( 'Désolé ! Une erreur critique est survenue',
                                 $e->getMessage() );
             exit;
         }
@@ -40,9 +41,9 @@ class UserController extends AbstractController
             # into the controller, thus saving some SQL different requests
             if ( isset( $_GET['sortBy'] ) )
             {
-               $sortBy = $_GET['sortBy'];
+                $sortBy = $_GET['sortBy'];
 
-               if ( ! $concertManager->sortArray($concerts, $sortBy) )
+                if ( ! $concertManager->sortArray($concerts, $sortBy) )
                     $this->storeMsg(
                         'Le paramètre de tri «' . $sortBy
                         . '» n\'est pas valide' );
@@ -56,9 +57,18 @@ class UserController extends AbstractController
             $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec la méthode POST');
 
 
+        # retrieve a list of actually used artist names...
+        $artistNames = [];
+        foreach ($concerts as $concert) {
+            $artistNames[] = $concert->getArtist()->getName();
+        }
+        $artistNames = array_unique($artistNames);
+        sort($artistNames);
+
         return $this->twig->render(
             'User/concerts.html.twig',
             [
+                'artistNames' => $artistNames,
                 'sortableProperties' => $props,
                 'concerts' => $concerts,
                 'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
