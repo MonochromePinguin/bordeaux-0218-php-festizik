@@ -42,6 +42,8 @@ class UserController extends AbstractController
         $concertManager = new ConcertManager($this->errorStore);
         $concerts = $concertManager->selectAll();
 
+        $sortBy = null;
+
         #allow to sort data out of the model, so we save an SQL request
         static $props = null;
 
@@ -55,9 +57,11 @@ class UserController extends AbstractController
             # into the controller, thus saving some SQL different requests
             if ( isset( $_GET['sortBy'] ) )
             {
-               if ( ! $concertManager->sortArray($concerts, $_GET['sortBy']) )
+               $sortBy = $_GET['sortBy'];
+
+               if ( ! $concertManager->sortArray($concerts, $sortBy) )
                     $this->storeMsg(
-                        'Le paramètre de tri «' . $_GET['sortBy']
+                        'Le paramètre de tri «' . $sortBy
                         . '» n\'est pas valide' );
             }
             else
@@ -74,9 +78,11 @@ class UserController extends AbstractController
             [
                 'sortableProperties' => $props,
                 'concerts' => $concerts,
+                'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
                 'errorList' => $this->errorStore ?
                         $this->errorStore->formatAllMsg() : null
             ]
+
         );
     }
 
