@@ -44,7 +44,9 @@ abstract class AbstractManager
      * @param string|null $orderBy optional "order by" parameter for the SQL request
      * @return array
      */
+
     public function selectAll($orderBy = null): array
+
     {
         $queryString = 'SELECT * FROM ' . $this->table;
         if (null != $orderBy) {
@@ -85,18 +87,6 @@ abstract class AbstractManager
     {
         //TODO : Implements SQL DELETE request
     }
-
-
-    /**
-     * INSERT one row in dataase
-     *
-     * @param Array $data
-     */
-    public function insert(array $data)
-    {
-        //TODO : Implements SQL INSERT request
-    }
-
 
     /**
      * @param int   $id   Id of the row to update

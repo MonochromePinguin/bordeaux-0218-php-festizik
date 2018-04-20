@@ -1,0 +1,73 @@
+@font-face {
+    font-family: "neon";
+    src: url('/assets/fonts/neon_club_music/NEON CLUB MUSIC.otf');
+}
+
+
+body{
+	background-image: url(../images/gray_sand.png);
+	
+	
+}
+
+
+.titleInfos
+{
+	font-family: neon;	
+	font-size: 5em;
+	color: #FDB940;
+
+}
+
+.txtTitleInfos
+{
+	font-size: 1.5em;
+	color: white;
+}
+
+.date, .presentation, .infos
+{
+	text-align: center;
+	
+}
+
+.date
+{
+	font-family: neon;
+	font-size: 3em;
+	margin-bottom: 30px; 
+	color: #FDB940;
+}
+
+
+
+
+
+
+.infos
+{
+
+	display: inline-block;
+	color: white; 
+	font-size: 1.5em;
+	border : 1px black solid;
+	text-align: justify;
+
+}
+
+.infos a {
+	color: white;
+	text-decoration: none; 
+}
+
+.infos a:visited {
+	color: white; 
+}
+
+
+.icons{
+	text-align: center;
+	margin-top: 1%;
+}
+
+

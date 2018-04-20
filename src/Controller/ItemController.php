@@ -11,6 +11,8 @@ namespace Controller;
 
 use Model\Item;
 use Model\ItemManager;
+use Model\Benevol;
+use Model\BenevolManager;
 
 /**
  * Class ItemController
@@ -26,10 +28,7 @@ class ItemController extends AbstractController
      */
     public function index()
     {
-        $itemManager = new ItemManager();
-        $items = $itemManager->selectAll();
-
-        return $this->twig->render('Item/index.html.twig', ['items' => $items]);
+        return $this->twig->render('Item/index.html.twig');
     }
 
     /**
@@ -60,15 +59,14 @@ class ItemController extends AbstractController
         return $this->twig->render('Item/edit.html.twig', ['item', $id]);
     }
 
-    /**
-     * Display item creation page
-     *
-     * @return string
-     */
-    public function add()
+
+
+    public function benevol()
     {
-        // TODO : add a new item
-        return $this->twig->render('Item/add.html.twig');
+        // TODO : add a new benevol
+        return $this->twig->render('Item/benevol.html.twig');
+
+
     }
 
     /**
@@ -82,5 +80,18 @@ class ItemController extends AbstractController
     {
         // TODO : delete the item with id $id
         return $this->twig->render('Item/index.html.twig');
+    }
+
+    public function insertedBenevol()
+    {
+        $BenevolManager = new BenevolManager();
+        $benevol = $BenevolManager->insertVolunteer($_POST);
+        return $this->twig->render('Item/insertedBenevol.html.twig');
+    }
+
+    public function infos()
+    {
+        // TODO : add a new item
+        return $this->twig->render('Item/infos.html.twig');
     }
 }

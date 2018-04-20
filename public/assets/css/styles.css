@@ -1,6 +1,13 @@
+body {
+    background-image : url('https://www.toptal.com/designers/subtlepatterns/patterns/gray_sand.png');
+}
+
 /* -------- NAVBAR -------- */
-nav {
+.barreNav {
+	background-color: rgba(58, 56, 62, 0.6);
 	display: block;
+	z-index: 22222;
+    overflow: hidden;
 }
 
 .logo {
@@ -9,27 +16,27 @@ nav {
 	width: 70%;
 }
 
-nav div {
+.barreNav div {
 	height: 85vh;
 	text-align: center;
 }
 
-nav ul:first-child {
-	margin-top: 15%;
+.barreNav ul:first-child {
+	margin-top: 2%;
 }
 
-nav li {
+.barreNav li {
 	list-style-type: none;
 	height: 10vh;
 }
 
-nav li a {
+.barreNav li a {
 	color: #FDB940;
 	padding-top: 5%;
 }
 
-nav li a:hover {
-	color: #3C3C3D;
+.barreNav li a:hover {
+	color: white;
 }
 
 .social-icons {
@@ -40,50 +47,76 @@ nav li a:hover {
 	margin: 5%;
 }
 
+/*********************FOOTER***************************/
+
+.myNav {
+	padding: 0;
+}
+
+
+.logoLink {
+	display: none;
+}
+
+/**********************BENEVOLES************************/
+
+.formBox {
+	position: relative;
+    left : 4%;
+    top: 6.5%;
+    padding : 3%;
+    color : white;
+    width : 80%;
+}
+
+.welcome {
+    color : white;
+    text-align: center;
+    padding-top: 5%;
+}
+
 
 /* -------- MEDIA QUERIES -------- */
 @media screen and (min-width: 992px) {
-	nav {
-		min-width: 100px;
+    .barreNav {
+		min-width: 7.5%;
 		height: 100vh;
 		border-right: 1px solid black;
 	}
 
 	.logo {
-		background: url("/assets/images/favicon.png") no-repeat;
+		background: url("/assets/images/favicon.png") no-repeat round;
 		position: absolute;
-		top: 0;
-		height: 80px;
-		width: 74px;
-		top: 5%;
+		height: 10%;
+		width: 80px;
 	}
 
-	nav:hover .logo {
-		background: url("/assets/images/logo.png") no-repeat;
-		height: 102px;
-		width: 130px;
-		top: 0;
-		margin-left: 3.2%;
+    .barreNav:hover .logo {
+		background: url("/assets/images/logo.png") no-repeat round;
+		height: 13%;
+		width: 100px;
+		margin-left: 12%;
+        top : 10px;
 	}
 
 	#navbarSupportedContent {
 		display: none !important;
 	}
 
-	nav:hover #navbarSupportedContent {
+    .barreNav:hover #navbarSupportedContent {
 		display: block !important;
 	}
 
-	nav:hover .navbar-nav:first-child {
+    .barreNav:hover .navbar-nav:first-child {
 		margin-top: 70%;
 	}
 
-	nav ul {
+    .barreNav ul {
 		display: block !important;
 	}
 
-	nav ul:first-child {
-	margin-top: 0;
+    .barreNav ul:first-child {
+	    margin-top: 0;
 	}
 
 	.social-icons {
@@ -94,5 +127,32 @@ nav li a:hover {
 
 	.social-icons li {
 		margin: 0 5%;
+	}
+
+	/****************Footer***************/
+	.myFooter{
+        z-index: 10000;
+
+	}
+
+	.myNav {
+		padding-right: 0;
+		align-items: center;
+	}
+
+	.myCopyright {
+		margin-left: 35px;
+	}
+
+	.logoLink {
+		display: block;
+		width: 10em;
+		height: 100%;
+	}
+
+	.footLogo {
+		background-repeat: no-repeat;
+		background-position: center;
+		height: 100%;
 	}
 }

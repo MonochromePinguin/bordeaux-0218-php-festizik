@@ -43,7 +43,7 @@ class Artist
     {
         $style = static::$styles[$this->id_style -1];
         if ($style) {
-            return $style->getName();
+            return $this->getName();
         } else {
             return 'Index de style erroné : ' . $this->id_style;
         }
