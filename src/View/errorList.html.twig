@@ -1,0 +1,14 @@
+{# This block should be placed where to show errors registered through the
+   Misc\ErrorStore object.
+   Need an "errorList" variable containing preformated text #}
+{% block errorList %}
+    {% if errorList %}
+
+        <aside>
+            <div class="alert alert-warning">
+                {{ errorList | raw }}
+            </div>
+        </aside>
+
+    {% endif %}
+{% endblock %}

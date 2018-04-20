@@ -28,7 +28,6 @@ $routes = [
     ],
 
     'User' => [
-        ['testList', '/testList', 'GET'], // ● TEST !
         ['concerts', '/concerts', 'GET']
     ]
 ];

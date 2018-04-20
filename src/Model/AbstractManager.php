@@ -2,15 +2,15 @@
 
 namespace Model;
 
-use App\Connection;
+use App\Connection as Connection;
 
 /**
  * Abstract class handling default manager.
  */
 abstract class AbstractManager
 {
- //TODO : One connection to fetch them all
-    protected $pdoConnection;
+    #initial state : explicitly unset
+    protected static $pdoConnection = null;
 
     protected $table;
     protected $className;
@@ -19,17 +19,21 @@ abstract class AbstractManager
      *  Initializes Manager Abstract class.
      *
      * @param string $table Table name of current model
+     * @param Connection $pdoConnection in case we want the manager class to use
+     *                   a different connection. By default, it is created at first call
+     *                   if none specified
      */
-//TODO : add as parameter the PDO connection, so we create only one connection
-# per page load ...
-// My little heart is bleeding because my colleagues fear I keep the 2nd
-# parameter «$className» to the __constructor(c$table, $className),
-# to have totally decoupled class names and table names ...
-# As if it were hard work! I'm soooo downbeated!
-    public function __construct(string $table)
+
+    public function __construct(string $table, Connection $pdoConnection = null)
     {
-        $connexion = new Connection();
-        $this->pdoConnection = $connexion->getPdoConnection();
+        if (null != $pdoConnection) {
+            #if the parameter $pdoConnection is set, use this connection,
+            static::$pdoConnection = $pdoConnection;
+        } elseif (null == static::$pdoConnection) {
+            #else create a new connection shared by every child classes
+            static::$pdoConnection = (new Connection())->getPdoConnection();
+        }
+
         $this->table = $table;
         $this->className = __NAMESPACE__ . '\\' . $table;
     }
@@ -37,13 +41,20 @@ abstract class AbstractManager
     /**
      * Get all row from database.
      *
+     * @param string|null $orderBy optional "order by" parameter for the SQL request
      * @return array
      */
-// TODO : ADD THE "ORDER BY" as an optional parameter
-    public function selectAll() : array
+
+    public function selectAll($orderBy = null): array
+
     {
-        return $this->pdoConnection->query(
-            'SELECT * FROM ' . $this->table,
+        $queryString = 'SELECT * FROM ' . $this->table;
+        if (null != $orderBy) {
+            $queryString .= ' ORDER BY ' . (static::$pdoConnection)->quote($orderBy);
+        }
+
+        return static::$pdoConnection->query(
+            $queryString,
             \PDO::FETCH_CLASS,
             $this->className
         )->fetchAll();
