@@ -14,7 +14,7 @@ namespace Model;
  */
 class BenevolManager extends AbstractManager
 {
-    const TABLE = 'volunteers';
+    const TABLE = 'Volunteers';
 
     /**
      *  Initializes this class.
