@@ -22,7 +22,11 @@ class AdminController extends AbstractController
      */
     public function login()
     {
+//TODO : won't it be better to start the session below after authentication?
+        session_start();
+
         $errors = [];
+
         if ($_POST) {
             $username = $_POST['username'];
             $password = $_POST['password'];
@@ -38,6 +42,7 @@ class AdminController extends AbstractController
                 echo $e->getMessage();
             }
         }
+
         if (!isset($_SESSION['username'])) {
             return $this->twig->render('Admin/login.html.twig', ['errors' => $errors]);
         } else {
@@ -47,6 +52,7 @@ class AdminController extends AbstractController
 
     public function admin()
     {
+        session_start();
         return $this->twig->render('Admin/logged.html.twig');
     }
 
