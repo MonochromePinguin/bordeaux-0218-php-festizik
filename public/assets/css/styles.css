@@ -13,7 +13,7 @@ p, .barreNav a {
     font-family : 'Open Sans', sans-serif;
 }
 
-.date, .titleInfos, .titleDay {
+.date, .titleInfos, .titleDay, .artist h3 {
     font-family : 'neon';
 }
 
@@ -23,11 +23,11 @@ body {
 }
 
 /* -------- NAVBAR -------- */
+
 .barreNav {
     background-color : rgba(253, 185, 64, 0.9);
     z-index          : 22222;
     overflow         : hidden;
-    height           : 100vh;
 }
 
 .logo {
@@ -342,13 +342,14 @@ body {
         position   : absolute;
         height     : 10%;
         width      : 100%;
+        top        : 3%;
     }
 
     .barreNav:hover .logo {
         background : url("/assets/images/logo.png") no-repeat round;
         height     : 13%;
         width      : 55%;
-        margin     : 8% 14%;
+        margin     : 0 14%;
     }
 
     #navbarSupportedContent {
@@ -364,11 +365,7 @@ body {
     }
 
     .barreNav ul:first-child {
-        margin-top : -5%;
-    }
-
-    .nav-item-infos {
-        margin-top: 55%;
+        margin-top : 50%;
     }
 
     .social-icons {
@@ -385,6 +382,7 @@ body {
     .video {
         height : 92vh;
     }
+
     #myVideo {
         right : 0;
     }
@@ -502,6 +500,20 @@ body {
 
     .btn-5:hover, .btn-6:hover {
         background-color : #009685;
+    }
+
+    /* -------- ARTISTES -------- */
+    .artist-header {
+        margin-bottom : 5%;
+    }
+
+    .artist {
+        background-color : rgba(58, 52, 62, 0.6);
+        color            : white;
+    }
+
+    .artist img {
+        width : inherit;
     }
 
 }
