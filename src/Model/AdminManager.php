@@ -13,7 +13,7 @@ namespace Model;
  */
 class AdminManager extends AbstractManager
 {
-    const TABLE = 'administration';
+    const TABLE = 'Administration';
     public $username;
     public $password;
 
@@ -29,7 +29,7 @@ class AdminManager extends AbstractManager
 
     public function connectDb(string $username, string $password)
     {
-        $request = $this->pdoConnection->prepare("SELECT * FROM " . $this->table . " WHERE username = :username AND password = :password");
+        $request = $this::$pdoConnection->prepare("SELECT * FROM " . $this->table . " WHERE username = :username AND password = :password");
         $request->setFetchMode(\PDO::FETCH_ASSOC);
         $request->bindValue('username', $username);
         $request->bindValue('password', $password);

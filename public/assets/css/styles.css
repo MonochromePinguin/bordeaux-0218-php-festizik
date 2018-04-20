@@ -1,158 +1,520 @@
+/* -------- TYPOGRAPHY -------- */
+@font-face {
+    font-family : "neon";
+    src         : url('/assets/fonts/neon_club_music/NEON CLUB MUSIC.otf');
+}
+
+@font-face {
+    font-family : "Open Sans";
+    src         : url('https://fonts.googleapis.com/css?family=Open+Sans');
+}
+
+p, .barreNav a {
+    font-family : 'Open Sans', sans-serif;
+}
+
+.date, .titleInfos, .titleDay, .artist h3 {
+    font-family : 'neon';
+}
+
+/* -------- BODY -------- */
 body {
-    background-image : url('https://www.toptal.com/designers/subtlepatterns/patterns/gray_sand.png');
+    background-image : url('https://www.toptal.com/designers/subtlepatterns/patterns/footer_lodyas.png');
 }
 
 /* -------- NAVBAR -------- */
+
 .barreNav {
-	background-color: rgba(58, 56, 62, 0.6);
-	display: block;
-	z-index: 22222;
-    overflow: hidden;
+    background-color : rgba(253, 185, 64, 0.9);
+    z-index          : 22222;
+    overflow         : hidden;
 }
 
 .logo {
-	background: url("/assets/images/logo_mini.png") no-repeat;
-	height: 40px;
-	width: 70%;
+    background : url("/assets/images/logo_mini.png") no-repeat;
+    height     : 40px;
+    width      : 70%;
+    display    : inline-block;
 }
 
 .barreNav div {
-	height: 85vh;
-	text-align: center;
+    height     : 85vh;
+    text-align : center;
 }
 
 .barreNav ul:first-child {
-	margin-top: 2%;
+    margin-top : 2%;
 }
 
 .barreNav li {
-	list-style-type: none;
-	height: 10vh;
+    list-style-type : none;
+    height          : 10vh;
 }
 
 .barreNav li a {
-	color: #FDB940;
-	padding-top: 5%;
+    color       : white;
+    padding-top : 5%;
 }
 
 .barreNav li a:hover {
-	color: white;
+    color : #00B6A2;
 }
 
 .social-icons {
-	display: inline;
-}
-.social-icons li {
-	display: inline-flex;
-	margin: 5%;
+    display : inline;
 }
 
-/*********************FOOTER***************************/
+.social-icons li {
+    display : inline-flex;
+    margin  : 5%;
+}
+
+/* -------- VIDEO --------*/
+#myVideo {
+    position   : fixed;
+    right      : -100%;
+    bottom     : 0;
+    min-width  : 100%;
+    min-height : 100%;
+}
+
+.content {
+    text-align : center;
+    position   : fixed;
+    color      : black;
+    width      : 100%;
+    top        : 31%;
+    height     : auto;
+}
+
+.content img {
+    width : 50%;
+}
+
+/* -------- FOOTER -------- */
 
 .myNav {
-	padding: 0;
+    padding : 0;
 }
 
-
-.logoLink {
-	display: none;
+.myNav a {
+    color : white;
 }
 
-/**********************BENEVOLES************************/
+/* -------- BENEVOLES -------- */
 
 .formBox {
-	position: relative;
-    left : 4%;
-    top: 6.5%;
+    position : relative;
+    top      : 6.5%;
+    color    : white;
+    width    : 80%;
+}
+
+.benevole-header {
+    text-align : justify;
+}
+
+.formBox .row {
     padding : 3%;
-    color : white;
-    width : 80%;
+}
+
+.formBox h2 {
+    font-size  : 1.5rem;
+    color      : #009685;
+    text-align : center;
+}
+
+.formBox h3 {
+    font-size : 1.4rem;
+}
+
+.formBox p {
+    text-align : justify;
+}
+
+.formBox hr {
+    margin : 2rem auto;
+}
+
+.formBox .btn {
+    background-color : #FDB940;
+    border-color     : #FDB940;
+    color            : black;
 }
 
 .welcome {
-    color : white;
-    text-align: center;
-    padding-top: 5%;
+    color       : white;
+    text-align  : center;
+    padding-top : 5%;
 }
 
+/* -------- INFOS PRATIQUES ------- */
+.presentation {
+    text-align : center;
+    padding    : 2% 4%;
+}
+
+.infos-header {
+    color : white;
+}
+
+.titleInfos {
+    font-size : 3rem;
+    color     : #FDB940;
+    margin    : 6% auto;
+}
+
+.txtTitleInfos {
+    color      : white;
+    font-size  : 1em;
+    text-align : justify;
+    padding    : 1% 3%;
+}
+
+.date {
+    font-size     : 1.6em;
+    margin-bottom : 8%;
+    margin-left   : 5%;
+    color         : #009685;
+}
+
+.infos {
+    display    : inline-block;
+    color      : white;
+    font-size  : 1em;
+    text-align : justify;
+    padding    : 10%;
+}
+
+.infos p:first-child {
+    padding-top : 2%;
+}
+
+.icons {
+    padding-bottom : 2%;
+}
+
+.billetterie {
+    color : #009685;
+}
+
+.billetterie:hover {
+    color           : white;
+    text-decoration : none;
+}
+
+/* -------- BILLETTERIE -------- */
+.billetterieTitle {
+    text-align : center;
+    color      : #FDB940;
+    margin-top : 5%;
+}
+
+.days {
+    justify-content : space-evenly;
+}
+
+.firstDay {
+    background-color : #00B6A2;
+}
+
+.secondDay {
+    background-color : #009685;
+    margin           : 15px 0;
+}
+
+.thirdDay {
+    background-color : #007A84;
+}
+
+.bjr {
+    margin-top : 10%;
+}
+
+.cadreTitle {
+    text-align : center;
+}
+
+.hoverable {
+    border-radius : 3%;
+    box-shadow    : 0 8px 17px 0 rgba(0, 0, 0, .3), 0 6px 20px 0 rgba(0, 0, 0, .7);
+    height        : 40vh;
+    color         : #FCFDBC;
+}
+
+.choice {
+    margin-top : 3rem;
+    font-style : italic;
+    text-align : center;
+}
+
+.separator {
+    margin-top       : 10%;
+    height           : 1px;
+    background-color : #FDB940;
+    width            : 5vw;
+    margin-left      : 2rem;
+}
+
+.lign {
+    margin-top       : 10%;
+    height           : 1px;
+    background-color : #FDB940;
+    width            : 5vw;
+    margin-right     : 2rem;
+}
+
+.separation {
+    display         : flex;
+    justify-content : space-evenly;
+}
+
+.price {
+    position      : relative;
+    font-size     : 3em;
+    margin-top    : 2rem;
+    margin-bottom : 0;
+}
+
+.announcement {
+    font-style : italic;
+}
+
+.titleDay {
+    margin-top : 20px;
+}
+
+.btnRow {
+    color           : black;
+    width           : 100%;
+    height          : auto;
+    margin          : 6% auto;
+    justify-content : space-around;
+}
+
+.btnReservation {
+    height      : 8vh;
+    white-space : normal;
+    position    : relative;
+    left        : 11%;
+}
+
+.btn-1, .btn-2 {
+    background-color : #00B6A2;
+}
+
+.btn-3 {
+    background-color : #009685;
+}
+
+.btn-4 {
+    background-color : #009685;
+    margin-top       : 3%;
+}
+
+.btn-5, .btn-6 {
+    background-color : #007A84;
+    margin-top       : 3%;
+}
 
 /* -------- MEDIA QUERIES -------- */
-@media screen and (min-width: 992px) {
-    .barreNav {
-		min-width: 7.5%;
-		height: 100vh;
-		border-right: 1px solid black;
-	}
 
-	.logo {
-		background: url("/assets/images/favicon.png") no-repeat round;
-		position: absolute;
-		height: 10%;
-		width: 80px;
-	}
+@media screen and (min-width : 992px) {
+
+    .container {
+        position : relative;
+        left     : 4%;
+        width    : 80%;
+    }
+
+    /* -------- NAVBAR -------- */
+    .barreNav {
+        min-width        : 7.5%;
+        height           : 100vh;
+        box-shadow       : 2px 2px 26px black;
+        float            : left;
+        position         : fixed;
+        background-color : rgba(58, 56, 62, 0.6);
+    }
+
+    .logo {
+        background : url("/assets/images/favicon.png") no-repeat round;
+        position   : absolute;
+        height     : 10%;
+        width      : 100%;
+        top        : 3%;
+    }
 
     .barreNav:hover .logo {
-		background: url("/assets/images/logo.png") no-repeat round;
-		height: 13%;
-		width: 100px;
-		margin-left: 12%;
-        top : 10px;
-	}
+        background : url("/assets/images/logo.png") no-repeat round;
+        height     : 13%;
+        width      : 55%;
+        margin     : 0 14%;
+    }
 
-	#navbarSupportedContent {
-		display: none !important;
-	}
+    #navbarSupportedContent {
+        display : none !important;
+    }
 
     .barreNav:hover #navbarSupportedContent {
-		display: block !important;
-	}
-
-    .barreNav:hover .navbar-nav:first-child {
-		margin-top: 70%;
-	}
+        display : block !important;
+    }
 
     .barreNav ul {
-		display: block !important;
-	}
+        display : block !important;
+    }
 
     .barreNav ul:first-child {
-	    margin-top: 0;
-	}
+        margin-top : 50%;
+    }
 
-	.social-icons {
-		position: absolute;
-		top: 90%;
-		width: 80%;
-	}
+    .social-icons {
+        position : absolute;
+        top      : 93%;
+        width    : 80%;
+    }
 
-	.social-icons li {
-		margin: 0 5%;
-	}
+    .social-icons li {
+        margin : 0 5%;
+    }
 
-	/****************Footer***************/
-	.myFooter{
-        z-index: 10000;
+    /* -------- VIDEO -------- */
+    .video {
+        height : 92vh;
+    }
 
-	}
+    #myVideo {
+        right : 0;
+    }
 
-	.myNav {
-		padding-right: 0;
-		align-items: center;
-	}
+    .content img {
+        width : auto;
+        top   : 30%;
+    }
 
-	.myCopyright {
-		margin-left: 35px;
-	}
+    /* -------- FOOTER -------- */
+    .myFooter {
+        z-index : 10000;
+    }
 
-	.logoLink {
-		display: block;
-		width: 10em;
-		height: 100%;
-	}
+    .myNav {
+        padding-right : 0;
+        align-items   : center;
+    }
 
-	.footLogo {
-		background-repeat: no-repeat;
-		background-position: center;
-		height: 100%;
-	}
+    .myCopyright {
+        margin-left : 35px;
+    }
+
+    .nav-link:hover {
+        color : #FDB940;
+    }
+
+    /* -------- BENEVOLES -------- */
+    .benevole-header, .infos-header, .artist-header, .billetterie-header {
+        text-align       : center;
+        background-color : #FDB940;
+        padding-top      : 2%;
+        box-shadow       : 1px 1px 8px black;
+    }
+
+    .formBox img {
+        width      : inherit;
+        box-shadow : 2px 2px 20px black;
+    }
+
+    .formBox h2 {
+        padding-top : 2%;
+    }
+
+    .formBox p, .formBox form {
+        padding-bottom : 2%;
+    }
+
+    .postuler {
+        background-color : rgba(58, 52, 62, 0.6);
+        box-shadow       : 5px 5px 20px black;
+        border-radius    : 3%;
+    }
+
+    .rejoindre {
+        padding-right : 5%;
+    }
+
+    /* -------- INFOS PRATIQUES ------- */
+    .date {
+        margin-left   : 24vw;
+        margin-bottom : 5%;
+    }
+
+    .presentation {
+        padding : 0;
+    }
+
+    .maps {
+        margin-bottom : 5%;
+    }
+
+    .infos {
+        padding          : 2%;
+        background-color : rgba(58, 52, 62, 0.6);
+        box-shadow       : 5px 5px 20px black;
+        border-radius    : 3%;
+    }
+
+    .titleInfos {
+        margin : 4% auto;
+    }
+
+    /* -------- BILLETTERIE -------- */
+    .bjr, .btn-4, .btn-5, .btn-6 {
+        margin-top : 0;
+    }
+
+    .billetterieTitle {
+        color      : white;
+        margin-top : 0;
+    }
+
+    .days {
+        height     : 50vh;
+        margin-top : 10%;
+    }
+
+    .hoverable {
+        height : 49vh;
+        margin : 0;
+    }
+
+    .btnReservation {
+        width : 8vw;
+    }
+
+    .btn-1:hover, .btn-2:hover {
+        background-color : #007A84;
+    }
+
+    .btn-3:hover, .btn-4:hover {
+        background-color : #00B6A2;
+    }
+
+    .btn-5:hover, .btn-6:hover {
+        background-color : #009685;
+    }
+
+    /* -------- ARTISTES -------- */
+    .artist-header {
+        margin-bottom : 5%;
+    }
+
+    .artist {
+        background-color : rgba(58, 52, 62, 0.6);
+        color            : white;
+    }
+
+    .artist img {
+        width : inherit;
+    }
+
 }
+

@@ -10,16 +10,6 @@
  */
 
 $routes = [
-    'Item' => [ // Controller
-        ['index', '/', 'GET'], // action, url, method
-        ['add', '/item/add', 'GET'], // action, url, method
-        ['edit', '/item/edit/{id:\d+}', 'GET'], // action, url, method
-        ['show', '/item/{id:\d+}', 'GET'], // action, url, method
-        ['benevol', '/benevol', 'GET'],
-        ['insertedBenevol', '/benevol', 'POST'],
-        ['infos', '/infos', 'GET'],
-    ],
-
     'Admin' => [ // Controller
         ['login', '/login', ['POST', 'GET']],  // action, url, method
         ['admin', '/admin', ['POST', 'GET']],
@@ -28,6 +18,12 @@ $routes = [
     ],
 
     'User' => [
-        ['concerts', '/concerts', 'GET']
+        ['index', '/', 'GET'],
+        ['concerts', '/concerts', 'GET'],
+        ['artists', '/artistes', 'GET'],
+        ['infos', '/infos', 'GET'],
+        ['benevol', '/benevole', 'GET'],
+        ['insertedBenevol', '/benevole', 'POST'],
+        ['billetterie', '/billetterie', 'GET'],
     ]
 ];
