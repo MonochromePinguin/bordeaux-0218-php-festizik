@@ -9,6 +9,7 @@
 namespace Controller;
 
 use Model\AdminManager;
+use Model\AdminBenevolManager;
 
 /**
  *  Class AdminController
@@ -62,15 +63,13 @@ class AdminController extends AbstractController
 
      public function adminBenevol()
     {
+        if(!empty($_POST)){
+            $benevolManager = new AdminBenevolManager();
+            $benevol = $benevolManager->benevolContentUpdate($_POST);
+        
+        }
         return $this->twig->render('Admin/adminBenevol.html.twig');
 
-    }
-
-    public function benevolContentUpdated()
-    {
-        $BenevolManager = new AdminBenevolManager();
-        $benevol = $BenevolManager->benevolContentUpdate($_POST);
-        return $this->twig->render('Admin/logged.html.twig');
     }
 }
 

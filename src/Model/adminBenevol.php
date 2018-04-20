@@ -33,31 +33,31 @@ class adminBenevol
 
     function getId()
     {
-        return $this->id_volunteer;
+        return $this->id;
     }
 
     function setId()
     {
-        return $this->id_volunteer;
+        return $this->id;
     }
 
     function getPhoto()
     {
-        return $this->name;
+        return $this->photo;
     }
 
     function setPhoto()
     {
-        return $this->name;
+        return $this->photo;
     }
 
     function getArticle()
     {
-        return $this->surname;
+        return $this->article;
     }
 
     function setArticle()
     {
-        return $this->surname;
+        return $this->article;
     }
 }
