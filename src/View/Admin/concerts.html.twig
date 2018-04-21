@@ -1,4 +1,17 @@
+{# this instruction forces escaping of text #}
+{% autoescape 'html' %}
+
+
 {% extends 'layout.html.twig' %}
+
+{# TODO :
+    This page will work at two levels:
+ 1) without JS. all is done through server-side validation
+ 2) with JS → write .needJS. client-side + server-side validation
+_ client-side input validation  through JS;
+_ AJAX requests for modifying more than 1 entry per POST request
+_ jquery hook to show
+#}
 
 
 {% block title %}Festizik – administration des concerts{% endblock %}
@@ -6,20 +19,62 @@
 {% block keywords %}festizik,concerts,administration{% endblock %}
 
 
-{# TODO : use the common stylesheet instead! #}
 {% block stylesheet %}
-    <link rel="stylesheet" href="assets/css/concertPage.css">
+    {{ parent() }}
+    <link rel="stylesheet" href="/assets/css/adminConcert.css">
 {% endblock %}
 
 
-{% block bodyProperties %} class="adminConcert" {% endblock %}
+
+{# needed variables : sceneNames[] selectedScene #}
+{% block selectForScene %}
+    <label class="form-group">
+        Scène&nbsp:
+        <select name="scene">
+            {# using scene names instead of their id seems slower but more secure #}
+            {% for name in sceneNames %}
+                <option value="{{ name }}" {% if name == selectedScene %}selected{% endif %}>
+                    {{ name }}
+                </option>
+            {% endfor %}
+{#TODO : WRITE JS to make it work #}
+{#TODO : Write .needJS #}
+            {# this one is visible only if JS is operational#}
+                <option value="newScene" class="needJS">
+                    Nouvelle scène&nbsp...
+                </option>
+        </select>
+    </label>
+{% endblock %}
+
+
+{# need variables : artistNames[] selectedScene #}
+{% block selectForArtist %}
+    <label class="form-group">
+        Artiste&nbsp;:
+        <select name="artist">
+            {% for name in artistNames %}
+                <option value="name" {% if name == selectedArtist %}selected{% endif %}>
+                    {{ name }}
+                </option>
+            {% endfor %}
+{#TODO : WRITE JS to make it work #}
+{#TODO : Write .needJS #}
+            {# this one is visible only if JS is operational#}
+            <option value="newScene" class="needJS">
+                Nouvel artiste&nbsp...
+            </option>
+        </select>
+    </label>
+{% endblock %}
 
 
 {% block content %}
-    <header class="sublined">
+    <header>
         <svg xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 100 100" preserveAspectRatio="none">
             <polygon fill="orange" points="0,0 100,100 100,0"/>
+            <line stroke="darkred" x1="0" y1="0" x2="100" y2="100" />
         </svg>
 
         <h1>Les concerts</h1>
@@ -33,14 +88,20 @@
         <form method="GET" action="" class="border border-info p-1">
             <p class="mb-0 font-weight-bold font-weight-italic">Trier&nbsp;...</p>
 
-            {% for prop in sortableProperties %}
+              {% for prop in sortableProperties %}
                 <button type="submit" class="btn btn-info {% if prop.name == actualSort %}active{% endif %}"
-                        title="recharger la page avec un ordre différent de tri"
-                        name="sortBy" value="{{prop.name}}">
+                    title="recharger la page avec un ordre différent de tri"
+                    name="sortBy" value="{{prop.name}}">
                     par {{prop.label}}
                 </button>
+              {% endfor %}
 
-            {% endfor %}
+                <button type="submit" class="btn btn-info float-right"
+                        name="sortBy" value="{{ actualSort }}"
+                        title="recharger la page avec les même critères de tri">
+                    <img src="/assets/images/sync.svg" alt="">
+                    Recharger la page
+                </button>
 
         </form>
         {# TODO :
@@ -61,56 +122,71 @@
 
 
     <main>
-        {% for concert in concerts %}
-            <article class="bordered">
-                <div>
-                    <p>Heure&nbsp;</p>
-                    <p>{{ concert.hour }}</p>
+      {% for concert in concerts %}
+        <article class="bordered m-2">
+            <form method="POST" action="" >
+
+                {% if concert.Artist.ImageURL %}
+                    <div>
+                        <img class="img-fluid float-right img-thumbnail downsized"
+                             src="/{{ concert.Artist.ImageURL }}"
+                             title="{{ concert.Artist.Name }}"
+                             alt="L'image pour «{{ concert.Artist.Name }}» est absente&nbsp;!">
+                    </div>
+                {% endif %}
+
+                {% set selectedScene = concert.SceneName %}
+                {{ block('selectForScene') }}
+
+                <div class="form-group">
+                    <label class="mr-2">
+                        Date&nbsp:
+                        <input type="date" name="DateLocale"
+                                {# beware of the format we NEED to the browser : "Y-m-d"! #}
+                               value="{{ concert.Date | date('Y-m-d') }}">
+                    </label>
+
+                    <label>
+                        Heure&nbsp:
+                        <input type="hour" name="hour"
+                               value="{{ concert.hour }}">
+                    </label>
                 </div>
 
-                <div>
-                    <p>Date&nbsp;</p>
-                    <p>{{ concert.DateAsString }}</p>
-                </div>
+                {% set selectedArtist = concert.Artist.Name %}
+                {{ block('selectForArtist') }}
 
-                <div>
-                    <p>Scène&nbsp;</p>
-                    <p>{{ concert.sceneName }}</p>
-                </div>
+                <div class="form-group">
+                    <label class="form-group">
+                        <strong>Concert annulé</strong>
+                        <input type="checkbox" name="cancelled"
+                               {% if concert.cancelled %}checked{% endif %}>
+                    </label>
 
-                <div>
-                    <p>Artiste&nbsp;</p>
-                    <p>{{ concert.Artist.Name }}</p>
-
-                    {% if concert.Artist.ImageURL %}
-
-                        <div class="col-xs-1 col-lg p-0">
-                            <img class="card-img-bottom"
-                                 src="{{ concert.Artist.ImageURL }}"
-                                 alt="L'image pour «{{ concert.Artist.Name }}» est absente&nbsp;!">
-                        </div>
-
-                    {% endif %}
+                    <button type="reset" class="btn btn-secondary"
+                            title="annuler les changements effectués pour ce concert">
+                         Annuler
+                     </button>
+                     <button type="submit" class="btn btn-primary"
+                            title="Envoyer les changements effectués vers le serveur">
+                         <span class="glyphicon glyphicon-cloud-upload"></span>
+                         Envoyer
+                     </button>
 
                 </div>
 
-                <form action="updateDB" method="POST">
-                    {% if 1 == concert.cancelled %}
-                        <p class="cancelled">Annulé</p>
-                    {% endif %}
+            </form>
+        </article>
 
-                </form>
+       {% else %}
+        <article>
+            <p>Aucun événement enregistré</p>
+        </article>
 
-
-            </article>
-
-        {% else %}
-            <article>
-                <p>Aucun événement enregistré</p>
-            </article>
-
-        {% endfor %}
+       {% endfor %}
 
     </main>
-
 {% endblock %}
+
+
+{% endautoescape %}

@@ -17,10 +17,12 @@
 
 
 {% block content %}
-    <header class="sublined">
+    <header >
         <svg xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 100 100" preserveAspectRatio="none">
             <polygon fill="orange" points="0,0 100,100 100,0"/>
+            <line x1="0" y1="0" x2="100" y2="100"
+                  stroke-width="2" stroke="darkred"/>
         </svg>
 
         <h1>Les concerts</h1>
@@ -45,7 +47,8 @@
 
         </form>
 {# TODO :
-• affichage par défaut : une section portant date / nom de jour par jour.
+• Affichage par défaut : une section portant date / nom de jour par jour.
+• 1 section par scène, avec liste artistes par horaire.
 à l'intérieur, tout par row.
 ****
 • bouton de bascule : 1 section /jour (↑), 1 section /semaine, tout d'un coup sans distinction chronologique. →
@@ -103,7 +106,6 @@
                     <div class="col-xs-1 col-lg p-2">
                         <p class="bordered">
                             {{ concert.Artist.Name }} ({{ concert.Artist.Style }}
-    )
                         </p>
                         <p class="bordered bg-light">{{ concert.Artist.Description }}</p>
                     </div>

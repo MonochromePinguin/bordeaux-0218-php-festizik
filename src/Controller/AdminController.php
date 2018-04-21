@@ -106,20 +106,38 @@ class AdminController extends AbstractController
             };
         }
 
-
         if (0 !== count($_POST)) {
             $this->storeMsg('TODO : Cette page n\'est pas encore fonctionnelle avec la méthode POST');
         }
+
+
+        #these two lists are meant to contains unique elements.
+        $sceneNameList = [];
+        $artistNameList = [];
+        foreach($concerts as $concert) {
+#TODO : storing and sorting strings seems more secure than storing Scene
+# references, is it really a good idea ?
+            $sceneNameList[] = $concert->getSceneName();
+            $artistNameList[] = $concert->getArtist()->getName();
+        }
+        $sceneNameList = array_unique($sceneNameList);
+        $artistNameList = array_unique($artistNameList);
+
 
         return $this->twig->render(
             'Admin/concerts.html.twig',
             [
                 'sortableProperties' => $props,
                 'concerts' => $concerts,
+                #these two are used by the template to generate options in select elements
+                'sceneNames' => $sceneNameList,
+                'artistNames' => $artistNameList,
+
                 'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
                 'errorList' => $this->errorStore ?
                     $this->errorStore->formatAllMsg() : null
             ]
         );
     }
+
 }

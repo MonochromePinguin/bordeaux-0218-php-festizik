@@ -43,6 +43,10 @@ class Concert
         return $this->id_concert;
     }
 
+    /**
+     * return concert's day only as a \DateTime object
+     * @return \DateTime
+     */
     public function getDate(): \DateTime
     {
          $day = static::$days[$this->id_day -1];
@@ -63,6 +67,11 @@ class Concert
             :  'Index de jour erroné : ' . $this->id_day;
     }
 
+    /**
+     * returns a combination of concert's day 's date and concert's hour
+     *   in a \DateTime object
+     * @return \DateTime
+     */
     public function getDateTime() : \DateTime
     {
         if ( ! isset($this->dateObject) ) {
@@ -76,15 +85,6 @@ class Concert
             $this->dateObject = new \DateTime( $theDate . ' ' . $this->getHour() );
         }
         return $this->dateObject;
-    }
-
-//TODO : seems unneeded. Delete it if no-one want it.
-    /**
-     * @return string
-     */
-    public function getDayName(): string
-    {
-        return 'NON IMPLÉMENTÉ : ' . $this->id_day;
     }
 
     /**
