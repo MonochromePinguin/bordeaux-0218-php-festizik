@@ -10,6 +10,9 @@ namespace Controller;
 
 use Model\AdminManager;
 use Model\ConcertManager;
+use Model\DayManager;
+use Model\SceneManager;
+use Model\ArtistManager;
 
 /**
  *  Class AdminController
@@ -66,7 +69,7 @@ class AdminController extends AbstractController
     }
 
 
-     public function concerts()
+    public function concerts()
     {
  //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
@@ -79,6 +82,16 @@ class AdminController extends AbstractController
 
         $concertManager = new ConcertManager($this->errorStore);
         $concerts = $concertManager->selectAll();
+
+        $artistManager = new ArtistManager($this->errorStore);
+        $artists = $artistManager->selectAll('name');
+
+        $sceneManager = new SceneManager($this->errorStore);
+        $scenes = $sceneManager->selectAll('name');
+
+        $dayManager = new DayManager($this->errorStore);
+        $days = $dayManager->selectAll('date');
+
 
         $sortBy = null;
 
@@ -106,23 +119,39 @@ class AdminController extends AbstractController
             };
         }
 
+        ## STORING DATA ##
+        #
         if (0 !== count($_POST)) {
-            $this->storeMsg('TODO : Cette page n\'est pas encore fonctionnelle avec la méthode POST');
+            #list of allowed actions and associated functions
+            $actionKeys = [ 'addOneNewConcert', 'deleteOneConcert', 'modifyOneConcert' ];
+            $actionFunctions = [ 'addOneConcert', 'deleteOneConcert', 'modifyOneConcert' ];
+
+//TODO : Should validate all parameters before doing anything
+#and use $this->storeMsg('Cette page n\'accepte pas l\'action «' . $key . '» par la méthode POST');
+            $l = count($actionFunctions);
+            foreach ($_POST as $key => $value) {
+                for ($i = 0; $i < $l; ++$i) {
+
+                    if ( $key == $actionKeys[$i] ) {
+                        #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
+                        $func = $actionFunctions[$i];
+                        $this->$func($concertManager, $artists, $scenes, $days, $_POST);
+                    }
+                }
+            }
         }
 
 
-        #these two lists are meant to contains unique elements.
-        $sceneNameList = [];
+        #these two lists are parameters for twig
         $artistNameList = [];
-        foreach ($concerts as $concert) {
-#TODO : storing and sorting strings seems more secure than storing Scene
-# references, is it really a good idea ?
-            $sceneNameList[] = $concert->getSceneName();
-            $artistNameList[] = $concert->getArtist()->getName();
+        foreach ($artists as $artist) {
+            $artistNameList[] = $artist->getName();
         }
-        $sceneNameList = array_unique($sceneNameList);
-        $artistNameList = array_unique($artistNameList);
 
+        $sceneNameList = [];
+        foreach ( $scenes as $scene) {
+            $sceneNameList[] = $scene->getName();
+        }
 
         try {
             return $this->twig->render(
@@ -142,5 +171,104 @@ class AdminController extends AbstractController
         } catch (\Exception $e) {
             return generateEmergencyPage('Erreur de génération de la page', [ $e->getMessage() ]);
         }
+    }
+
+    ## adminConcert Page functions ##
+    #
+
+
+    /**
+     * make sanity checks and then records the new concert entry
+     * @param array $values all needed fields for a new row should be in this
+     *              associative array
+     */
+    private function addOneConcert( ConcertManager $concertManager,
+                                    array $artists,
+                                    array $scenes,
+                                    array $days,
+                                    array $values)
+    {
+        #the values looked up by $manager->insert() are:
+        # id_day, hour, id_scene, id_artist, cancelled
+        # and the one found into $_POST[] are:
+        # DateLocale, hour, scene, artist, cancelled
+        $keyList = [ 'DateLocale', 'hour', 'scene', 'artist', 'cancelledConcert'];
+        foreach ( $keyList as $key) {
+            if (empty($values[$key])) {
+                $this->storeMsg("Propriété «{$key}» introuvable dans la requête. Enregistrement abandonné.");
+                return;
+            }
+        }
+
+        #only these two are directly usable
+        $sentValues = [
+            'hour' => $values['hour'],
+            'cancelled' => $values['cancelledConcert']
+        ];
+
+        #existance checks
+        if (
+            !$this->checkValid( $values['artist'], $artists, 'getName',
+                         $sentValues['id_artist'], 'Artiste' )
+            || !$this->checkValid( $values['scene'], $scenes, 'getName',
+                            $sentValues['id_scene'], 'Nom de Scène')
+            || !$this->checkValid( $values['DateLocale'], $days, 'getDateAsRaw',
+                            $sentValues['id_day'], 'Jour de concert')
+        ) {
+            return;
+        }
+
+        try {
+            $concertManager->insert($sentValues);
+        } catch (\Exception $e) {
+            $this->storeMsg( 'Impossible d\'enregistrer la nouvelle entrée : <br>'
+                                . $e->getMessage() );
+        }
+    }
+
+    /**
+     * Basic existance check for differents objects into our lists.
+     * We test if an object into $into has its ->getName() returns $lookedFor,
+     * and returns an appropriate boolean ;
+     * we eventually store an error message into $this->errorStore
+     * @param string $lookedFor
+     * @param array $into   array of examinated objects
+     * @param string $getterName    name of the getter to use to compare data
+     * @param &$toVar       variable where the result should be set
+     * @param string $errName      name of the object for error message
+     * @return bool
+     */
+    private function checkValid(string $lookedFor, array $into,
+                                string $getterName, &$toKey,
+                                string $errName): bool
+    {
+        $found = false;
+        foreach ($into as $item) {
+$this->storeMsg("cmp {$lookedFor}, {$item->$getterName()}<br>");
+            if ($lookedFor == $item->$getterName()) {
+                $found = true;
+                $sentValues[$toKey] = $item->getId();
+                break;
+            }
+        }
+
+        if (!$found) {
+            $this->storeMsg(
+                "{$errName} Inconnu «{$lookedFor}» passé en paramètre. Pas d'enregistrement."
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    private function deleteOneConcert(int $id)
+    {
+        $this->storeMsg(__FUNCTION__);
+    }
+
+    private function modifyOneConcert(int $id)
+    {
+        $this->storeMsg(__FUNCTION__);
     }
 }

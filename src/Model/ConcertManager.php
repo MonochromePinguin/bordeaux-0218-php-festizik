@@ -24,6 +24,34 @@ class ConcertManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
+
+    /**
+     * Insert ONE row into the DB
+     * @param array $values an associative array storing the values for the new row
+     * @return bool the result of PDOPreparedStatement::execute()
+     */
+    public function insert(array $values) : bool
+    {
+        $query = $this::$pdoConnection->prepare(
+            "INSERT INTO $this->table ( id_day, hour, id_scene, id_artist, cancelled )
+                VALUES ( :day, :hour, :scene, :artist, :cancelled )"
+        );
+
+        $query->bindValue(':day', $values['id_day'], \PDO::PARAM_INT);
+        $query->bindValue(':hour', $values['hour'], \PDO::PARAM_STR);
+        $query->bindValue(':scene', $values['id_scene'], \PDO::PARAM_INT);
+        $query->bindValue(':artist', $values['id_artist'], \PDO::PARAM_INT);
+        $query->bindValue(':cancelled', $values['cancelled'], \PDO::PARAM_INT);
+
+        return $query->execute();
+    }
+
+
+//TODO : write insertMultiple() : multiple values in ONE SQL request, for more efficiency
+
+
+//-------- sorting function --------
+
 //TODO: this should be generalized to all tables into AbstractManager
     /**
     * returns an array of all sort criteria usable in sortConcertArray()

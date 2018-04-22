@@ -55,21 +55,22 @@ _ jquery hook to show # of modified items, modified entries, ...
 {#TODO : WRITE JS to make it work #}
 {#TODO : Write .needJS #}
             {# this one is visible only if JS is operational#}
-                <option value="newScene" class="needJS">
+ {#               <option value="newScene" class="needJS">
                     Nouvelle scène&nbsp...
                 </option>
+#}
         </select>
     </label>
 {% endblock %}
 
 
-{# need variables : artistNames[] selectedScene #}
+{# need variables : artistNames[] selectedArtist #}
 {% block selectForArtist %}
     <label class="form-group">
         Artiste&nbsp;:
         <select name="artist">
             {% for name in artistNames %}
-                <option value="name" {% if name == selectedArtist %}selected{% endif %}>
+                <option value="{{ name }}" {% if name == selectedArtist %}selected{% endif %}>
                     {{ name }}
                 </option>
             {% endfor %}
@@ -77,9 +78,10 @@ _ jquery hook to show # of modified items, modified entries, ...
 {#TODO : WRITE JS to make it work #}
 {#TODO : Write .needJS #}
             {# this one is visible only if JS is operational#}
-            <option value="newScene" class="needJS">
+{#            <option value="newScene" class="needJS">
                 Nouvel artiste&nbsp...
             </option>
+ #}
         </select>
     </label>
 {% endblock %}
@@ -125,6 +127,9 @@ _ jquery hook to show # of modified items, modified entries, ...
 
 
     <main>
+
+        {# ADDITION OF A NEW ENTRY #}
+        {##}
         <article class="bordered m-2">
 
             {# "input[type=checkbox]:checked + elem" trick #}
@@ -165,11 +170,11 @@ _ jquery hook to show # of modified items, modified entries, ...
 
                 <div class="form-group">
                     <label class="form-group">
-                        <input type="checkbox" name="cancelled">
+                        <input type="checkbox" name="cancelledConcert">
                         <span class="cancelled"></span>
                     </label>
 
-                    <button type="submit" name="modify-{{ concert.Id }}"
+                    <button type="submit" name="addOneNewConcert"
                             class="btn btn-primary m-2 float-right"
                             title="Envoyer les changements effectués vers le serveur">
                         <span class="badge badge-light">
@@ -190,6 +195,8 @@ _ jquery hook to show # of modified items, modified entries, ...
             </form>
         </article>
 
+      {# LIST OF ALL PRESENT ENTRIES #}
+      {##}
       {% for concert in concerts %}
         <article class="bordered m-2">
             <form method="POST" action="" >
@@ -226,12 +233,15 @@ _ jquery hook to show # of modified items, modified entries, ...
 
                 <div class="form-group">
                     <label class="form-group">
-                        <input type="checkbox" name="cancelled"
+                        <input type="checkbox" name="cancelledConcert"
                         {% if concert.cancelled %}checked{% endif %}>
                         <span class="cancelled"></span>
                     </label>
 
-                    <button type="submit" name="delete-{{ concert.Id }}"
+                    <input type="hidden" name="concernedConcert"
+                           value="{{ concert.Id }}">
+
+                    <button type="submit" name="deleteOneConcert"
                             class="btn btn-danger m-2 float-right"
                             title="Supprimer ce concert (après confirmation)">
                         <span class="badge badge-light">
@@ -240,7 +250,7 @@ _ jquery hook to show # of modified items, modified entries, ...
                         Supprimer ...
                     </button>
 
-                    <button type="submit" name="modify-{{ concert.Id }}"
+                    <button type="submit" name="modifyOneConcert"
                             class="btn btn-primary m-2 float-right"
                             title="Envoyer les changements effectués vers le serveur">
                         <span class="badge badge-light">

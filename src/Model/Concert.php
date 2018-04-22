@@ -44,7 +44,7 @@ class Concert
     }
 
     /**
-     * return concert's day only as a \DateTime object
+     * return concert's day only as a \DateTime object ; return a "Year 0" date in case of error
      * @return \DateTime
      */
     public function getDate(): \DateTime
@@ -127,6 +127,7 @@ class Concert
         return $this->cancelled;
     }
 
+## comparison functions ##
 
     /*
      sort functions for use into ConcertManager::sortArray()

@@ -40,14 +40,16 @@ abstract class AbstractManager
 
     /**
      * Get all row from database.
-     *
+     * @param string|null $orderBy give an optional parameter to the SQL query
      * @return array
      */
-// TODO : ADD THE "ORDER BY" as an optional parameter
-    public function selectAll(): array
+    public function selectAll( $orderBy = null ): array
     {
         return static::$pdoConnection->query(
-            'SELECT * FROM ' . $this->table,
+            'SELECT * FROM ' . $this->table . (
+                isset($orderBy) ?
+                    ' ORDER BY ' . static::$pdoConnection->quote($orderBy)  :  ''
+            ),
             \PDO::FETCH_CLASS,
             $this->className
         )->fetchAll();
