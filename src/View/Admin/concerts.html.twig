@@ -165,8 +165,8 @@ _ jquery hook to show # of modified items, modified entries, ...
 
                 <div class="form-group">
                     <label class="form-group">
-                        <strong>Concert annulé</strong>
                         <input type="checkbox" name="cancelled">
+                        <span class="cancelled"></span>
                     </label>
 
                     <button type="submit" name="modify-{{ concert.Id }}"
@@ -226,9 +226,9 @@ _ jquery hook to show # of modified items, modified entries, ...
 
                 <div class="form-group">
                     <label class="form-group">
-                        <strong>Concert annulé</strong>
                         <input type="checkbox" name="cancelled"
-                               {% if concert.cancelled %}checked{% endif %}>
+                        {% if concert.cancelled %}checked{% endif %}>
+                        <span class="cancelled"></span>
                     </label>
 
                     <button type="submit" name="delete-{{ concert.Id }}"

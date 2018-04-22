@@ -24,8 +24,19 @@
 .showNext,
 .unHiddenable{ display: none }
 
-input[type='checkbox']:checked + .unHiddenable {
+input[type='checkbox'].showNext:checked + .unHiddenable {
     display: block;
+}
+
+/* for the "Annulation" checkbox */
+.cancelled::after {
+    content: 'Annulation';
+}
+
+input[type="checkbox"]:checked + .cancelled::after {
+    font-style: italic;
+    color: red;
+    content: 'Annulé';
 }
 
 
