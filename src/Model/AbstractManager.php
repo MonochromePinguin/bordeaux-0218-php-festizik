@@ -4,7 +4,6 @@ namespace Model;
 
 use App\Connection as Connection;
 
-
 /**
  * Abstract class handling default manager.
  */
@@ -25,13 +24,12 @@ abstract class AbstractManager
      *                   if none specified
      */
 
-    public function __construct(string $table, Connection $pdoConnection = null )
+    public function __construct(string $table, Connection $pdoConnection = null)
     {
         if (null != $pdoConnection) {
             #if the parameter $pdoConnection is set, use this connection,
             static::$pdoConnection = $pdoConnection;
-
-        } elseif ( null == static::$pdoConnection ) {
+        } elseif (null == static::$pdoConnection) {
             #else create a new connection shared by every child classes
             static::$pdoConnection = (new Connection())->getPdoConnection();
         }

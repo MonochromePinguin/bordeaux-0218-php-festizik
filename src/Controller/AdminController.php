@@ -114,7 +114,7 @@ class AdminController extends AbstractController
         #these two lists are meant to contains unique elements.
         $sceneNameList = [];
         $artistNameList = [];
-        foreach($concerts as $concert) {
+        foreach ($concerts as $concert) {
 #TODO : storing and sorting strings seems more secure than storing Scene
 # references, is it really a good idea ?
             $sceneNameList[] = $concert->getSceneName();
@@ -139,5 +139,4 @@ class AdminController extends AbstractController
             ]
         );
     }
-
 }

@@ -25,7 +25,6 @@ class AdminManager extends AbstractManager
         parent::__construct(self::TABLE);
         $this->username = $username;
         $this->password = $password;
-
     }
 
     public function connectDb(string $username, string $password)
