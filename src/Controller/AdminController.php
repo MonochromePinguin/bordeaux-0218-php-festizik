@@ -66,7 +66,7 @@ class AdminController extends AbstractController
     }
 
 
-    public function concerts()
+     public function concerts()
     {
  //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
@@ -124,19 +124,23 @@ class AdminController extends AbstractController
         $artistNameList = array_unique($artistNameList);
 
 
-        return $this->twig->render(
-            'Admin/concerts.html.twig',
-            [
-                'sortableProperties' => $props,
-                'concerts' => $concerts,
-                #these two are used by the template to generate options in select elements
-                'sceneNames' => $sceneNameList,
-                'artistNames' => $artistNameList,
+        try {
+            return $this->twig->render(
+                'Admin/concerts.html.twig',
+                [
+                    'sortableProperties' => $props,
+                    'concerts' => $concerts,
+                    #these two are used by the template to generate options in select elements
+                    'sceneNames' => $sceneNameList,
+                    'artistNames' => $artistNameList,
 
-                'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
-                'errorList' => $this->errorStore ?
-                    $this->errorStore->formatAllMsg() : null
-            ]
-        );
+                    'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
+                    'errorList' => $this->errorStore ?
+                        $this->errorStore->formatAllMsg() : null
+                ]
+            );
+        } catch (\Exception $e) {
+            return generateEmergencyPage('Erreur de génération de la page', [ $e->getMessage() ]);
+        }
     }
 }

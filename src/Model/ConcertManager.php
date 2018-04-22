@@ -8,7 +8,7 @@ class ConcertManager extends AbstractManager
 {
     const TABLE = 'Concert';
 
-    const availableSortCriterias = [
+    const AVAILABLE_SORT_CRITERIAS = [
         [ 'name' => 'Day', 'label' => 'journée' ],
         [ 'name' => 'ArtistName', 'label' => "nom d'artiste" ],
         [ 'name' => 'Scene', 'label' => 'scène' ]
@@ -30,7 +30,7 @@ class ConcertManager extends AbstractManager
     */
     public static function getAvailableSortCriterias() : array
     {
-        return self::availableSortCriterias;
+        return self::AVAILABLE_SORT_CRITERIAS;
     }
 
 
@@ -44,7 +44,7 @@ class ConcertManager extends AbstractManager
         $valid = false;
 
         # is the criteria valid?
-        foreach (self::availableSortCriterias as $test) {
+        foreach (self::AVAILABLE_SORT_CRITERIAS as $test) {
             if ($test['name'] == $criteria) {
                 $valid = true;
                 break;
