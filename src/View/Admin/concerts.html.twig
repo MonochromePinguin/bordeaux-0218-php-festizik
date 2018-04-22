@@ -5,14 +5,28 @@
 {% extends 'layout.html.twig' %}
 
 {# TODO :
-    This page will work at two levels:
- 1) without JS. all is done through server-side validation
- 2) with JS → write .needJS. client-side + server-side validation
-_ client-side input validation  through JS;
-_ AJAX requests for modifying more than 1 entry per POST request
-_ jquery hook to show
-#}
+● «sélectionner une entrée» ds les 2 combo ...
+● style : grisé, avec marqué «passé» pr anciens concerts ...
+● TOUT LE BACKEND !
+● affichage par défaut : une section / critère de tri
+● retour visuel non-JS :
+    si heure entrée pas bien ...
+● retour visuel JS :
+si heure entrée == mauvais format
+si date/heure fin < date/heure départ
+● retour d'erreur ...
+_ JS : BdDial confirmation suppression enreg. en .needJS
+    → version sans JS : formulaire caché rendu visible par input:checked ...
 
+_ NOTE : This page will work at two levels:
+ 1) without JS. all is done through server-side validation
+    → write .noJS and warning banner.
+ 2) with JS
+    → write .needJS. client-side + server-side validation
+_ client-side input validation of hour through JS;
+_ AJAX requests for modifying more than 1 entry per POST request
+_ jquery hook to show # of modified items, modified entries, ...
+#}
 
 {% block title %}Festizik – administration des concerts{% endblock %}
 
@@ -37,6 +51,7 @@ _ jquery hook to show
                     {{ name }}
                 </option>
             {% endfor %}
+
 {#TODO : WRITE JS to make it work #}
 {#TODO : Write .needJS #}
             {# this one is visible only if JS is operational#}
@@ -58,6 +73,7 @@ _ jquery hook to show
                     {{ name }}
                 </option>
             {% endfor %}
+
 {#TODO : WRITE JS to make it work #}
 {#TODO : Write .needJS #}
             {# this one is visible only if JS is operational#}
@@ -85,7 +101,7 @@ _ jquery hook to show
     {% include 'errorList.html.twig' %}
 
     <nav>
-        <form method="GET" action="" class="border border-info p-1">
+        <form method="GET" action="" class="border border-info p-1 m-2 sublined">
             <p class="mb-0 font-weight-bold font-weight-italic">Trier&nbsp;...</p>
 
               {% for prop in sortableProperties %}
@@ -104,24 +120,76 @@ _ jquery hook to show
                 </button>
 
         </form>
-        {# TODO :
-        • affichage par défaut : une section portant date / nom de jour par jour.
-        à l'intérieur, tout par row.
-        ****
-        • bouton de bascule : 1 section /jour (↑), 1 section /semaine, tout d'un coup sans distinction chronologique. →
-
-        **** c'est pour le FILTRAGE qu'il y aura besoin de modifier la requête ...
-
-        • bouton bascule : ligne / ligne  (cartes alignées verticalement),
-                        1 entrée par ligne
-                        ou compact (comme maintenant, dans une «.card-columns»)
-        → PAR JAVASCRIPT !
-        • Utiliser une seule connection PDO par page. #}
     </nav>
 
 
 
     <main>
+        <article class="bordered m-2">
+
+            {# "input[type=checkbox]:checked + elem" trick #}
+            <label for="shower1" class="btn btn-primary" role="button">
+                <span class="badge badge-light">
+                    <img src="/assets/images/plus.svg" alt="">
+                </span>
+                Créer nouvelle entrée ...
+            </label>
+            <input type="checkbox" id="shower1" class="showNext" aria-hidden="true">
+
+            <form method="POST" action="" class="unHiddenable">
+                <div>
+                    <img class="img-fluid float-right img-thumbnail downsized"
+                         src="" title="" alt="">
+                </div>
+
+                {% set selectedScene = '' %}
+                {{ block('selectForScene') }}
+
+                <div class="form-group">
+                    <label class="mr-2">
+                        Date&nbsp:
+                        <input type="date" name="DateLocale"
+                                {# beware of the format we NEED to the browser : "Y-m-d"! #}
+                               value="{{ 'now' | date('Y-m-d') }}">
+                    </label>
+
+                    <label>
+                        Heure&nbsp:
+                        <input type="hour" name="hour"
+                               value="{{ 'now' | date('H\\hi\\m') }}">
+                    </label>
+                </div>
+
+                {% set selectedArtist = '' %}
+                {{ block('selectForArtist') }}
+
+                <div class="form-group">
+                    <label class="form-group">
+                        <strong>Concert annulé</strong>
+                        <input type="checkbox" name="cancelled">
+                    </label>
+
+                    <button type="submit" name="modify-{{ concert.Id }}"
+                            class="btn btn-primary m-2 float-right"
+                            title="Envoyer les changements effectués vers le serveur">
+                        <span class="badge badge-light">
+                            <img src="/assets/images/cloud-upload.svg" alt="">
+                        </span>
+                        Envoyer
+                    </button>
+
+                    <button type="reset" class="btn btn-secondary m-2 float-right"
+                            title="Annuler cet ajout">
+                        <span class="badge badge-light">
+                            <img src="/assets/images/trashcan.svg" alt="">
+                        </span>
+                        Annuler
+                    </button>
+                </div>
+
+            </form>
+        </article>
+
       {% for concert in concerts %}
         <article class="bordered m-2">
             <form method="POST" action="" >
@@ -163,15 +231,32 @@ _ jquery hook to show
                                {% if concert.cancelled %}checked{% endif %}>
                     </label>
 
-                    <button type="reset" class="btn btn-secondary"
-                            title="annuler les changements effectués pour ce concert">
-                         Annuler
-                     </button>
-                     <button type="submit" class="btn btn-primary"
+                    <button type="submit" name="delete-{{ concert.Id }}"
+                            class="btn btn-danger m-2 float-right"
+                            title="Supprimer ce concert (après confirmation)">
+                        <span class="badge badge-light">
+                            <img src="/assets/images/trashcan.svg" alt="">
+                        </span>
+                        Supprimer ...
+                    </button>
+
+                    <button type="submit" name="modify-{{ concert.Id }}"
+                            class="btn btn-primary m-2 float-right"
                             title="Envoyer les changements effectués vers le serveur">
-                         <span class="glyphicon glyphicon-cloud-upload"></span>
-                         Envoyer
-                     </button>
+                        <span class="badge badge-light">
+                            <img src="/assets/images/cloud-upload.svg" alt="">
+                        </span>
+                        Envoyer
+                    </button>
+
+                    <button type="reset" class="btn btn-secondary m-2 float-right"
+                            title="annuler les changements effectués pour ce concert">
+                        <span class="badge badge-light">
+                            <img src="/assets/images/sync.svg" alt="">
+                        </span>
+                        Annuler
+                    </button>
+
 
                 </div>
 

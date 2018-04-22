@@ -6,15 +6,28 @@
     padding: 0.5rem;
 }
 
-
 .sublined {
-    border-bottom: 2px solid darkred;
+/* this "!important" is needed to neutralize bootstrap's "!important" usage */
+    border: none !important;
+    border-bottom: 2px solid darkred !important;
 }
 
+/* for images into the articles */
 .downsized {
     max-width: 20vw;
     max-height: 20vh;
 }
+
+/* ------- */
+
+/* for the "input[checkbox]:checked + elem" trick (hidding without JS) */
+.showNext,
+.unHiddenable{ display: none }
+
+input[type='checkbox']:checked + .unHiddenable {
+    display: block;
+}
+
 
 /* ------- */
 
