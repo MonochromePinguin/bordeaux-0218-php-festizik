@@ -23,7 +23,6 @@ body {
 }
 
 /* -------- NAVBAR -------- */
-
 .barreNav {
     background-color : rgba(253, 185, 64, 0.9);
     z-index          : 22222;
@@ -505,6 +504,7 @@ body {
     /* -------- ARTISTES -------- */
     .artist-header {
         margin-bottom : 5%;
+        color         : white;
     }
 
     .artist {
