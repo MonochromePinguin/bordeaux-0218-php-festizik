@@ -49,12 +49,12 @@ class Artist
         }
     }
 
-    public function getImageURL() : string
+    public function getImageURL()
     {
         return $this->picture;
     }
 
-    public function getDescription() : string
+    public function getDescription()
     {
         return $this->about;
     }

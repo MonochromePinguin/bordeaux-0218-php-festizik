@@ -5,11 +5,14 @@
 {% extends 'layout.html.twig' %}
 
 {# TODO :
+●PRQOUOI l'entrée CANCELLEDCONCERT n'est pas jointe qd pas modifiée ?
+● jquery changement aspect / nom boutons !
 ● «sélectionner une entrée» ds les 2 combo ...
-● style : grisé, avec marqué «passé» pr anciens concerts ... itout pr les "annulés"
-● TOUT LE BACKEND !
+● style : grisé, avec marqué «passé» pr anciens concerts ...
+          itout /rouge pr les "annulés"
 ● affichage par défaut : une section / critère de tri
 ● retour visuel non-JS :
+    pattern pour l'heure
     si heure entrée pas bien ...
 ● retour visuel JS :
 si heure entrée == mauvais format
@@ -115,7 +118,7 @@ _ jquery hook to show # of modified items, modified entries, ...
               {% endfor %}
 
                 <button type="submit" class="btn btn-info float-right"
-                        name="sortBy" value="{{ actualSort }}"
+                        {% if actualSort %} name="sortBy" value="{{ actualSort }}" {% endif %}
                         title="recharger la page avec les même critères de tri">
                     <img src="/assets/images/sync.svg" alt="">
                     Recharger la page

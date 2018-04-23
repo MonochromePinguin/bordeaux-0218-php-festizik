@@ -80,28 +80,76 @@ class AdminController extends AbstractController
             );
         }
 
-        $concertManager = new ConcertManager($this->errorStore);
-        $concerts = $concertManager->selectAll();
+        $sceneManager = new SceneManager($this->errorStore);
+        $scenes = $sceneManager->selectAll('name');
 
         $artistManager = new ArtistManager($this->errorStore);
         $artists = $artistManager->selectAll('name');
 
-        $sceneManager = new SceneManager($this->errorStore);
-        $scenes = $sceneManager->selectAll('name');
-
         $dayManager = new DayManager($this->errorStore);
         $days = $dayManager->selectAll('date');
 
+        $concertManager = new ConcertManager($this->errorStore);
+        $concerts = $concertManager->selectAll();
 
+
+        //sort criteria sent in the URL
         $sortBy = null;
 
         #allow to sort data out of the model, so we save an SQL request
         static $props = null;
-
         if (null === $props) {
             $props = $concertManager::getAvailableSortCriterias();
         }
 
+        ## STORING DATA ##
+        #
+        if (0 !== count($_POST)) {
+            #list of allowed actions and associated functions
+            $actionKeys = [ 'addOneNewConcert', 'deleteOneConcert', 'modifyOneConcert' ];
+            $actionFunctions = [ 'addOneConcert', 'deleteOneConcert', 'modifyOneConcert' ];
+
+//TODO : Should validate ALL parameters before doing anything,
+// instead of validation at the time of action
+// – and use $this->storeMsg('Cette page n\'accepte pas l\'action «' . $key . '» par la méthode POST');
+
+            #did at least an action succefully run and changed something?
+            # → we need to reload the datas
+            $actionFlag = false;
+
+//TODO : for now we are open to multiple actions in a same POST request, so we do that in a loop
+            $l = count($actionFunctions);
+            foreach ($_POST as $key => $value) {
+                for ($i = 0; $i < $l; ++$i) {
+
+                    if ( $key == $actionKeys[$i] ) {
+                        #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
+                        $func = $actionFunctions[$i];
+                        if ($this->$func($concertManager, $artists, $scenes, $days, $_POST))
+                            $actionFlag = true;
+                    }
+                }
+            }
+
+//TODO : We need to load datas for validation, ok, but can we do this better
+//than by reloading the whole set ?
+            if ($actionFlag) {
+                $sceneManager = new SceneManager($this->errorStore);
+                $scenes = $sceneManager->selectAll('name');
+
+                #no need to reload the artists, we don't modify them
+
+                $dayManager = new DayManager($this->errorStore);
+                $days = $dayManager->selectAll('date');
+
+                $concertManager = new ConcertManager($this->errorStore);
+                $concerts = $concertManager->selectAll();
+            }
+        }
+
+
+        ## SORTING DATA ##
+        #
         if (0 !== count($_GET)) {
             ## the goal of a GET method is to sort the available datas
             # into the controller, thus saving some SQL different requests
@@ -117,28 +165,6 @@ class AdminController extends AbstractController
             } else {
                 $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');
             };
-        }
-
-        ## STORING DATA ##
-        #
-        if (0 !== count($_POST)) {
-            #list of allowed actions and associated functions
-            $actionKeys = [ 'addOneNewConcert', 'deleteOneConcert', 'modifyOneConcert' ];
-            $actionFunctions = [ 'addOneConcert', 'deleteOneConcert', 'modifyOneConcert' ];
-
-//TODO : Should validate all parameters before doing anything
-#and use $this->storeMsg('Cette page n\'accepte pas l\'action «' . $key . '» par la méthode POST');
-            $l = count($actionFunctions);
-            foreach ($_POST as $key => $value) {
-                for ($i = 0; $i < $l; ++$i) {
-
-                    if ( $key == $actionKeys[$i] ) {
-                        #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
-                        $func = $actionFunctions[$i];
-                        $this->$func($concertManager, $artists, $scenes, $days, $_POST);
-                    }
-                }
-            }
         }
 
 
@@ -177,8 +203,10 @@ class AdminController extends AbstractController
     #
 
 
+//TODO : THROW an exception in case of problem ? Probably betten than returning nothing ...
     /**
-     * make sanity checks and then records the new concert entry
+     * make sanity checks and if all is OK then records the new concert entry.
+     *  in case of error, store a message in the errorStore and return without value ...
      * @param array $values all needed fields for a new row should be in this
      *              associative array
      */
@@ -189,10 +217,16 @@ class AdminController extends AbstractController
                                     array $values)
     {
         #the values looked up by $manager->insert() are:
-        # id_day, hour, id_scene, id_artist, cancelled
+            # id_day, hour, id_scene, id_artist, cancelled
         # and the one found into $_POST[] are:
-        # DateLocale, hour, scene, artist, cancelled
-        $keyList = [ 'DateLocale', 'hour', 'scene', 'artist', 'cancelledConcert'];
+            # DateLocale, hour, scene, artist, cancelled
+        $keyList = [ 'DateLocale', 'hour', 'scene', 'artist'];
+        # REMEMBER : "cancelled" isn't sent if unchecked. So we don't test for its presence
+
+        $sentValues = [];
+
+
+        #Test for the presence of needed parameters
         foreach ( $keyList as $key) {
             if (empty($values[$key])) {
                 $this->storeMsg("Propriété «{$key}» introuvable dans la requête. Enregistrement abandonné.");
@@ -200,13 +234,23 @@ class AdminController extends AbstractController
             }
         }
 
-        #only these two are directly usable
-        $sentValues = [
-            'hour' => $values['hour'],
-            'cancelled' => $values['cancelledConcert']
-        ];
+        #Translate the checkbox to a value usable by SQL
+        if (isset($values['cancelledConcert'])) {
+            $v = $values['cancelledConcert'];
+            if ($v != 'on') {
+                $this->storeMsg('Valeur invalide fournie pour la propriété «cancelledConcert». Pas d\'enregistrement');
+                return;
+            }
+            $sentValues['cancelled'] = '1';
+        } else {
+          $sentValues['cancelled'] = '0';
+        }
 
-        #existance checks
+        #only this one is directly usable
+        $sentValues['hour'] = $values['hour'];
+
+        #Validity checks
+    //TODO : as an upper ↑ TODO said, should'nt we return a value ?
         if (
             !$this->checkValid( $values['artist'], $artists, 'getName',
                          $sentValues['id_artist'], 'Artiste' )
@@ -227,9 +271,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * Basic existance check for differents objects into our lists.
-     * We test if an object into $into has its ->getName() returns $lookedFor,
-     * and returns an appropriate boolean ;
+     * Basic existence check for differents objects into our lists.
+     * We test if one of the objects into $into has its ->getName() returning
+     * $lookedFor, and returns an appropriate boolean ;
      * we eventually store an error message into $this->errorStore
      * @param string $lookedFor
      * @param array $into   array of examinated objects
@@ -239,15 +283,14 @@ class AdminController extends AbstractController
      * @return bool
      */
     private function checkValid(string $lookedFor, array $into,
-                                string $getterName, &$toKey,
+                                string $getterName, &$toVar,
                                 string $errName): bool
     {
         $found = false;
         foreach ($into as $item) {
-$this->storeMsg("cmp {$lookedFor}, {$item->$getterName()}<br>");
             if ($lookedFor == $item->$getterName()) {
                 $found = true;
-                $sentValues[$toKey] = $item->getId();
+                $toVar = $item->getId();
                 break;
             }
         }
