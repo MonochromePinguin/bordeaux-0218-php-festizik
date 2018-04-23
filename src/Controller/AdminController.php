@@ -121,12 +121,12 @@ class AdminController extends AbstractController
             $l = count($actionFunctions);
             foreach ($_POST as $key => $value) {
                 for ($i = 0; $i < $l; ++$i) {
-
-                    if ( $key == $actionKeys[$i] ) {
+                    if ($key == $actionKeys[$i]) {
                         #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
                         $func = $actionFunctions[$i];
-                        if ($this->$func($concertManager, $artists, $scenes, $days, $_POST))
+                        if ($this->$func($concertManager, $artists, $scenes, $days, $_POST)) {
                             $actionFlag = true;
+                        }
                     }
                 }
             }
@@ -175,7 +175,7 @@ class AdminController extends AbstractController
         }
 
         $sceneNameList = [];
-        foreach ( $scenes as $scene) {
+        foreach ($scenes as $scene) {
             $sceneNameList[] = $scene->getName();
         }
 
@@ -210,12 +210,13 @@ class AdminController extends AbstractController
      * @param array $values all needed fields for a new row should be in this
      *              associative array
      */
-    private function addOneConcert( ConcertManager $concertManager,
-                                    array $artists,
-                                    array $scenes,
-                                    array $days,
-                                    array $values)
-    {
+    private function addOneConcert(
+        ConcertManager $concertManager,
+        array $artists,
+        array $scenes,
+        array $days,
+        array $values
+    ) {
         #the values looked up by $manager->insert() are:
             # id_day, hour, id_scene, id_artist, cancelled
         # and the one found into $_POST[] are:
@@ -227,7 +228,7 @@ class AdminController extends AbstractController
 
 
         #Test for the presence of needed parameters
-        foreach ( $keyList as $key) {
+        foreach ($keyList as $key) {
             if (empty($values[$key])) {
                 $this->storeMsg("Propriété «{$key}» introuvable dans la requête. Enregistrement abandonné.");
                 return;
@@ -243,7 +244,7 @@ class AdminController extends AbstractController
             }
             $sentValues['cancelled'] = '1';
         } else {
-          $sentValues['cancelled'] = '0';
+            $sentValues['cancelled'] = '0';
         }
 
         #only this one is directly usable
@@ -251,13 +252,27 @@ class AdminController extends AbstractController
 
         #Validity checks
     //TODO : as an upper ↑ TODO said, should'nt we return a value ?
-        if (
-            !$this->checkValid( $values['artist'], $artists, 'getName',
-                         $sentValues['id_artist'], 'Artiste' )
-            || !$this->checkValid( $values['scene'], $scenes, 'getName',
-                            $sentValues['id_scene'], 'Nom de Scène')
-            || !$this->checkValid( $values['DateLocale'], $days, 'getDateAsRaw',
-                            $sentValues['id_day'], 'Jour de concert')
+        if (!$this->checkValid(
+            $values['artist'],
+            $artists,
+            'getName',
+            $sentValues['id_artist'],
+            'Artiste'
+        )
+            || !$this->checkValid(
+                $values['scene'],
+                $scenes,
+                'getName',
+                $sentValues['id_scene'],
+                'Nom de Scène'
+            )
+            || !$this->checkValid(
+                $values['DateLocale'],
+                $days,
+                'getDateAsRaw',
+                $sentValues['id_day'],
+                'Jour de concert'
+            )
         ) {
             return;
         }
@@ -265,8 +280,8 @@ class AdminController extends AbstractController
         try {
             $concertManager->insert($sentValues);
         } catch (\Exception $e) {
-            $this->storeMsg( 'Impossible d\'enregistrer la nouvelle entrée : <br>'
-                                . $e->getMessage() );
+            $this->storeMsg('Impossible d\'enregistrer la nouvelle entrée : <br>'
+                                . $e->getMessage());
         }
     }
 
@@ -282,10 +297,13 @@ class AdminController extends AbstractController
      * @param string $errName      name of the object for error message
      * @return bool
      */
-    private function checkValid(string $lookedFor, array $into,
-                                string $getterName, &$toVar,
-                                string $errName): bool
-    {
+    private function checkValid(
+        string $lookedFor,
+        array $into,
+        string $getterName,
+        &$toVar,
+        string $errName
+    ): bool {
         $found = false;
         foreach ($into as $item) {
             if ($lookedFor == $item->$getterName()) {

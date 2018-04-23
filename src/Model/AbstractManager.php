@@ -43,7 +43,7 @@ abstract class AbstractManager
      * @param string|null $orderBy give an optional parameter to the SQL query
      * @return array
      */
-    public function selectAll( $orderBy = null ): array
+    public function selectAll($orderBy = null): array
     {
         return static::$pdoConnection->query(
             'SELECT * FROM ' . $this->table . (
