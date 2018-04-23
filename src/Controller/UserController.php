@@ -79,6 +79,7 @@ class UserController extends AbstractController
                 'errorList' => $this->errorStore ?
                     $this->errorStore->formatAllMsg() : null
             ]
+
         );
     }
 
