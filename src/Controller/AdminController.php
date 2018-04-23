@@ -63,5 +63,18 @@ class AdminController extends AbstractController
         header('Location: /login');
 
     }
+
+     public function adminBenevol()
+    {
+        return $this->twig->render('Admin/adminBenevol.html.twig');
+
+    }
+
+    public function benevolContentUpdated()
+    {
+        $BenevolManager = new AdminBenevolManager();
+        $benevol = $BenevolManager->benevolContentUpdate($_POST);
+        return $this->twig->render('Admin/logged.html.twig');
+    }
 }
 

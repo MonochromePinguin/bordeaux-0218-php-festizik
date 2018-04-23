@@ -9,6 +9,8 @@
  * @link     https://github.com/WildCodeSchool/simple-mvc
  */
 
+use Misc\ErrorStore as ErrorStore;
+use App\Connection;
 
 require_once __DIR__ . '/routing.php';
 $routesCollection = function (FastRoute\RouteCollector $r) use ($routes) {
@@ -47,6 +49,14 @@ switch ($routeInfo[0]) {
         $vars = $routeInfo[2];
         list($class, $method) = explode("/", $handler, 2);
         $class = APP_CONTROLLER_NAMESPACE . $class . APP_CONTROLLER_SUFFIX;
-        echo call_user_func_array([new $class(), $method], $vars);
+
+        try {
+            $errorStore = new ErrorStore();
+        } catch ( Exception $e ) {
+            //DO NOT SHOW ANY ERROR MESSAGE. We can live without it.
+            $errorStore = null;
+        }
+
+        echo call_user_func_array([new $class($errorStore), $method], $vars);
         break;
 }

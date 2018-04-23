@@ -1,22 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sylvain
- * Date: 07/03/18
- * Time: 20:52
- * PHP version 7
- */
 
 namespace Model;
 
-use App\Connection;
+use App\Connection as Connection;
 
 /**
  * Abstract class handling default manager.
  */
 abstract class AbstractManager
 {
-    protected $pdoConnection; //variable de connexion
+    #initial state : explicitly unset
+    protected static $pdoConnection = null;
 
     protected $table;
     protected $className;
@@ -25,23 +19,45 @@ abstract class AbstractManager
      *  Initializes Manager Abstract class.
      *
      * @param string $table Table name of current model
+     * @param Connection $pdoConnection in case we want the manager class to use
+     *                   a different connection. By default, it is created at first call
+     *                   if none specified
      */
-    public function __construct(string $table)
+
+    public function __construct(string $table, Connection $pdoConnection = null)
     {
-        $connexion = new Connection();
-        $this->pdoConnection = $connexion->getPdoConnection();
+        if (null != $pdoConnection) {
+            #if the parameter $pdoConnection is set, use this connection,
+            static::$pdoConnection = $pdoConnection;
+        } elseif (null == static::$pdoConnection) {
+            #else create a new connection shared by every child classes
+            static::$pdoConnection = (new Connection())->getPdoConnection();
+        }
+
         $this->table = $table;
-        $this->className = __NAMESPACE__ . '\\' . ucfirst($table);
+        $this->className = __NAMESPACE__ . '\\' . $table;
     }
 
     /**
      * Get all row from database.
      *
+     * @param string|null $orderBy optional "order by" parameter for the SQL request
      * @return array
      */
-    public function selectAll(): array
+
+    public function selectAll($orderBy = null): array
+
     {
-        return $this->pdoConnection->query('SELECT * FROM ' . $this->table, \PDO::FETCH_CLASS, $this->className)->fetchAll();
+        $queryString = 'SELECT * FROM ' . $this->table;
+        if (null != $orderBy) {
+            $queryString .= ' ORDER BY ' . (static::$pdoConnection)->quote($orderBy);
+        }
+
+        return static::$pdoConnection->query(
+            $queryString,
+            \PDO::FETCH_CLASS,
+            $this->className
+        )->fetchAll();
     }
 
     /**
@@ -71,18 +87,6 @@ abstract class AbstractManager
     {
         //TODO : Implements SQL DELETE request
     }
-
-
-    /**
-     * INSERT one row in dataase
-     *
-     * @param Array $data
-     */
-    public function insert(array $data)
-    {
-        //TODO : Implements SQL INSERT request
-    }
-
 
     /**
      * @param int   $id   Id of the row to update
