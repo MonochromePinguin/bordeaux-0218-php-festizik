@@ -20,22 +20,6 @@ class UserController extends AbstractController
         return $this->twig->render('User/index.html.twig');
     }
 
-    public function testList()
-    {
-        $concertManager = new ConcertManager($this->errorStore);
-        $concerts = $concertManager->selectAll();
-
-        return $this->twig->render(
-            'User/testList.html.twig',
-            [
-                'concerts' => $concerts,
-                'errorList' => $this->errorStore ?
-                    $this->errorStore->getAllMsg() : null
-            ]
-        );
-    }
-
-
     /**
     * TEST : display items – no editing for now
     */
@@ -110,6 +94,7 @@ class UserController extends AbstractController
         $artistManager = new ArtistManager();
         $artists = $artistManager->selectAll();
         return $this->twig->render('User/artist.html.twig', ['artists' => $artists]);
+
     }
 
     public function benevol()

@@ -9,6 +9,9 @@
 namespace Controller;
 
 use Model\AdminManager;
+use Model\ArtistManager;
+use Model\AdminBenevolManager;
+use Model\StyleManager;
 
 /**
  *  Class AdminController
@@ -71,6 +74,27 @@ class AdminController extends AbstractController
         $BenevolManager = new AdminBenevolManager();
         $benevol = $BenevolManager->benevolContentUpdate($_POST);
         return $this->twig->render('Admin/logged.html.twig');
+    }
+
+    public function adminArtist()
+    {
+        $artistManager = new ArtistManager();
+        $artists = $artistManager->selectNameId();
+        $styleManager = new StyleManager();
+        $styles = $styleManager->selectStyle();
+
+        if ($_POST) {
+            $data = ['name' => $_POST['name'],
+                'about' => $_POST['about'],
+                'picture' => '/assets/DBimages/'.$_POST['picture'],
+                'id_style' => $_POST['id_style']];
+            $artistManager->update($_GET['artistSelect'], $data);
+        }
+        if (isset($_GET['artistSelect'])) {
+            $artistId = $artistManager->selectOneById($_GET['artistSelect']);
+            return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'artistId' => $artistId, 'styles' => $styles]);
+        }
+        return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists]);
     }
 }
 

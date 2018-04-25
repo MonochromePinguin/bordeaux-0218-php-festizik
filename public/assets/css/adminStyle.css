@@ -1,62 +1,67 @@
+.container {
+    position : relative;
+    left     : 10%;
+    width    : 80%;
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
-    
-    #sidebar {
-      width: 250px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      z-index: 999;
-      background: #007A84;
-      color: #fff !important;
-      transition: all 0.3s;
-    }
-    
-    #sidebar.active {
-      margin-left: -250px;
-    }
-    
-    #sidebar .sidebar-header {
-      padding: 20px;
-      background: #009685;
-    }
-    
-    #sidebar ul.components {
-      padding: 20px 0;
-      border-bottom: 1px solid #47748b;
-    }
-    
-    #sidebar ul p {
-      color: #fff;
-      padding: 10px;
-    }
-    
-    #sidebar ul li a {
-      padding: 10px;
-      font-size: 1.1em;
-      display: block;
-      color:white;
-    }
-    
-    #sidebar ul li a:hover {
-      color: #7386D5;
-      background: #fff;
-    }
 
-    /*******************BENEVOLES*****************************/
-    .benevolTitle{
-      display: flex;
-      justify-content: center;
-    }
+#sidebar {
+    width      : 15%;
+    position   : fixed;
+    top        : 0;
+    left       : 0;
+    height     : 100vh;
+    z-index    : 999;
+    background : #007A84;
+    color      : #FFF !important;
+    transition : all 0.3s;
+}
+
+#sidebar.active {
+    margin-left : -250px;
+}
+
+#sidebar .sidebar-header {
+    padding    : 5%;
+    background : #009685;
+}
+
+#sidebar ul.components {
+    padding       : 20px 0;
+    border-bottom : 1px solid #47748B;
+}
+
+#sidebar ul p {
+    color   : #FFF;
+    padding : 10px;
+}
+
+#sidebar ul li a {
+    padding   : 10px;
+    font-size : 1.1em;
+    display   : block;
+    color     : white;
+}
+
+#sidebar ul li a:hover {
+    color      : #7386D5;
+    background : #FFF;
+}
+
+/*******************BENEVOLES*****************************/
+.benevolTitle {
+    display         : flex;
+    justify-content : center;
+}
+
+.benevoleForm {
+    margin-top : 250px;
+}
 
 
-    .benevoleForm {
-      margin-top: 250px;
-    }
-           
-   
     /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */

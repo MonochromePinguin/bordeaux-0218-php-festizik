@@ -1,4 +1,5 @@
 <?php
+
 namespace Model;
 
 class ArtistManager extends AbstractManager
@@ -13,4 +14,11 @@ class ArtistManager extends AbstractManager
         Artist::initStatics();
         parent::__construct(self::TABLE);
     }
+
+    public function selectNameId()
+    {
+        return static::$pdoConnection->query("SELECT id, name, id_style FROM " . $this->table . " ORDER BY name", \PDO::FETCH_ASSOC)->fetchAll();
+    }
+
+
 }

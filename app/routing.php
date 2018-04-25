@@ -14,12 +14,12 @@ $routes = [
         ['login', '/login', ['POST', 'GET']],  // action, url, method
         ['admin', '/admin', ['POST', 'GET']],
         ['logout', '/admin/logout', 'GET'],
-        ['adminBenevol', '/admin/adminBenevol', ['POST', 'GET']],
+        ['adminBenevol', '/admin/benevole', ['POST', 'GET']],
+        ['adminArtist', '/admin/artistes', ['POST', 'GET']],
     ],
 
     'User' => [
         ['index', '/', 'GET'],
-        ['testList', '/testList', 'GET'], // ● TEST !
         ['concerts', '/concerts', 'GET'],
         ['artists', '/artistes', 'GET'],
         ['infos', '/infos', 'GET'],
