@@ -251,7 +251,7 @@ class AdminController extends AbstractController
         $sentValues['hour'] = $values['hour'];
 
         #Validity checks
-    //TODO : as an upper ↑ TODO said, should'nt we return a value ?
+//TODO : as an upper ↑ TODO said, should'nt we return a value ?
         if (!$this->checkValid(
             $values['artist'],
             $artists,
@@ -277,6 +277,7 @@ class AdminController extends AbstractController
             return;
         }
 
+//TODO : CREATE A DAY ENTRY IN CASE OF NON-EXISTENCE
         try {
             $concertManager->insert($sentValues);
         } catch (\Exception $e) {
@@ -323,10 +324,12 @@ class AdminController extends AbstractController
         return true;
     }
 
+
     private function deleteOneConcert(int $id)
     {
-        $this->storeMsg(__FUNCTION__);
+        $this->storeMsg(__FUNCTION__ . ' a été appelé !');
     }
+
 
     private function modifyOneConcert(int $id)
     {

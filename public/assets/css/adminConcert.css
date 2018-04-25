@@ -14,8 +14,8 @@
 
 /* for images into the articles */
 .downsized {
-    max-width: 20vw;
-    max-height: 20vh;
+    max-width: 15vw;
+    max-height: 15vh;
 }
 
 /* ------- */
@@ -24,7 +24,7 @@
 .showNext,
 .unHiddenable{ display: none }
 
-input[type='checkbox'].showNext:checked + .unHiddenable {
+#adminConcert input[type='checkbox'].showNext:checked + .unHiddenable {
     display: block;
 }
 
@@ -33,7 +33,7 @@ input[type='checkbox'].showNext:checked + .unHiddenable {
     content: 'Annulation';
 }
 
-input[type="checkbox"]:checked + .cancelled::after {
+#adminConcert input[type="checkbox"]:checked + .cancelled::after {
     font-style: italic;
     color: red;
     content: 'Annulé';
@@ -42,7 +42,7 @@ input[type="checkbox"]:checked + .cancelled::after {
 
 /* ------- */
 
-.adminConcert header {
+#adminConcert header {
     position: relative;
 
     text-align: right;
@@ -57,7 +57,7 @@ input[type="checkbox"]:checked + .cancelled::after {
     */
 }
 
-.adminConcert header > svg {
+#adminConcert header > svg {
     position: absolute;
     z-index:  0;
 
@@ -66,13 +66,12 @@ input[type="checkbox"]:checked + .cancelled::after {
     width: 100%;
     max-height: 5rem;
 }
-.adminConcert header > :not(svg) {
+#adminConcert header > :not(svg) {
     position: relative;
 }
 
 
-.adminConcert > aside,
-.adminConcert > nav {
+#adminConcert > aside,
+#adminConcert > nav {
     margin: 3%;
 }
-
