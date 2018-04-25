@@ -7,7 +7,7 @@ namespace Model;
  */
 class Artist
 {
-    private $id_artist;
+    private $id;
     private $name;
     private $id_style;
     private $about;
@@ -25,7 +25,7 @@ class Artist
      */
     public function getId(): int
     {
-        return $this->id_artist;
+        return $this->id;
     }
 
    /**

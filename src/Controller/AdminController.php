@@ -355,17 +355,23 @@ class AdminController extends AbstractController
                                       array $days,
                                       array $values)
     {
-        $dummy = '';
+        $id = '';
         if (!$this->checkValid($values['idConcertToDelete'],
                                 $concerts,
                     'getId',
-                        $dummy,
+                        $id,
                       'Concert')) {
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         };
 
-        $this->storeMsg(__FUNCTION__ . ' a été appelé !');
+        try {
+            $concertManager->delete($id);
+            return true;
+        } catch (\Exception $e) {
+            $this->storeMsg('Impossible de supprimer l\'entrée : <br>' . $e->getMessage());
+            return false;
+        }
     }
 
 

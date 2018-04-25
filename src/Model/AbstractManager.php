@@ -81,7 +81,8 @@ abstract class AbstractManager
     public function delete(int $id)
     {
         $statement = self::$pdoConnection->prepare("DELETE FROM $this->table WHERE id=:id");
-        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        return $statement->execute();
     }
 
 

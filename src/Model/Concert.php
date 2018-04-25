@@ -13,7 +13,7 @@ class Concert
     * all of these vars are of the same type as theire corresponding field
     * into the DB
     */
-    private $id_concert;
+    private $id;
     private $id_day;
     private $hour;
     private $id_scene;
@@ -40,7 +40,7 @@ class Concert
      */
     public function getId(): int
     {
-        return $this->id_concert;
+        return $this->id;
     }
 
     /**
