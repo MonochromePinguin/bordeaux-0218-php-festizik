@@ -124,7 +124,12 @@ class AdminController extends AbstractController
                     if ($key == $actionKeys[$i]) {
                         #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
                         $func = $actionFunctions[$i];
-                        if ($this->$func($concertManager, $artists, $scenes, $days, $_POST)) {
+                        if ($this->$func($concertManager,
+                                         $concerts,
+                                         $artists,
+                                         $scenes,
+                                         $days,
+                                         $_POST)) {
                             $actionFlag = true;
                         }
                     }
@@ -195,18 +200,29 @@ class AdminController extends AbstractController
 
 
     ## adminConcert Page functions ##
+    # THESE FUNCTIONS NEED TO FOLLOW THE SAME PROTOTYPE.
+    # See the "if (0 !== count($_POST))" block in the above function.
     #
 
 
-//TODO : THROW an exception in case of problem ? Probably betten than returning nothing ...
+//TODO : THROW an exception in case of problem ?
     /**
-     * make sanity checks and if all is OK then records the new concert entry.
+     * Add a new concert entry after some sanity checks.
      *  in case of error, store a message in the errorStore and return without value ...
+     * @param ConcertManager $concertManager
+     * @param array $concerts unused
+     * @param array $artists
+     * @param array $scenes
+     * @param array $days
      * @param array $values all needed fields for a new row should be in this
-     *              associative array
+     *                      associative array.
+     *                      AWAITED KEYS:
+     *                          DateLocale, hour, scene, artist, cancelled
+     * @return bool
      */
     private function addOneConcert(
         ConcertManager $concertManager,
+        array $concerts,
         array $artists,
         array $scenes,
         array $days,
@@ -246,7 +262,6 @@ class AdminController extends AbstractController
         $sentValues['hour'] = $values['hour'];
 
         #Validity checks
-//TODO : as an upper ↑ TODO said, should'nt we return a value ?
         if (!$this->checkValid(
             $values['artist'],
             $artists,
@@ -269,6 +284,7 @@ class AdminController extends AbstractController
                 'Jour de concert'
             )
         ) {
+            $this->storeMsg('requête invalide : propriété absente');
             return false;
         }
 
@@ -323,8 +339,32 @@ class AdminController extends AbstractController
     }
 
 
-    private function deleteOneConcert(int $id)
+    /**
+     * DeleteOneConcert by Id.
+     * @param ConcertManager $concertManager
+     * @param array $concerts
+     * @param array $artists    unused
+     * @param array $scenes     unused
+     * @param array $days       unused
+     * @param array $values     unused
+     */
+    private function deleteOneConcert(ConcertManager $concertManager,
+                                      array $concerts,
+                                      array $artists,
+                                      array $scenes,
+                                      array $days,
+                                      array $values)
     {
+        $dummy = '';
+        if (!$this->checkValid($values['idConcertToDelete'],
+                                $concerts,
+                    'getId',
+                        $dummy,
+                      'Concert')) {
+            $this->storeMsg('requête invalide : propriété absente');
+            return false;
+        };
+
         $this->storeMsg(__FUNCTION__ . ' a été appelé !');
     }
 

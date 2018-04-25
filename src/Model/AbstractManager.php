@@ -45,7 +45,7 @@ abstract class AbstractManager
      */
     public function selectAll($orderBy = null): array
     {
-       return self::$pdoConnection->query(
+        return self::$pdoConnection->query(
             'SELECT * FROM ' . $this->table . (
                 isset($orderBy) ?
                     ' ORDER BY `' . substr(self::$pdoConnection->quote($orderBy), 1, -1) . '`' :  ''

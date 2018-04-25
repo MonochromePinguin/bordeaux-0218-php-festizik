@@ -15,19 +15,9 @@
             $('#concertInfos').text(this.dataset.infosConcert);
 
 //TODO: use AJAX!
-        /*           //give the button the value to send throught the POST
-                        $('#deleterButton').click( function{
-                            $.post( '/admin/concerts',
-                                    {
-                                        deleteOneConcert : '',
-                                        idConcertToDelete: this.dataset.idToDelete
-                                    }
-                                    function() {
 
-                            } );
-                        } );
-            */
-
+            //give the button the value to send throught the POST
+            $('#idConcertToDelete').val(this.dataset.idToDelete);
         } );
 
     } );

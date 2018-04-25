@@ -159,14 +159,23 @@ _ jquery hook to show # of modified items, modified entries, ...
 
                     <div class="modal-footer container-fluid">
                         <div class="row">
-                            <button class="m-3 col btn btn-danger" id="deleterButton"
-                                    title="Supprimer ce concert"
-                                    name="deleteOneConcert">
-                                <span class="badge badge-light">
-                                    <img src="/assets/images/trashcan.svg" alt="">
-                                </span>
-                                Supprimer
-                            </button>
+
+                            <form method="post" action="" class="m-3 col">
+
+                                <input type="hidden" id="idConcertToDelete"
+                                       name="idConcertToDelete"
+                                       value="" {# filled by JS #}>
+
+                                <button class="btn btn-danger" id="deleterButton"
+                                        title="Supprimer ce concert"
+                                        name="deleteOneConcert">
+                                    <span class="badge badge-light">
+                                        <img src="/assets/images/trashcan.svg" alt="">
+                                    </span>
+                                    Supprimer
+                                </button>
+
+                            </form>
 
                             <button type="button" id="abortDeleteBtn"
                                     class="m-3 col btn btn-secondary"
