@@ -29,7 +29,7 @@ class AdminManager extends AbstractManager
 
     public function connectDb(string $username, string $password)
     {
-        $request = $this::$pdoConnection->prepare(
+        $request = self::$pdoConnection->prepare(
             "SELECT * FROM " . $this->table . " WHERE username = :username AND password = :password"
         );
         $request->setFetchMode(\PDO::FETCH_ASSOC);

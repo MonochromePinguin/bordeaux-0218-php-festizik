@@ -28,7 +28,7 @@ abstract class AbstractManager
     {
         if (null != $pdoConnection) {
             #if the parameter $pdoConnection is set, use this connection,
-            static::$pdoConnection = $pdoConnection;
+            self::$pdoConnection = $pdoConnection;
         } elseif (null == static::$pdoConnection) {
             #else create a new connection shared by every child classes
             static::$pdoConnection = (new Connection())->getPdoConnection();
@@ -45,10 +45,10 @@ abstract class AbstractManager
      */
     public function selectAll($orderBy = null): array
     {
-        return static::$pdoConnection->query(
+       return self::$pdoConnection->query(
             'SELECT * FROM ' . $this->table . (
                 isset($orderBy) ?
-                    ' ORDER BY ' . static::$pdoConnection->quote($orderBy)  :  ''
+                    ' ORDER BY `' . substr(self::$pdoConnection->quote($orderBy), 1, -1) . '`' :  ''
             ),
             \PDO::FETCH_CLASS,
             $this->className
@@ -65,9 +65,9 @@ abstract class AbstractManager
     public function selectOneById(int $id)
     {
         // prepared request
-        $statement = $this->pdoConnection->prepare("SELECT * FROM $this->table WHERE id=:id");
+        $statement = self::$pdoConnection->prepare("SELECT * FROM $this->table WHERE id=:id");
         $statement->setFetchMode(\PDO::FETCH_CLASS, $this->className);
-        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetch();
@@ -80,7 +80,8 @@ abstract class AbstractManager
      */
     public function delete(int $id)
     {
-        //TODO : Implements SQL DELETE request
+        $statement = self::$pdoConnection->prepare("DELETE FROM $this->table WHERE id=:id");
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
     }
 
 

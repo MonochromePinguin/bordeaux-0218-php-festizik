@@ -24,16 +24,16 @@
 .showNext,
 .unHiddenable{ display: none }
 
-#adminConcert input[type='checkbox'].showNext:checked + .unHiddenable {
+input[type='checkbox'].showNext:checked + .unHiddenable {
     display: block;
 }
 
 /* for the "Annulation" checkbox */
-.cancelled::after {
+.adminConcert .cancelled::after {
     content: 'Annulation';
 }
 
-#adminConcert input[type="checkbox"]:checked + .cancelled::after {
+input[type="checkbox"]:checked + .cancelled::after {
     font-style: italic;
     color: red;
     content: 'Annulé';
@@ -42,7 +42,7 @@
 
 /* ------- */
 
-#adminConcert header {
+.adminConcert header {
     position: relative;
 
     text-align: right;
@@ -53,11 +53,10 @@
     background: repeating-linear-gradient( 45deg,
     transparent, transparent 20px, #d55 40px, #5dd 60px ),
     /*en fond du précédent */
-    /*                linear-gradient(to bottom, #fff, #ccc 50%, #555);
-    */
+                    linear-gradient(to bottom, #fff, #ccc 50%, #555);
 }
 
-#adminConcert header > svg {
+.adminConcert header > svg {
     position: absolute;
     z-index:  0;
 
@@ -66,12 +65,12 @@
     width: 100%;
     max-height: 5rem;
 }
-#adminConcert header > :not(svg) {
+.adminConcert header > :not(svg) {
     position: relative;
 }
 
 
-#adminConcert > aside,
-#adminConcert > nav {
+.adminConcert > aside,
+.adminConcert > nav {
     margin: 3%;
 }

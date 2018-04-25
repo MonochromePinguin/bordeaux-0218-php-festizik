@@ -21,7 +21,7 @@ class ConcertManager extends AbstractManager
     public function __construct()
     {
         Concert::initStatics();
-        parent::__construct(self::TABLE);
+        parent::__construct(static::TABLE);
     }
 
 
@@ -32,7 +32,7 @@ class ConcertManager extends AbstractManager
      */
     public function insert(array $values) : bool
     {
-        $query = $this::$pdoConnection->prepare(
+        $query = static::$pdoConnection->prepare(
             "INSERT INTO $this->table ( id_day, hour, id_scene, id_artist, cancelled )
                 VALUES ( :day, :hour, :scene, :artist, :cancelled )"
         );
@@ -58,7 +58,7 @@ class ConcertManager extends AbstractManager
     */
     public static function getAvailableSortCriterias() : array
     {
-        return self::AVAILABLE_SORT_CRITERIAS;
+        return static::AVAILABLE_SORT_CRITERIAS;
     }
 
 
@@ -72,7 +72,7 @@ class ConcertManager extends AbstractManager
         $valid = false;
 
         # is the criteria valid?
-        foreach (self::AVAILABLE_SORT_CRITERIAS as $test) {
+        foreach (static::AVAILABLE_SORT_CRITERIAS as $test) {
             if ($test['name'] == $criteria) {
                 $valid = true;
                 break;

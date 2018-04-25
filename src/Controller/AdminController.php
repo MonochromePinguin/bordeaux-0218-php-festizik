@@ -92,7 +92,6 @@ class AdminController extends AbstractController
         $concertManager = new ConcertManager($this->errorStore);
         $concerts = $concertManager->selectAll();
 
-
         //sort criteria sent in the URL
         $sortBy = null;
 
@@ -105,7 +104,8 @@ class AdminController extends AbstractController
         ## STORING DATA ##
         #
         if (0 !== count($_POST)) {
-            #list of allowed actions and associated functions
+            #list of allowed actions and associated functions ; these one are
+            # activated by a classical POST page-reload
             $actionKeys = [ 'addOneNewConcert', 'deleteOneConcert', 'modifyOneConcert' ];
             $actionFunctions = [ 'addOneConcert', 'deleteOneConcert', 'modifyOneConcert' ];
 
@@ -134,15 +134,9 @@ class AdminController extends AbstractController
 //TODO : We need to load datas for validation, ok, but can we do this better
 //than by reloading the whole set ?
             if ($actionFlag) {
-                $sceneManager = new SceneManager($this->errorStore);
                 $scenes = $sceneManager->selectAll('name');
-
                 #no need to reload the artists, we don't modify them
-
-                $dayManager = new DayManager($this->errorStore);
                 $days = $dayManager->selectAll('date');
-
-                $concertManager = new ConcertManager($this->errorStore);
                 $concerts = $concertManager->selectAll();
             }
         }
@@ -199,6 +193,7 @@ class AdminController extends AbstractController
         }
     }
 
+
     ## adminConcert Page functions ##
     #
 
@@ -231,7 +226,7 @@ class AdminController extends AbstractController
         foreach ($keyList as $key) {
             if (empty($values[$key])) {
                 $this->storeMsg("Propriété «{$key}» introuvable dans la requête. Enregistrement abandonné.");
-                return;
+                return false;
             }
         }
 
@@ -240,7 +235,7 @@ class AdminController extends AbstractController
             $v = $values['cancelledConcert'];
             if ($v != 'on') {
                 $this->storeMsg('Valeur invalide fournie pour la propriété «cancelledConcert». Pas d\'enregistrement');
-                return;
+                return false;
             }
             $sentValues['cancelled'] = '1';
         } else {
@@ -274,17 +269,20 @@ class AdminController extends AbstractController
                 'Jour de concert'
             )
         ) {
-            return;
+            return false;
         }
 
 //TODO : CREATE A DAY ENTRY IN CASE OF NON-EXISTENCE
         try {
             $concertManager->insert($sentValues);
+            return true;
         } catch (\Exception $e) {
             $this->storeMsg('Impossible d\'enregistrer la nouvelle entrée : <br>'
                                 . $e->getMessage());
+            return false;
         }
     }
+
 
     /**
      * Basic existence check for differents objects into our lists.
