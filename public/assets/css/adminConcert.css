@@ -74,3 +74,9 @@ input[type="checkbox"]:checked + .cancelled::after {
 .adminConcert > nav {
     margin: 3%;
 }
+
+/* concert inputs */
+
+input:invalid {
+    background-color: lightpink;
+}

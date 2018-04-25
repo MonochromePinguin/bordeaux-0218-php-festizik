@@ -125,6 +125,7 @@ class AdminController extends AbstractController
                         #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
                         $func = $actionFunctions[$i];
                         if ($this->$func($concertManager,
+                                         $dayManager,
                                          $concerts,
                                          $artists,
                                          $scenes,
@@ -210,6 +211,7 @@ class AdminController extends AbstractController
      * Add a new concert entry after some sanity checks.
      *  in case of error, store a message in the errorStore and return without value ...
      * @param ConcertManager $concertManager
+     * @param DayManager $dayManager unused
      * @param array $concerts unused
      * @param array $artists
      * @param array $scenes
@@ -222,6 +224,7 @@ class AdminController extends AbstractController
      */
     private function addOneConcert(
         ConcertManager $concertManager,
+        DayManager $dayManager,
         array $concerts,
         array $artists,
         array $scenes,
@@ -235,7 +238,7 @@ class AdminController extends AbstractController
         $keyList = [ 'DateLocale', 'hour', 'scene', 'artist'];
         # REMEMBER : "cancelled" isn't sent if unchecked. So we don't test for its presence
 
-        $sentValues = [];
+        $usedValues = [];
 
 
         #Test for the presence of needed parameters
@@ -253,45 +256,63 @@ class AdminController extends AbstractController
                 $this->storeMsg('Valeur invalide fournie pour la propriété «cancelledConcert». Pas d\'enregistrement');
                 return false;
             }
-            $sentValues['cancelled'] = '1';
+            $usedValues['cancelled'] = '1';
         } else {
-            $sentValues['cancelled'] = '0';
+            $usedValues['cancelled'] = '0';
         }
 
         #only this one is directly usable
-        $sentValues['hour'] = $values['hour'];
+        $usedValues['hour'] = $values['hour'];
 
         #Validity checks
         if (!$this->checkValid(
             $values['artist'],
             $artists,
             'getName',
-            $sentValues['id_artist'],
+            $usedValues['id_artist'],
             'Artiste'
-        )
+            )
             || !$this->checkValid(
                 $values['scene'],
                 $scenes,
                 'getName',
-                $sentValues['id_scene'],
+                $usedValues['id_scene'],
                 'Nom de Scène'
             )
-            || !$this->checkValid(
-                $values['DateLocale'],
-                $days,
-                'getDateAsRaw',
-                $sentValues['id_day'],
-                'Jour de concert'
-            )
-        ) {
+         ) {
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         }
 
-//TODO : CREATE A DAY ENTRY IN CASE OF NON-EXISTENCE
+        //check if a day entry exist for this date
+        if (!$this->checkValid(
+                $values['DateLocale'],
+                $days,
+                'getDateAsRaw',
+                $usedValues['id_day'],
+                null)
+        ) {
+            #NO? we must create it
+            try {
+                $res = $dayManager->insert( [ 'date' => $values['DateLocale'] ]);
+            } catch (\Exception $e) {
+                $this->storeMsg('Impossible de créer une entrée «jour» pour enregistrer la nouvelle entrée : <br>'
+                                . $e->getMessage());
+                return false;
+            }
+
+            if (!$res) {
+                $this->storeMsg('Impossible de créer une entrée «jour» pour enregistrer la nouvelle entrée ...<br>' );
+                return false;
+            }
+
+            #creation succeded – we still must get back the id
+            $usedValues['id_day'] = $dayManager->getIdOfDate($values['DateLocale']);
+        }
+
+
         try {
-            $concertManager->insert($sentValues);
-            return true;
+            return $concertManager->insert($usedValues);
         } catch (\Exception $e) {
             $this->storeMsg('Impossible d\'enregistrer la nouvelle entrée : <br>'
                                 . $e->getMessage());
@@ -307,9 +328,10 @@ class AdminController extends AbstractController
      * we eventually store an error message into $this->errorStore
      * @param string $lookedFor
      * @param array $into   array of examinated objects
-     * @param string $getterName    name of the getter to use to compare data
+     * @param string $getterName     name of the getter to use to compare data
      * @param &$toVar       variable where the result should be set
-     * @param string $errName      name of the object for error message
+     * @param string|null $errName   name of the object for error message,
+     *                               or null if nothing is to be shown
      * @return bool
      */
     private function checkValid(
@@ -317,7 +339,7 @@ class AdminController extends AbstractController
         array $into,
         string $getterName,
         &$toVar,
-        string $errName
+        $errName
     ): bool {
         $found = false;
         foreach ($into as $item) {
@@ -329,9 +351,9 @@ class AdminController extends AbstractController
         }
 
         if (!$found) {
-            $this->storeMsg(
-                "{$errName} Inconnu «{$lookedFor}» passé en paramètre. Pas d'enregistrement."
-            );
+            if (null !== $errName) {
+                $this->storeMsg("{$errName} Inconnu «{$lookedFor}» passé en paramètre. Pas d'enregistrement.");
+            }
             return false;
         }
 
@@ -342,6 +364,7 @@ class AdminController extends AbstractController
     /**
      * DeleteOneConcert by Id.
      * @param ConcertManager $concertManager
+     * @param DayManager $dayManager
      * @param array $concerts
      * @param array $artists    unused
      * @param array $scenes     unused
@@ -349,6 +372,7 @@ class AdminController extends AbstractController
      * @param array $values     unused
      */
     private function deleteOneConcert(ConcertManager $concertManager,
+                                      DayManager $dayManager,
                                       array $concerts,
                                       array $artists,
                                       array $scenes,
@@ -365,6 +389,7 @@ class AdminController extends AbstractController
             return false;
         };
 
+ //TODO: DELETE THE DAY ENTRY IF NO MORE REFERENCES
         try {
             $concertManager->delete($id);
             return true;

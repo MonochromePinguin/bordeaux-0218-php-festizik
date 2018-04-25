@@ -74,7 +74,7 @@ _ jquery hook to show # of modified items, modified entries, ...
 {% block selectForArtist %}
     <label class="form-group">
         Artiste&nbsp;:
-        <select name="artist">
+        <select name="artist" class="selectArtist">
             {% for name in artistNames %}
                 <option value="{{ name }}" {% if name == selectedArtist %}selected{% endif %}>
                     {{ name }}
@@ -216,15 +216,17 @@ _ jquery hook to show # of modified items, modified entries, ...
                 <div class="form-group">
                     <label class="mr-2">
                         Date&nbsp:
-                        <input type="date" name="DateLocale"
+                        <input type="date" name="DateLocale" required
                                 {# beware of the format we NEED to the browser : "Y-m-d"! #}
                                value="{{ 'now' | date('Y-m-d') }}">
                     </label>
 
                     <label>
                         Heure&nbsp:
-                        <input type="hour" name="hour"
-                               value="{{ 'now' | date('H\\hi\\m') }}">
+                        <input name="hour" required
+                               title="heure du concert – heures puis minutes séparés par un h, deux-points, tiret ou espace"
+                               pattern="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
+                               value="{{ 'now' | date('H\\hi') }}">
                     </label>
                 </div>
 
@@ -267,7 +269,7 @@ _ jquery hook to show # of modified items, modified entries, ...
                 {% if concert.Artist.ImageURL %}
                     <div>
                         <img class="img-fluid float-right img-thumbnail downsized"
-                             src="/{{ concert.Artist.ImageURL }}"
+                             src="{{ concert.Artist.ImageURL }}"
                              title="{{ concert.Artist.Name }}"
                              alt="L'image pour «{{ concert.Artist.Name }}» est absente&nbsp;!">
                     </div>
@@ -279,15 +281,17 @@ _ jquery hook to show # of modified items, modified entries, ...
                 <div class="form-group">
                     <label class="mr-2">
                         Date&nbsp:
-                        <input type="date" name="DateLocale"
+                        <input type="date" name="DateLocale" required
                                 {# beware of the format we NEED to the browser : "Y-m-d"! #}
                                value="{{ concert.Date | date('Y-m-d') }}">
                     </label>
 
                     <label>
                         Heure&nbsp:
-                        <input type="hour" name="hour"
-                               value="{{ concert.hour }}">
+                        <input name="hour" required
+                               title="heure du concert – heures puis minutes séparés par un h, deux-points, tiret ou espace"
+                               pattern="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
+                               value="{{ concert.hour | date('H\\hi') }}">
                     </label>
                 </div>
 
