@@ -35,7 +35,7 @@ class DayManager extends AbstractManager
         $query = static::$pdoConnection->prepare("SELECT id FROM $this->table WHERE date = :date");
         $query->bindValue(':date', $rawDate, \PDO::PARAM_STR);
         $query->execute();
-        return $query->fetchAll()[0]['id'];
+        return $query->fetch()['id'];
     }
 
 }

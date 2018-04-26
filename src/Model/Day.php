@@ -40,7 +40,7 @@ class Day
     }
 
     /**
-     * @return string
+     * @return string return a formatted date (french)
      */
     public function getDateAsString(): string
     {

@@ -264,8 +264,10 @@ class AdminController extends AbstractController
             $usedValues['cancelled'] = '0';
         }
 
-        #only this one is directly usable
-        $usedValues['hour'] = $values['hour'];
+        #format the hour to the SQL format
+        $h = $values['hour'];
+        $h[2] = ':';
+        $usedValues['hour'] = $h . ':00';
 
         #Validity checks
         if (!$this->checkValid(

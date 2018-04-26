@@ -7,6 +7,9 @@
 {# TODO :
 ● jquery changement aspect / nom boutons !
 ● «sélectionner une entrée» ds les 2 combo ...
+// grey out «apply» button when any data is not correct;
+//make the select elements into "create entry" start with "select something";
+//perhaps enforce the pattern in the "hour" entry;
 ● style : grisé, avec marqué «passé» pr anciens concerts ...
           itout /rouge pr les "annulés"
 ● affichage par défaut : une section / critère de tri
@@ -362,7 +365,6 @@ _ jquery hook to show # of modified items, modified entries, ...
         that will be used by JS to associate an image url #}
     <script>URLimgs = {{ URLimgs | raw }};</script>
     <script src="/js/adminConcert.js"></script>
-        to each artist #}
 {% endblock %}
 
 

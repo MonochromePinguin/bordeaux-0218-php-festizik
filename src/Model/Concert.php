@@ -57,7 +57,7 @@ class Concert
     }
 
     /**
-     * @return string
+     * @return string the concert's date as a locale-formatted string (french)
      */
     public function getDateAsString(): string
     {
@@ -88,6 +88,7 @@ class Concert
     }
 
     /**
+     * returns the concert's hour as a SQL time string (HH:MM:SS)
      * @return string
      */
     public function getHour(): string
