@@ -9,6 +9,8 @@
 namespace Controller;
 
 use Model\AdminManager;
+use Model\ArticleManager;
+use Model\AdminInfosManager;
 
 /**
  *  Class AdminController
@@ -67,6 +69,16 @@ class AdminController extends AbstractController
      public function adminBenevol()
     {
         return $this->twig->render('Admin/adminBenevol.html.twig');
+
+    }     
+    public function adminInfos()
+    {
+        $infosManager = new ArticleManager();
+        $infos = $infosManager->selectAll();
+
+        $title = $infos[1]->getTitle();
+        $content = $infos[1]->getContent();
+        return $this->twig->render('Admin/adminInfos.html.twig', ['title'=>$title, 'content'=>$content]);
 
     }
 

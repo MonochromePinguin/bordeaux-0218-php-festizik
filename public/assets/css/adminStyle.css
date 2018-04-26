@@ -45,6 +45,14 @@
     background : #FFF;
 }
 
+/*******************INFORMATIONS*****************************/
+.adminInfosTitle{
+    text-align: center;
+}
+
+.txtInfos{
+    height: 50vh;
+}
 /*******************BENEVOLES*****************************/
 .benevolTitle {
     display         : flex;
