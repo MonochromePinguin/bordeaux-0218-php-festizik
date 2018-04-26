@@ -17,7 +17,7 @@ class ArtistManager extends AbstractManager
 
     public function selectNameId()
     {
-        return static::$pdoConnection->query("SELECT id, name, id_style FROM " . $this->table . " ORDER BY name", \PDO::FETCH_ASSOC)->fetchAll();
+        return static::$pdoConnection->query("SELECT Artist.id, Artist.name AS AN, Style.name AS SN FROM Artist JOIN Style ON id_style = Style.id ORDER BY Artist.name", \PDO::FETCH_ASSOC)->fetchAll();
     }
 
     public function insert()
@@ -29,7 +29,6 @@ class ArtistManager extends AbstractManager
         $statement->bindValue(':about', $_POST['about']);
         $statement->bindValue(':picture', '/assets/DBimages/'.$_POST['picture']);
         $statement->execute();
-
     }
 
 }

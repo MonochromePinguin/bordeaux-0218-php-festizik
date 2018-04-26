@@ -83,22 +83,24 @@ class AdminController extends AbstractController
     public function adminArtist()
     {
         $artistManager = new ArtistManager();
-        $artists = $artistManager->selectNameId();
         $styleManager = new StyleManager();
         $styles = $styleManager->selectStyle();
 
         if ($_POST) {
             $data = ['name' => $_POST['name'],
                      'about' => $_POST['about'],
-                     'picture' => '/assets/DBimages/'.$_POST['picture'],
                      'id_style' => $_POST['id_style']];
+            if (strlen($_POST['picture']) > 0) {
+                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+            }
             if (isset($_GET['artistSelect'])) {
                 $artistManager->update($_GET['artistSelect'], $data);
             } else {
-               $artistManager->insert();
+                $artistManager->insert();
             }
         }
-        
+
+        $artists = $artistManager->selectNameId();
         if (isset($_GET['artistSelect'])) {
             $artistId = $artistManager->selectOneById($_GET['artistSelect']);
             return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'artistId' => $artistId, 'styles' => $styles]);
