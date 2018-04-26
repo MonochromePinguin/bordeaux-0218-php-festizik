@@ -9,8 +9,11 @@
 namespace Controller;
 
 use Model\AdminManager;
-use Model\AdminBenevolManager;
+
 use Model\ArticleManager;
+use Model\ArtistManager;
+use Model\AdminBenevolManager;
+use Model\StyleManager;
 
 /**
  *  Class AdminController
@@ -69,13 +72,44 @@ class AdminController extends AbstractController
      public function adminBenevol()
     {
         $benevolManager = new ArticleManager();
-        $benevol = $benevolManager->selectAll();
 
+
+         if ($_POST) {
+            $data = ['title' => $_POST['title'],
+                     'content' => $_POST['content']
+                    ];
+            if (strlen($_POST['picture'])> 0){
+                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+            }
+            $benevolManager->update(6, $data);
+        }
+        $benevol = $benevolManager->selectAll();
         $title = $benevol[0]->getTitle();
         $content = $benevol[0]->getContent();
         $picture = $benevol[0]->getPicture();
         return $this->twig->render('Admin/adminBenevol.html.twig', ['question'=>$title, 'beneContent'=>$content, 'picture'=>$picture]);
 
+    }
+
+    public function adminArtist()
+    {
+        $artistManager = new ArtistManager();
+        $artists = $artistManager->selectNameId();
+        $styleManager = new StyleManager();
+        $styles = $styleManager->selectStyle();
+
+        if ($_POST) {
+            $data = ['name' => $_POST['name'],
+                     'about' => $_POST['about'],
+                     'picture' => '/assets/DBimages/'.$_POST['picture'],
+                     'id_style' => $_POST['id_style']];
+            $artistManager->update($_GET['artistSelect'], $data);
+        }
+        if (isset($_GET['artistSelect'])) {
+            $artistId = $artistManager->selectOneById($_GET['artistSelect']);
+            return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'artistId' => $artistId, 'styles' => $styles]);
+        }
+        return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists]);
     }
 }
 

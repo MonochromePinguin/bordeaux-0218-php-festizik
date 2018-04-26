@@ -42,4 +42,6 @@ class AdminManager extends AbstractManager
     {
         return $this->connectDb($username, $password);
     }
+
+
 }

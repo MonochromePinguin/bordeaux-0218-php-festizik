@@ -21,6 +21,7 @@ class UserController extends AbstractController
         return $this->twig->render('User/index.html.twig');
     }
 
+
     public function concerts()
     {
         try {
@@ -89,6 +90,7 @@ class UserController extends AbstractController
         $artistManager = new ArtistManager();
         $artists = $artistManager->selectAll();
         return $this->twig->render('User/artist.html.twig', ['artists' => $artists]);
+
     }
 
         public function benevol()

@@ -33,7 +33,7 @@ abstract class AbstractManager
             #else create a new connection shared by every child classes
             static::$pdoConnection = (new Connection())->getPdoConnection();
         }
-
+        self::$pdoConnection = (new Connection())->getPdoConnection();
         $this->table = $table;
         $this->className = __NAMESPACE__ . '\\' . $table;
     }
@@ -70,9 +70,9 @@ abstract class AbstractManager
     public function selectOneById(int $id)
     {
         // prepared request
-        $statement = $this->pdoConnection->prepare("SELECT * FROM $this->table WHERE id=:id");
+        $statement = $this::$pdoConnection->prepare("SELECT * FROM " . $this->table . " WHERE id =:id");
         $statement->setFetchMode(\PDO::FETCH_CLASS, $this->className);
-        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetch();
@@ -94,6 +94,21 @@ abstract class AbstractManager
      */
     public function update(int $id, array $data)
     {
-        //TODO : Implements SQL UPDATE request
+        foreach ($data as $key => $value) {
+            // prepared request
+            $statement = $this::$pdoConnection->prepare("UPDATE $this->table SET `$key` = '$value' WHERE `id` = $id");
+            $statement->bindValue('id', $id, \PDO::PARAM_INT);
+            $statement->execute();
+        }
+    }
+
+    public function insert(array $data)
+    {
+        foreach ($data as $key => $value) {
+            // prepared request
+            $statement = $this::$pdoConnection->prepare("INSERT INTO $this->table 
+                                                                     (`$key`) VALUES ('$value')");
+            $statement->execute();
+        }
     }
 }
