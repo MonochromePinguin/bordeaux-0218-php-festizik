@@ -52,13 +52,17 @@ class AdminController extends AbstractController
 
     public function admin()
     {
-        return $this->twig->render('Admin/logged.html.twig');
+        if (!isset($_SESSION['username'])) {
+            header('Location: /login');
+        } else {
+            return $this->twig->render('Admin/logged.html.twig');
+        }
     }
 
     public function logout()
     {
-        unset($_SESSION['username']);
-        //session_destroy();
+        session_unset();
+        session_destroy();
         header('Location: /login');
 
     }
