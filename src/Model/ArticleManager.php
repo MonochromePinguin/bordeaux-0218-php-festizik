@@ -1,21 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sylvain
- * Date: 07/03/18
- * Time: 18:20
- * PHP version 7
- */
-
 namespace Model;
+
+use Model\Article;
 
 /**
  *
  */
-class ItemManager extends AbstractManager
+class ArticleManager extends AbstractManager
 {
-    const TABLE = 'item';
-
+    const TABLE = 'Article';
+    private $articles;
     /**
      *  Initializes this class.
      */

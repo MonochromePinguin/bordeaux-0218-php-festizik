@@ -14,7 +14,8 @@ namespace Model;
  */
 class AdminBenevolManager extends AbstractManager
 {
-    const TABLE = 'AdminBenevol';
+    const TABLE = 'Article';
+    private $articles;
 
     /**
      *  Initializes this class.
@@ -23,13 +24,12 @@ class AdminBenevolManager extends AbstractManager
     {
         parent::__construct(self::TABLE);
     }
-     /**
-     * INSERT one row in dataase
-     *
-     * @param Array $data
-     */
-     public function benevolContentUpdate(array $data)
-     {
+
+    public function editBenevol($id, $data)
+    {
         
-     }
+    }
+     
+        
+}
         
