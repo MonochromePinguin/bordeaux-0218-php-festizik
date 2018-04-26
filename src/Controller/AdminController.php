@@ -92,13 +92,18 @@ class AdminController extends AbstractController
                      'about' => $_POST['about'],
                      'picture' => '/assets/DBimages/'.$_POST['picture'],
                      'id_style' => $_POST['id_style']];
-            $artistManager->update($_GET['artistSelect'], $data);
+            if (isset($_GET['artistSelect'])) {
+                $artistManager->update($_GET['artistSelect'], $data);
+            } else {
+               $artistManager->insert();
+            }
         }
+        
         if (isset($_GET['artistSelect'])) {
             $artistId = $artistManager->selectOneById($_GET['artistSelect']);
             return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'artistId' => $artistId, 'styles' => $styles]);
         }
-        return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists]);
+        return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'styles' => $styles]);
     }
 }
 
