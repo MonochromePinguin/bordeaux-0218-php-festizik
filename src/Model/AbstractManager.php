@@ -103,4 +103,14 @@ abstract class AbstractManager
             $statement->execute();
         }
     }
+
+    public function insert(array $data)
+    {
+        foreach ($data as $key => $value) {
+            // prepared request
+            $statement = $this::$pdoConnection->prepare("INSERT INTO $this->table 
+                                                                     (`$key`) VALUES ('$value')");
+            $statement->execute();
+        }
+    }
 }

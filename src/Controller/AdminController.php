@@ -85,9 +85,9 @@ class AdminController extends AbstractController
 
         if ($_POST) {
             $data = ['name' => $_POST['name'],
-                'about' => $_POST['about'],
-                'picture' => '/assets/DBimages/'.$_POST['picture'],
-                'id_style' => $_POST['id_style']];
+                     'about' => $_POST['about'],
+                     'picture' => '/assets/DBimages/'.$_POST['picture'],
+                     'id_style' => $_POST['id_style']];
             $artistManager->update($_GET['artistSelect'], $data);
         }
         if (isset($_GET['artistSelect'])) {
