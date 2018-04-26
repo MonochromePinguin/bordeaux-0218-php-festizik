@@ -15,7 +15,7 @@ namespace Model;
  */
 class Style
 {
-    private $id_style;
+    private $id;
     private $name;
 
     /**
@@ -23,7 +23,7 @@ class Style
      */
     public function getId(): int
     {
-        return $this->id_style;
+        return $this->id;
     }
 
     /**

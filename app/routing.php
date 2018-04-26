@@ -16,6 +16,7 @@ $routes = [
         ['logout', '/admin/logout', 'GET'],
         ['adminBenevol', '/admin/benevole', ['POST', 'GET']],
         ['adminInfos', '/admin/infos', ['POST', 'GET']],
+        ['adminArtist', '/admin/artistes', ['POST', 'GET']],
     ],
 
     'User' => [
