@@ -302,7 +302,7 @@ _ jquery hook to show # of modified items, modified entries, ...
                         Heure&nbsp:
                         <input name="hour" required
                                title="heure du concert – heures puis minutes séparés par un h, deux-points, tiret ou espace"
-                               s="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
+                               pattern="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
                                value="{{ concert.hour | date('H\\hi') }}">
                     </label>
                 </div>

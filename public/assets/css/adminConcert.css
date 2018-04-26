@@ -18,9 +18,30 @@
     max-height: 15vh;
 }
 
-/* ------- */
+/* page-global styling and boostrap overriding */
+
+.adminConcert { color: lightgray }
+
+.adminConcert .btn-info:focus,
+.adminConcert .btn-danger :focus,
+.adminConcert .btn-primary:focus,
+.adminConcert .btn-secondary:focus,
+input:focus,
+select:focus {
+    box-shadow: 0 0 0 .2rem #ff675d
+}
+
+.btn-info:not(:disabled):not(.disabled).active:focus, .btn-info:not(:disabled):not(.disabled):active:focus,
+.show > .btn-info.dropdown-toggle:focus {
+    box-shadow: 0 0 0 .3rem rgb(251, 165, 157);
+}
+
+input:invalid {
+    background-color: lightpink;
+}
 
 /* for the "input[checkbox]:checked + elem" trick (hidding without JS) */
+
 .showNext,
 .unHiddenable{ display: none }
 
@@ -73,10 +94,4 @@ input[type="checkbox"]:checked + .cancelled::after {
 .adminConcert > aside,
 .adminConcert > nav {
     margin: 3%;
-}
-
-/* concert inputs */
-
-input:invalid {
-    background-color: lightpink;
 }
