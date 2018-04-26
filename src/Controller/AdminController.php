@@ -168,13 +168,15 @@ class AdminController extends AbstractController
         }
 
 
-        #these two lists are parameters for twig
+        #these 3 lists are parameters for twig
         $artistNameList = [];
-        foreach ($artists as $artist) {
-            $artistNameList[] = $artist->getName();
-        }
-
+        $artistImgList = [];
         $sceneNameList = [];
+        foreach ($artists as $artist) {
+            $name = $artist->getName();
+            $artistNameList[] = $name;
+            $artistImgList[$name] = $artist->getImageURL();
+        }
         foreach ($scenes as $scene) {
             $sceneNameList[] = $scene->getName();
         }
@@ -188,6 +190,7 @@ class AdminController extends AbstractController
                     #these two are used by the template to generate options in select elements
                     'sceneNames' => $sceneNameList,
                     'artistNames' => $artistNameList,
+                    'URLimgs' => json_encode($artistImgList,JSON_UNESCAPED_SLASHES ),
 
                     'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
                     'errorList' => $this->errorStore ?

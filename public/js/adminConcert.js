@@ -6,12 +6,16 @@
         // <select> element content;
         // imgUrl[] is defined in a script into the <head> element
         $('.selectArtist').change( function(ev) {
-                $(this).parent().parent().
-                     find('img.downsized').
-                     attr('src', imgUrl[$(this).val()] );
+                artiste = $(this).val();
+                img = $(this).parent().parent().find('img.downsized');
+
+                img.attr('src', URLimgs[artiste] );
+                img.attr('alt', 'image pour ' + artiste + ' absente');
         } );
-//TODO : ↑ MAKE IT WORK; grey out «apply» button when any data is not correct;
+//TODO : ↑ MAKE IT WORK : imgUrl bien remplie en php, puis en twig ?;
+// grey out «apply» button when any data is not correct;
 //make the select elements into "create entry" start with "select something";
+//perhaps enforce the pattern in the "hour" entry;
 //reduce the TODO in adminConcert.html.twig.
 
         // the button for aborting the deletion is focused on modal open
@@ -27,7 +31,6 @@
             $('#concertInfos').text(this.dataset.infosConcert);
 
 //TODO: use AJAX!
-
             //give the button the value to send throught the POST
             $('#idConcertToDelete').val(this.dataset.idToDelete);
         } );
