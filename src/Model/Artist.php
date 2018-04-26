@@ -17,7 +17,12 @@ class Artist
 
     public static function initStatics()
     {
-        static::$styles = ( new StyleManager() )->selectAll();
+        static::$styles = [];
+
+        //build $styles as an associative array using Artist::id as index
+        foreach ((new StyleManager())->selectAll('id') as $object) {
+            static::$styles[ $object->getId() ] = $object;
+        }
     }
 
     /**
@@ -41,7 +46,7 @@ class Artist
      */
     public function getStyle(): string
     {
-        $style = static::$styles[$this->id_style -1];
+        $style = static::$styles[$this->id_style];
         if ($style) {
             return $style->getName();
         } else {

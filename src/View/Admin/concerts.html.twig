@@ -112,18 +112,27 @@ _ jquery hook to show # of modified items, modified entries, ...
     {% include 'errorList.html.twig' %}
 
     <nav>
-        <form method="GET" action="" class="border border-info p-1 m-2 sublined">
+        <form method="GET" action=""
+              class="border border-info p-2 m-2 sublined">
+
             <p class="mb-0 font-weight-bold font-weight-italic">Trier&nbsp;...</p>
 
               {% for prop in sortableProperties %}
-                <button type="submit" class="btn btn-info {% if prop.name == actualSort %}active{% endif %}"
+                <button type="submit" class="btn btn-info m-2 {% if prop.name == actualSort %}active{% endif %}"
                     title="recharger la page avec un ordre différent de tri"
                     name="sortBy" value="{{prop.name}}">
                     par {{prop.label}}
                 </button>
               {% endfor %}
 
-                <button type="submit" class="btn btn-info float-right"
+                <label>
+                    <input type="checkbox" class="btn btn-info checkbox-highlight"
+                           name="sortInverted" {% if sortInverted is not null %}checked{% endif %}>
+                    Ordre inversé
+                </label>
+
+
+                <button type="submit" class="btn btn-info m-2 float-right"
                         {% if actualSort %} name="sortBy" value="{{ actualSort }}" {% endif %}
                         title="recharger la page avec les même critères de tri">
                     <img src="/assets/images/sync.svg" alt="">

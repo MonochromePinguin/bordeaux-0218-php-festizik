@@ -92,8 +92,9 @@ class AdminController extends AbstractController
         $concertManager = new ConcertManager($this->errorStore);
         $concerts = $concertManager->selectAll();
 
-        //sort criteria sent in the URL
+        //sort criterias sent in the URL
         $sortBy = null;
+        $sortInverted = false;
 
         #allow to sort data out of the model, so we save an SQL request
         static $props = null;
@@ -124,13 +125,15 @@ class AdminController extends AbstractController
                     if ($key == $actionKeys[$i]) {
                         #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
                         $func = $actionFunctions[$i];
-                        if ($this->$func($concertManager,
-                                         $dayManager,
-                                         $concerts,
-                                         $artists,
-                                         $scenes,
-                                         $days,
-                                         $_POST)) {
+                        if ($this->$func(
+                            $concertManager,
+                            $dayManager,
+                            $concerts,
+                            $artists,
+                            $scenes,
+                            $days,
+                            $_POST
+                        )) {
                             $actionFlag = true;
                         }
                     }
@@ -162,9 +165,12 @@ class AdminController extends AbstractController
                         . '» n\'est pas valide'
                     );
                 }
-            } else {
-                $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');
-            };
+            }
+
+            if (isset($_GET['sortInverted'])) {
+                $sortInverted = true;
+                $concerts = array_reverse($concerts);
+            }
         }
 
 
@@ -174,6 +180,7 @@ class AdminController extends AbstractController
         $sceneNameList = [];
         foreach ($artists as $artist) {
             $name = $artist->getName();
+
             $artistNameList[] = $name;
             $artistImgList[$name] = $artist->getImageURL();
         }
@@ -186,13 +193,16 @@ class AdminController extends AbstractController
                 'Admin/concerts.html.twig',
                 [
                     'sortableProperties' => $props,
+
                     'concerts' => $concerts,
                     #these two are used by the template to generate options in select elements
                     'sceneNames' => $sceneNameList,
                     'artistNames' => $artistNameList,
-                    'URLimgs' => json_encode($artistImgList,JSON_UNESCAPED_SLASHES ),
+                    'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
 
                     'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
+                    'sortInverted' => $sortInverted,    # boolean
+
                     'errorList' => $this->errorStore ?
                         $this->errorStore->formatAllMsg() : null
                 ]
@@ -276,7 +286,7 @@ class AdminController extends AbstractController
             'getName',
             $usedValues['id_artist'],
             'Artiste'
-            )
+        )
             || !$this->checkValid(
                 $values['scene'],
                 $scenes,
@@ -291,15 +301,16 @@ class AdminController extends AbstractController
 
         //check if a day entry exist for this date
         if (!$this->checkValid(
-                $values['DateLocale'],
-                $days,
-                'getDateAsRaw',
-                $usedValues['id_day'],
-                null)
+            $values['DateLocale'],
+            $days,
+            'getDateAsRaw',
+            $usedValues['id_day'],
+            null
+        )
         ) {
             #NO? we must create it
             try {
-                $res = $dayManager->insert( [ 'date' => $values['DateLocale'] ]);
+                $res = $dayManager->insert([ 'date' => $values['DateLocale'] ]);
             } catch (\Exception $e) {
                 $this->storeMsg('Impossible de créer une entrée «jour» pour enregistrer la nouvelle entrée : <br>'
                                 . $e->getMessage());
@@ -307,7 +318,7 @@ class AdminController extends AbstractController
             }
 
             if (!$res) {
-                $this->storeMsg('Impossible de créer une entrée «jour» pour enregistrer la nouvelle entrée ...<br>' );
+                $this->storeMsg('Impossible de créer une entrée «jour» pour enregistrer la nouvelle entrée ...<br>');
                 return false;
             }
 
@@ -376,20 +387,23 @@ class AdminController extends AbstractController
      * @param array $days       unused
      * @param array $values     unused
      */
-    private function deleteOneConcert(ConcertManager $concertManager,
-                                      DayManager $dayManager,
-                                      array $concerts,
-                                      array $artists,
-                                      array $scenes,
-                                      array $days,
-                                      array $values)
-    {
+    private function deleteOneConcert(
+        ConcertManager $concertManager,
+        DayManager $dayManager,
+        array $concerts,
+        array $artists,
+        array $scenes,
+        array $days,
+        array $values
+    ) {
         $id = '';
-        if (!$this->checkValid($values['idConcertToDelete'],
-                                $concerts,
-                    'getId',
-                        $id,
-                      'Concert')) {
+        if (!$this->checkValid(
+            $values['idConcertToDelete'],
+            $concerts,
+            'getId',
+            $id,
+            'Concert'
+        )) {
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         };

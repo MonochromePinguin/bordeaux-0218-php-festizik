@@ -10,7 +10,7 @@ use Model\ArtistManager;
 class Concert
 {
     /**
-    * all of these vars are of the same type as theire corresponding field
+    * all of these vars are of the same type as their corresponding field
     * into the DB
     */
     private $id;
@@ -29,9 +29,20 @@ class Concert
 
     public static function initStatics()
     {
-        static::$artists = ( new ArtistManager() )->selectAll();
-        static::$scenes = ( new SceneManager() )->selectAll();
-        static::$days = ( new DayManager() )->selectAll();
+        //these ASSOCIATIVE ARRAYS use the id as index
+        static::$artists = [];
+        static::$scenes = [];
+        static::$days = [];
+
+        foreach ((new ArtistManager())->selectAll('id') as $object) {
+            static::$artists[$object->getId()] = $object;
+        }
+        foreach ((new SceneManager())->selectAll('id') as $object) {
+            static::$scenes[$object->getId()] = $object;
+        }
+        foreach ((new DayManager())->selectAll('id') as $object) {
+            static::$days[$object->getId()] = $object;
+        }
     }
 
 
@@ -49,7 +60,7 @@ class Concert
      */
     public function getDate(): \DateTime
     {
-         $day = static::$days[$this->id_day -1];
+         $day = static::$days[$this->id_day];
         return $day ?
             new \DateTime($day->getDateAsRaw())
             # if an error occurend, returns an as-null-as-possible Date
@@ -61,7 +72,7 @@ class Concert
      */
     public function getDateAsString(): string
     {
-        $day = static::$days[$this->id_day -1];
+        $day = static::$days[$this->id_day];
         return $day ?
             $day->getDateAsString()
             :  'Index de jour erroné : ' . $this->id_day;
@@ -75,7 +86,7 @@ class Concert
     public function getDateTime() : \DateTime
     {
         if (! isset($this->dateObject)) {
-            $day = static::$days[$this->id_day -1];
+            $day = static::$days[$this->id_day];
             if (isset($day)) {
                 $theDate = $day->getDateAsRaw();
             } else {
@@ -99,7 +110,7 @@ class Concert
 
     public function getSceneName(): string
     {
-        $scene = static::$scenes[$this->id_scene -1];
+        $scene = static::$scenes[$this->id_scene];
         return ($scene) ?
             $scene->getName()
             :  'Index de scène erroné : ' . $this->id_scene;
@@ -117,7 +128,7 @@ class Concert
      */
     public function getArtist()
     {
-        return Concert::$artists[$this->id_artist -1]  ??  null;
+        return Concert::$artists[$this->id_artist]  ??  null;
     }
 
     /**
