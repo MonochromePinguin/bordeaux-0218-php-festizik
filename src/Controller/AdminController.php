@@ -12,6 +12,7 @@ use Model\AdminManager;
 use Model\ArtistManager;
 use Model\AdminBenevolManager;
 use Model\StyleManager;
+use Model\ConcertManager;
 
 /**
  *  Class AdminController
@@ -26,7 +27,6 @@ class AdminController extends AbstractController
     {
         $errors = [];
         if ($_POST) {
-
             $username = $_POST['username'];
             $password = $_POST['password'];
 
@@ -107,5 +107,69 @@ class AdminController extends AbstractController
         }
         return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'styles' => $styles]);
     }
-}
 
+    public function benevolContentUpdated()
+    {
+        $BenevolManager = new AdminBenevolManager();
+        $benevol = $BenevolManager->benevolContentUpdate($_POST);
+        return $this->twig->render('Admin/logged.html.twig');
+    }
+
+
+    public function concerts()
+    {
+ //TODO: ADD SESSION TIMING-OUT AND REFRESHING
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render(
+                'Admin/login.html.twig',
+                ['errors' => [ 'La page d\'administration des concerts n\'est pas accessible sans identification'] ]
+            );
+        }
+
+        $concertManager = new ConcertManager($this->errorStore);
+        $concerts = $concertManager->selectAll();
+
+        $sortBy = null;
+
+        #allow to sort data out of the model, so we save an SQL request
+        static $props = null;
+
+        if (null === $props) {
+            $props = $concertManager::getAvailableSortCriterias();
+        }
+
+        if (0 !== count($_GET)) {
+            ## the goal of a GET method is to sort the available datas
+            # into the controller, thus saving some SQL different requests
+            if (isset($_GET['sortBy'])) {
+                $sortBy = $_GET['sortBy'];
+
+                if (! $concertManager->sortArray($concerts, $sortBy)) {
+                    $this->storeMsg(
+                        'Le paramètre de tri «' . $sortBy
+                        . '» n\'est pas valide'
+                    );
+                }
+            } else {
+                $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');
+            };
+        }
+
+
+        if (0 !== count($_POST)) {
+            $this->storeMsg('TODO : Cette page n\'est pas encore fonctionnelle avec la méthode POST');
+        }
+
+        return $this->twig->render(
+            'Admin/concerts.html.twig',
+            [
+                'sortableProperties' => $props,
+                'concerts' => $concerts,
+                'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
+                'errorList' => $this->errorStore ?
+                    $this->errorStore->formatAllMsg() : null
+            ]
+        );
+    }
+}
