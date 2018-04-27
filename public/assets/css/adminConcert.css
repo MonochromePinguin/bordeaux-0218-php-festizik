@@ -20,25 +20,39 @@
 
 /* page-global styling and boostrap overriding */
 
-.adminConcert { color: lightgray }
-
 .adminConcert .btn-info:focus,
 .adminConcert .btn-danger :focus,
 .adminConcert .btn-primary:focus,
 .adminConcert .btn-secondary:focus,
 input:focus,
 select:focus {
-    box-shadow: 0 0 0 .2rem #ff675d
+    box-shadow: 0 0 0 .2rem rgb(67, 251, 93);
 }
 
 .btn-info:not(:disabled):not(.disabled).active:focus, .btn-info:not(:disabled):not(.disabled):active:focus,
 .show > .btn-info.dropdown-toggle:focus {
-    box-shadow: 0 0 0 .3rem rgb(251, 165, 157);
+    box-shadow: 0 0 0 .3rem rgb(60, 201, 86);
 }
 
 input:invalid {
     background-color: lightpink;
 }
+
+
+input:valid + .showInputInfo { display: none }
+
+input:invalid + .showInputInfo {
+    display : block;
+    font-style: italic;
+    color: red;
+}
+
+
+input:invalid:focus {
+    box-shadow: 0 0 0 .2rem red;
+
+}
+
 
 /* for the "input[checkbox]:checked + elem" trick (hidding without JS) */
 
@@ -62,34 +76,6 @@ input[type="checkbox"]:checked + .cancelled::after {
 
 
 /* ------- */
-
-.adminConcert header {
-    position: relative;
-
-    text-align: right;
-    color: darkred;
-    font-weight: bold;
-
-    /* ●●● VENGEANCE IS MINE. EAT THIS BACKGROUND! ●●● */
-    background: repeating-linear-gradient( 45deg,
-    transparent, transparent 20px, #d55 40px, #5dd 60px ),
-    /*en fond du précédent */
-                    linear-gradient(to bottom, #fff, #ccc 50%, #555);
-}
-
-.adminConcert header > svg {
-    position: absolute;
-    z-index:  0;
-
-    top: 0;
-    left: 0;
-    width: 100%;
-    max-height: 5rem;
-}
-.adminConcert header > :not(svg) {
-    position: relative;
-}
-
 
 .adminConcert > aside,
 .adminConcert > nav {

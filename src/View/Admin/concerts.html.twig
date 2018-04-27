@@ -2,7 +2,7 @@
 {% autoescape 'html' %}
 
 
-{% extends 'layout.html.twig' %}
+{% extends 'admin-layout.html.twig' %}
 
 {# TODO :
 ● jquery changement aspect / nom boutons !
@@ -98,13 +98,7 @@ _ jquery hook to show # of modified items, modified entries, ...
 
 {% block content %}
     <header>
-        <svg xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polygon fill="orange" points="0,0 100,100 100,0"/>
-            <line stroke="darkred" x1="0" y1="0" x2="100" y2="100" />
-        </svg>
-
-        <h1>Les concerts</h1>
+        <h1>administration des concerts</h1>
     </header>
 
     <hr/>
@@ -117,27 +111,30 @@ _ jquery hook to show # of modified items, modified entries, ...
 
             <p class="mb-0 font-weight-bold font-weight-italic">Trier&nbsp;...</p>
 
-              {% for prop in sortableProperties %}
-                <button type="submit" class="btn btn-info m-2 {% if prop.name == actualSort %}active{% endif %}"
-                    title="recharger la page avec un ordre différent de tri"
-                    name="sortBy" value="{{prop.name}}">
-                    par {{prop.label}}
-                </button>
-              {% endfor %}
+            <label class="form-group">
+                <input type="checkbox" class="btn btn-info checkbox-highlight"
+                       name="sortInverted" {% if sortInverted is not null %}checked{% endif %}>
+                Ordre inversé
+            </label>
 
-                <label>
-                    <input type="checkbox" class="btn btn-info checkbox-highlight"
-                           name="sortInverted" {% if sortInverted is not null %}checked{% endif %}>
-                    Ordre inversé
-                </label>
+            <button type="submit" class="btn btn-info m-2 float-right"
+                    {% if actualSort %} name="sortBy" value="{{ actualSort }}" {% endif %}
+                    title="recharger la page avec les même critères de tri">
+                <img src="/assets/images/sync.svg" alt="">
+                Recharger la page
+            </button>
 
 
-                <button type="submit" class="btn btn-info m-2 float-right"
-                        {% if actualSort %} name="sortBy" value="{{ actualSort }}" {% endif %}
-                        title="recharger la page avec les même critères de tri">
-                    <img src="/assets/images/sync.svg" alt="">
-                    Recharger la page
-                </button>
+            <div class="form-group">
+                {% for prop in sortableProperties %}
+                    <button type="submit" class="btn btn-info m-2 {% if prop.name == actualSort %}active{% endif %}"
+                        title="recharger la page avec un ordre différent de tri"
+                        name="sortBy" value="{{prop.name}}">
+                        par {{prop.label}}
+                    </button>
+                {% endfor %}
+
+            </div>
 
         </form>
     </nav>
@@ -229,8 +226,12 @@ _ jquery hook to show # of modified items, modified entries, ...
                     <label class="mr-2">
                         Date&nbsp:
                         <input type="date" name="DateLocale" required
-                                {# beware of the format we NEED to the browser : "Y-m-d"! #}
+                                {# beware of the format we NEED to send to the browser : "Y-m-d"! #}
                                value="{{ 'now' | date('Y-m-d') }}">
+
+                        <p class="showInputInfo">
+                            format de date invalide. Utiliser «jj/mm/AAAA»
+                        </p>
                     </label>
 
                     <label>
@@ -239,6 +240,11 @@ _ jquery hook to show # of modified items, modified entries, ...
                                title="heure du concert – heures puis minutes séparés par un h, deux-points, tiret ou espace"
                                pattern="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
                                value="{{ 'now' | date('H\\hi') }}">
+
+                        <p class="showInputInfo">
+                            format de l'heure invalide. Utiliser «HH:MM», «HHhMM», «HH-MM» ou «HH
+                            MM»
+                        </p>
                     </label>
                 </div>
 
@@ -275,89 +281,108 @@ _ jquery hook to show # of modified items, modified entries, ...
       {# LIST OF ALL PRESENT ENTRIES #}
       {##}
       {% for concert in concerts %}
-        <article class="bordered m-2">
-            <form method="POST" action="" >
+          <article class="bordered m-2 p-1 container">
+              <form method="POST" action="">
 
-                {% if concert.Artist.ImageURL %}
-                    <div>
-                        <img class="img-fluid float-right img-thumbnail downsized"
-                             src="{{ concert.Artist.ImageURL }}"
-                             title="{{ concert.Artist.Name }}"
-                             alt="image pour «{{ concert.Artist.Name }}» absente">
-                    </div>
-                {% endif %}
+                  <div class="row">
 
-                {% set selectedScene = concert.SceneName %}
-                {{ block('selectForScene') }}
+                       <div class="col-xs-6 col-sm-8 col-lg-10">
+                          {% set selectedScene = concert.SceneName %}
+                          {{ block('selectForScene') }}
 
-                <div class="form-group">
-                    <label class="mr-2">
-                        Date&nbsp:
-                        <input type="date" name="DateLocale" required
-                                {# beware of the format we NEED to the browser : "Y-m-d"! #}
-                               value="{{ concert.Date | date('Y-m-d') }}">
-                    </label>
+                          <div class="form-group">
+                              <label class="mr-2">
+                                  Date&nbsp:
+                                  <input type="date" name="DateLocale" required
+                                          {# beware of the format we NEED to the browser : "Y-m-d"! #}
+                                         value="{{ concert.Date | date('Y-m-d') }}">
 
-                    <label>
-                        Heure&nbsp:
-                        <input name="hour" required
-                               title="heure du concert – heures puis minutes séparés par un h, deux-points, tiret ou espace"
-                               pattern="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
-                               value="{{ concert.hour | date('H\\hi') }}">
-                    </label>
-                </div>
+                                  <p class="showInputInfo">
+                                      format de date invalide. Utiliser «jj/mm/AAAA»
+                                  </p>
+                              </label>
 
-                {% set selectedArtist = concert.Artist.Name %}
-                {{ block('selectForArtist') }}
+                              <label>
+                                  Heure&nbsp:
+                                  <input name="hour" required
+                                         title="heure du concert – heures puis minutes séparés par un h, deux-points, tiret ou espace"
+                                         pattern="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
+                                         value="{{ concert.hour | date('H\\hi') }}">
 
-                <div class="form-group">
-                    <label class="form-group">
-                        <input type="checkbox" name="cancelledConcert"
-                        {% if concert.cancelled %}checked{% endif %}>
-                        <span class="cancelled"></span>
-                    </label>
+                                  <p class="showInputInfo">
+                                      format de l'heure invalide. Utiliser «HH:MM», «HHhMM», «HH-MM»
+                                      ou «HH
+                                      MM»
+                                  </p>
+                              </label>
+                          </div>
 
-                    <input type="hidden" name="concernedConcert"
-                           value="{{ concert.Id }}">
+                          {% set selectedArtist = concert.Artist.Name %}
+                          {{ block('selectForArtist') }}
 
-{#TODO : without JS this button should show a div containing the yes/no buttons,
- and so show a different label ... #}
-                    <button type="button"
-                            class="btn btn-danger m-2 float-right askForDeleteBtn"
-                            data-target="#confirmDelete" data-toggle="modal"
-                            data-id-to-delete="{{ concert.Id }}"
-                            title="Supprimer ce concert (après confirmation)"
-                            data-infos-concert="{{ concert.Artist.Name }}, le {{ concert.DateAsString }} à {{ concert.hour }}">
-                        <span class="badge badge-light">
-                            <img src="/assets/images/trashcan.svg" alt="">
-                        </span>
-                        Supprimer ...
-                    </button>
+                          <div class="form-group">
+                              <label>
+                                  <input type="checkbox" name="cancelledConcert"
+                                         {% if concert.cancelled %}checked{% endif %}>
+                                  <span class="cancelled"></span>
+                              </label>
+                          </div>
 
-                    <button type="submit" name="modifyOneConcert"
-                            class="btn btn-primary m-2 float-right"
-                            title="Envoyer les changements effectués vers le serveur">
-                        <span class="badge badge-light">
-                            <img src="/assets/images/cloud-upload.svg" alt="">
-                        </span>
-                        Envoyer changements
-                    </button>
+                       </div> {# .col... #}
 
-                    <button type="reset" class="btn btn-secondary m-2 float-right"
-                            title="annuler les changements effectués pour ce concert">
-                        <span class="badge badge-light">
-                            <img src="/assets/images/sync.svg" alt="">
-                        </span>
-                        Annuler
-                    </button>
+                     {% if concert.Artist.ImageURL %}
+                        <div class="hidden-sm-down col">
+                            <img class="img-fluid float-right img-thumbnail downsized"
+                                   src="{{ concert.Artist.ImageURL }}"
+                                   title="{{ concert.Artist.Name }}"
+                                   alt="image pour «{{ concert.Artist.Name }}» absente">
+                        </div>
+                     {% endif %}
 
+                  </div> {# .row #}
 
-                </div>
+                  <div class="row form-group m-1">
 
-            </form>
-        </article>
+                      <input type="hidden" name="concernedConcert"
+                             value="{{ concert.Id }}">
 
-       {% else %}
+                      {#TODO : without JS this button should show a div containing the yes/no buttons,
+                      and so show a different label ... #}
+                      <button type="button"
+                              class="btn btn-danger m-2 float-right askForDeleteBtn"
+                              data-target="#confirmDelete" data-toggle="modal"
+                              data-id-to-delete="{{ concert.Id }}"
+                              title="Supprimer ce concert (après confirmation)"
+                              data-infos-concert="{{ concert.Artist.Name }}, le {{ concert.DateAsString }} à {{ concert.hour }}">
+                          <span class="badge badge-light">
+                              <img src="/assets/images/trashcan.svg" alt="">
+                          </span>
+                          Supprimer ...
+                      </button>
+
+                      <button type="submit" name="modifyOneConcert"
+                              class="btn btn-primary m-2 float-right"
+                              title="Envoyer les changements effectués vers le serveur">
+                          <span class="badge badge-light">
+                              <img src="/assets/images/cloud-upload.svg" alt="">
+                          </span>
+                          Envoyer changements
+                      </button>
+
+                      <button type="reset" class="btn btn-secondary m-2 float-right"
+                              title="annuler les changements effectués pour ce concert">
+                          <span class="badge badge-light">
+                             <img src="/assets/images/sync.svg" alt="">
+                          </span>
+                          Annuler
+                      </button>
+
+                  </div> {# .row #}
+
+              </form>
+          </article>
+
+      {% else %}
         <article>
             <p>Aucun événement enregistré</p>
         </article>
