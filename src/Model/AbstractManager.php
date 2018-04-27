@@ -101,4 +101,6 @@ abstract class AbstractManager
             $statement->execute();
         }
     }
+
+
 }

@@ -1,14 +1,12 @@
 .container {
     position : relative;
-    left     : 10%;
+    left     : 7%;
     width    : 80%;
 }
 
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
-
-
 #sidebar {
     width      : 15%;
     position   : fixed;
@@ -50,6 +48,7 @@
 #sidebar ul li a:hover {
     color      : #7386D5;
     background : #FFF;
+<<<<<<< HEAD
 }
 
 /*******************INFORMATIONS*****************************/
@@ -59,6 +58,8 @@
 
 .txtInfos{
     height: 50vh;
+=======
+>>>>>>> c9c6cdad476c531f7a3de6915fc8bee566ab332d
 }
 
 /*******************BENEVOLES*****************************/
@@ -76,7 +77,7 @@
     MEDIAQUERIES
 ----------------------------------------------------- */
     /******sidenav*******/
-    @media (max-width: 768px) {
+@media (max-width: 768px) {
       #sidebar {
         margin-left: -250px;
       }
@@ -92,5 +93,9 @@
       #sidebarCollapse span {
         display: none;
       }
+<<<<<<< HEAD
     }
+=======
+
+>>>>>>> c9c6cdad476c531f7a3de6915fc8bee566ab332d
 }

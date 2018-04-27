@@ -21,10 +21,6 @@ class UserController extends AbstractController
         return $this->twig->render('User/index.html.twig');
     }
 
-    /**
-    * TEST : display items – no editing for now
-    */
-
     public function concerts()
     {
         try {

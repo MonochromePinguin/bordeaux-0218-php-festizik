@@ -1,12 +1,23 @@
 {% extends 'admin-layout.html.twig' %}
 
+{% block stylesheet %}
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+    <script>tinymce.init({ selector:'textarea' });</script>
+{% endblock %}
+
+{% block adminnavbar %}
+    {% include 'admin-navbar.html.twig' %}
+{% endblock %}
+
 {% block content %}
     <div class="container">
+        <h1 class="text-center">Modifier un artiste</h1>
+        <hr>
         <form method="get">
             <label for="artistSelect">Artistes :</label>
-            <select id="artistSelect" name="artistSelect">
+            <select id="artistSelect" name="artistSelect" class="form-control col-md-3">
                 {% for artist in artists %}
-                    <option value="{{ artist.id }}" name="artistId">{{ artist.name }}</option>
+                    <option value="{{ artist.id }}" name="artistId">{{ artist.AN }}  ({{ artist.SN }})</option>
                 {% endfor %}
             </select>
             <input type="submit" value="Modifier">
@@ -14,26 +25,31 @@
         <hr>
         <div class="row">
             <form method="post">
-                <div class="form-group">
-                    <label for="name">Nom de l'artiste :</label>
-                    <input type="text" value="{{ artistId.name }}" id="name" name="name">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="name" class="col-form-label">Nom de l'artiste :</label>
+                        <input type="text" value="{{ artistId.name }}" id="name" name="name" class="form-control">
+                    </div>
+                    <div class="form-group col-md-4 col-form-label">
+                        <label for="id_style">Style :</label>
+                        <select id="id_style" name="id_style" class="form-control">
+                            {% for style in styles %}
+                                <option value="{{ style.id }}" name="id_style">{{ style.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="id_style">Style :</label>
-                    <select id="id_style" name="id_style">
-                        {% for style in styles %}
-                            <option value="{{ style.id }}" name="id_style">{{ style.name }}</option>
-                        {% endfor %}
-                    </select>
+                <div class="form-group row">
+                    <label for="about" class="col-form-label">Description :</label>
+                    <textarea name="about" id="about" class="col-md-4 form-control">{{ artistId.Description }}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="about">Description :</label>
-                    <textarea name="about" id="about" class="col-md-4">{{ artistId.Description }}</textarea>
-                </div>
-                <img src="{{ artistId.ImageURL }}" class="img-thumbnail col-md-4">
-                <div class="form-group">
-                    <label for="img">Image :</label>
-                    <input type="file" id="picture" name="picture">
+                <div class="form-group d-flex">
+                    <img src="{{ artistId.ImageURL }}" class="img-thumbnail col-md-4">
+                    <div class="col-md-6">
+                        <label for="img" class=" col-md-4">Image :</label>
+                        <input type="file" id="picture" name="picture" class="form-control">
+                    </div>
+
                 </div>
                 <input type="submit" value="Enregistrer" id="submit" name="submit">
             </form>
