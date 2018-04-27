@@ -74,16 +74,7 @@ class AdminController extends AbstractController
         return $this->twig->render('Admin/adminBenevol.html.twig');
 
     }     
-    public function adminInfos()
-    {
-        $infosManager = new ArticleManager();
-        $infos = $infosManager->selectAll();
 
-        $title = $infos[1]->getTitle();
-        $content = $infos[1]->getContent();
-        return $this->twig->render('Admin/adminInfos.html.twig', ['title'=>$title, 'content'=>$content]);
-
-    }
 
     public function benevolContentUpdated()
     {
@@ -111,6 +102,25 @@ class AdminController extends AbstractController
             return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'artistId' => $artistId, 'styles' => $styles]);
         }
         return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists]);
+    }
+
+        public function adminInfos()
+    {
+        $infosManager = new ArticleManager();
+        $infos = $infosManager->selectAll();
+
+        $title = $infos[1]->getTitle();
+        $content = $infos[1]->getContent();
+
+        if ($_POST) {
+    $data = ['title' => $_POST['title'],
+        'content' => $_POST['content'],
+        'picture' => '/assets/DBimages/'.$_POST['picture']];
+    $infosManager->update(7, $data);
+            }
+
+
+        return $this->twig->render('Admin/adminInfos.html.twig', ['title'=>$title, 'content'=>$content]);
     }
 }
 
