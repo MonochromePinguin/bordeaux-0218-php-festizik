@@ -9,9 +9,11 @@
 namespace Controller;
 
 use Model\AdminManager;
+use Model\ArticleManager;
 use Model\ArtistManager;
 use Model\AdminBenevolManager;
 use Model\StyleManager;
+
 
 /**
  *  Class AdminController
@@ -69,15 +71,14 @@ class AdminController extends AbstractController
 
      public function adminBenevol()
     {
-        return $this->twig->render('Admin/adminBenevol.html.twig');
+        $benevolManager = new ArticleManager();
+        $benevol = $benevolManager->selectAll();
 
-    }
+        $title = $benevol[0]->getTitle();
+        $content = $benevol[0]->getContent();
+        $picture = $benevol[0]->getPicture();
+        return $this->twig->render('Admin/adminBenevol.html.twig', ['question'=>$title, 'beneContent'=>$content, 'picture'=>$picture]);
 
-    public function benevolContentUpdated()
-    {
-        $BenevolManager = new AdminBenevolManager();
-        $benevol = $BenevolManager->benevolContentUpdate($_POST);
-        return $this->twig->render('Admin/logged.html.twig');
     }
 
     public function adminArtist()
