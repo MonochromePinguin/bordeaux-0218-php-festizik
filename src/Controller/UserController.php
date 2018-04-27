@@ -1,6 +1,7 @@
 <?php
 namespace Controller;
 
+
 require_once __DIR__ . '/../Misc/functions.php';
 
 use Model\ArtistManager;
@@ -75,9 +76,13 @@ class UserController extends AbstractController
         return $this->twig->render('User/insertedBenevol.html.twig');
     }
 
-    public function infos()
+        public function infos()
     {
-        return $this->twig->render('User/infos.html.twig');
-    }
+        $infosManager = new ArticleManager();
+        $infos = $infosManager->selectAll();
 
+        $title = $infos[1]->getTitle();
+        $content = $infos[1]->getContent();
+        return $this->twig->render('User/infos.html.twig', ['date'=>$title, 'content'=>$content]);
+    }
 }
