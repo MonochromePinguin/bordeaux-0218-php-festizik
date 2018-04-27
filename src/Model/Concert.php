@@ -13,7 +13,7 @@ class Concert
     * all of these vars are of the same type as theire corresponding field
     * into the DB
     */
-    private $id_concert;
+    private $id;
     private $id_day;
     private $hour;
     private $id_scene;
@@ -40,7 +40,7 @@ class Concert
      */
     public function getId(): int
     {
-        return $this->id_concert;
+        return $this->id;
     }
 
     public function getDate(): \DateTime
@@ -90,7 +90,7 @@ class Concert
     /**
      * @return string
      */
-    public function getHour(): string
+    public function getHour()
     {
         return $this->hour;
     }
@@ -98,7 +98,7 @@ class Concert
 
     public function getSceneName(): string
     {
-        $scene = static::$scenes[$this->id_scene -1];
+        $scene = static::$scenes[$this->id_scene];
         return ($scene) ?
             $scene->getName()
             :  'Index de scène erroné : ' . $this->id_scene;

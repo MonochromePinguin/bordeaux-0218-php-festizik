@@ -15,7 +15,7 @@
                     <h3>{{ artist.name }}</h3>
                     <img src="{{ artist.ImageURL }}">
                     <figcaption>
-                        <p>{{ artist.Description }}</p>
+                        <p>{{ artist.Description | raw}}</p>
                     </figcaption>
                 </figure>
             {% endfor %}

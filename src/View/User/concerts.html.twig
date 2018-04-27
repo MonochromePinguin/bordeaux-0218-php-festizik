@@ -1,128 +1,100 @@
 {% extends 'layout.html.twig' %}
 
-
 {% block title %}Festizik – les concerts{% endblock %}
 
-{# TODO: ajouter les noms d'artistes dans les mots-clés #}
 {% block keywords %}festizik,concerts,événements,planning{% for name in artistNames %},{{ name }}{% endfor %}{% endblock %}
 
-
-{# TODO : use the common stylesheet instead! #}
-{% block stylesheet %}
-    <link rel="stylesheet" href="assets/css/concertPage.css">
-{% endblock %}
-
-
-{% block bodyProperties %} id="programmation" {% endblock %}
-
-
 {% block content %}
-    <header class="sublined">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polygon fill="orange" points="0,0 100,100 100,0"/>
-        </svg>
-
-        <h1>Les concerts</h1>
-    </header>
-
-    <hr/>
-
-    {% include 'errorList.html.twig' %}
-
-    <nav>
-        <form method="GET" action="" class="border border-info p-1">
-            <p class="mb-0 font-weight-bold font-weight-italic">Trier&nbsp;...</p>
-
-            {% for prop in sortableProperties %}
-              <button type="submit" class="btn btn-info {% if prop.name == actualSort %}active{% endif %}"
-                title="recharger la page avec un ordre différent de tri"
-                name="sortBy" value="{{prop.name}}">
-                  par {{prop.label}}
-              </button>
-
-            {% endfor %}
-
-        </form>
-{# TODO :
-• affichage par défaut : une section portant date / nom de jour par jour.
-à l'intérieur, tout par row.
-****
-• bouton de bascule : 1 section /jour (↑), 1 section /semaine, tout d'un coup sans distinction chronologique. →
-
-**** c'est pour le FILTRAGE qu'il y aura besoin de modifier la requête ...
-
-• bouton bascule : ligne / ligne  (cartes alignées verticalement),
-                1 entrée par ligne
-                ou compact (comme maintenant, dans une «.card-columns»)
-→ PAR JAVASCRIPT !
-• Utiliser une seule connection PDO par page. #}
-    </nav>
+    <div class="container">
+        <header class="prog-header">
+            <h1>Programmation</h1>
+            <hr/>
+        </header>
 
 
-
-    <main>
-        <div class="card-columns">
-
-          {% for concert in concerts %}
-
-            <article class="card m-3 p-2">
-
-              <div class="card-body p-1">
-
-                <header class="sublined">
-                    <h1 class="card-title">
-                        {{ concert.hour }}
-                        <span class="pull-right text-muted">
-                            {{ concert.DateAsString }}
-                        </span>
-                    </h1>
-                    <h2 class="card-subtitle">
-                        scène «{{ concert.sceneName | title }}»
-                    </h2>
-
-                    {% if 1 == concert.cancelled %}
-                        <p class="cancelled">Annulé</p>
-                    {% endif %}
-                </header>
-
-
-                <main class="card-text container-fluid">
-                  <div class="row p-2">
-
-                  {% if concert.Artist.ImageURL %}
-
-                    <div class="col-xs-1 col-lg p-0">
-                        <img class="card-img-bottom"
-                            src="{{ concert.Artist.ImageURL }}"
-                            alt="L'image pour «{{ concert.Artist.Name }}» est absente&nbsp;!">
-                    </div>
-
-                  {% endif %}
-
-                    <div class="col-xs-1 col-lg p-2">
-                        <p class="bordered">
-                            {{ concert.Artist.Name }} ({{ concert.Artist.Style }}
-    )
-                        </p>
-                        <p class="bordered bg-light">{{ concert.Artist.Description }}</p>
-                    </div>
-
-                  </div> <!-- .row -->
-                </main>
-
-            </article>
-
-            {% else %}
-                <article>
-                    <p>Aucun événement enregistré</p>
-                </article>
-
-          {% endfor %}
-
-        </div> <!-- .row -->
-    </main>
-
-    </main>
+        <h1 class="day-concert">{{ concerts.0.Day }}</h1>
+        <div class="row prog-concert">
+            <div class="prog-scene col-md-3">
+                <h2>{{ concerts.0.Scene }}</h2>
+                <ul>
+                    {% for concert in concerts %}
+                        <li>{{ concert.hour }} - {{ concert.Artist }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="prog-scene col-md-3">
+                <h2>{{ concerts2.0.Scene }}</h2>
+                <ul>
+                    {% for concert2 in concerts2 %}
+                        <li>{{ concert2.hour }} - {{ concert2.Artist }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="prog-scene col-md-3">
+                <h2>{{ concerts3.0.Scene }}</h2>
+                <ul>
+                    {% for concert3 in concerts3 %}
+                        <li>{{ concert3.hour }} - {{ concert3.Artist }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <hr/>
+        <h1 class="day-concert">{{ concerts4.0.Day }}</h1>
+        <div class="row prog-concert">
+            <div class="prog-scene col-md-3">
+                <h2>{{ concerts4.0.Scene }}</h2>
+                <ul>
+                    {% for concert4 in concerts4 %}
+                        <li>{{ concert4.hour }} - {{ concert4.Artist }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="prog-scene col-md-3">
+                <h2>{{ concerts5.0.Scene }}</h2>
+                <ul>
+                    {% for concert5 in concerts5 %}
+                        <li>{{ concert5.hour }} - {{ concert5.Artist }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="prog-scene col-md-3">
+                <h2>{{ concerts6.0.Scene }}</h2>
+                <ul>
+                    {% for concert6 in concerts6 %}
+                        <li>{{ concert6.hour }} - {{ concert6.Artist }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <hr/>
+        <h1 class="day-concert">{{ concerts7.0.Day }}</h1>
+        <div class="row prog-concert">
+            <div class="prog-scene col-md-3">
+                <h2>{{ concerts7.0.Scene }}</h2>
+                <ul>
+                    {% for concert7 in concerts7 %}
+                        <li>{{ concert7.hour }} - {{ concert7.Artist }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="prog-scene col-md-3">
+                <h2>{{ concerts8.0.Scene }}</h2>
+                <ul>
+                    {% for concert8 in concerts8 %}
+                        <li>{{ concert8.hour }} - {{ concert8.Artist }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="prog-scene col-md-3">
+                <h2>{{ concerts9.0.Scene }}</h2>
+                <ul>
+                    {% for concert9 in concerts9 %}
+                        <li>{{ concert9.hour }} - {{ concert9.Artist }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
