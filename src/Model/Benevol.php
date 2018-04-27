@@ -69,5 +69,10 @@ class Benevol
     {
         return $this->disponibility_end;
     }
+
+    function getContent()
+    {
+        return $this->content;
+    }
 }
     

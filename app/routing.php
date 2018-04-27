@@ -14,6 +14,7 @@ $routes = [
         ['login', '/login', ['POST', 'GET']],  // action, url, method
         ['admin', '/admin', ['POST', 'GET']],
         ['logout', '/admin/logout', 'GET'],
+        ['benevolContentUpdated', '/admin/logged', 'POST'],
         ['adminBenevol', '/admin/benevole', ['POST', 'GET']],
         ['adminArtist', '/admin/artistes', ['POST', 'GET']],
     ],
@@ -25,6 +26,6 @@ $routes = [
         ['infos', '/infos', 'GET'],
         ['benevol', '/benevole', 'GET'],
         ['insertedBenevol', '/benevole', 'POST'],
-        ['billetterie', '/billetterie', 'GET']
+        ['billetterie', '/billetterie', 'GET'],
     ]
 ];
