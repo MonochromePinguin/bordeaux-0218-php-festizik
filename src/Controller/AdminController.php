@@ -26,6 +26,8 @@ class AdminController extends AbstractController
      */
     public function login()
     {
+        session_start();
+
         $errors = [];
         if ($_POST) {
 
@@ -49,13 +51,17 @@ class AdminController extends AbstractController
             return $this->twig->render('Admin/login.html.twig', ['errors' => $errors]);
         } else {
             header('Location: /admin');
+            exit;
         }
     }
 
     public function admin()
     {
+        session_start();
+
         if (!isset($_SESSION['username'])) {
             header('Location: /login');
+            exit;
         } else {
             return $this->twig->render('Admin/logged.html.twig');
         }
@@ -63,10 +69,12 @@ class AdminController extends AbstractController
 
     public function logout()
     {
+        session_start();
+
         session_unset();
         session_destroy();
         header('Location: /login');
-
+        exit;
     }
 
      public function adminBenevol()

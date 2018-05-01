@@ -1,10 +1,6 @@
 <?php
 namespace Model;
 
-/**
- * Class Item
- *
- */
 class Artist
 {
     private $id;
@@ -49,12 +45,18 @@ class Artist
         }
     }
 
-    public function getImageURL() : string
+    /**
+     * @return string|null
+     */
+    public function getImageURL()
     {
         return $this->picture;
     }
 
-    public function getDescription() : string
+    /**
+     * @return string|null
+     */
+    public function getDescription()
     {
         return $this->about;
     }
@@ -77,6 +79,7 @@ class Artist
 
     /**
      * @param mixed $picture
+     * @returns
      */
     public function setPicture($picture)
     {
