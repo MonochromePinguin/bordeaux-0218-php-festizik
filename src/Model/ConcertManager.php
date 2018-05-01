@@ -51,7 +51,7 @@ class ConcertManager extends AbstractManager
             "UPDATE $this->table SET id_day = :idDay, hour = :hour, id_scene  = :idScene, id_artist = :idArtist, cancelled = :cancelled WHERE id = :id"
         );
 
-        $query->bindValue(':id', $values['idConcertToUpdate'], \PDO::PARAM_INT);
+        $query->bindValue(':id', $id, \PDO::PARAM_INT);
         $query->bindValue(':idDay', $values['id_day'], \PDO::PARAM_INT);
         $query->bindValue(':hour', $values['hour'], \PDO::PARAM_STR);
         $query->bindValue(':idScene', $values['id_scene'], \PDO::PARAM_INT);

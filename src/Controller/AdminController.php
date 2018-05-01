@@ -10,6 +10,7 @@ namespace Controller;
 
 use Model\AdminManager;
 use Model\ConcertManager;
+use Model\Concert;
 use Model\DayManager;
 use Model\SceneManager;
 use Model\ArtistManager;
@@ -105,7 +106,7 @@ class AdminController extends AbstractController
             #list of allowed actions and associated functions ; these one are
             # activated by a classical POST page-reload
             $actionKeys = ['addOneNewConcert', 'deleteOneConcert', 'modifyOneConcert'];
-            $actionFunctions = ['addOneConcert', 'deleteOneConcert', 'modifyOneConcert'];
+            $actionFunctions = ['addOneConcert', 'deleteOneConcert', 'updateOneConcert'];
 
 //TODO : Should validate ALL parameters before doing anything,
 // instead of validation at the time of action
@@ -134,7 +135,13 @@ class AdminController extends AbstractController
             if ($actionFlag) {
                 $scenes = $sceneManager->selectAll('name');
                 #no need to reload the artists, we don't modify them
+ var_dump($days);
+ echo "●●●● <br>";
                 $days = $dayManager->selectAll('date');
+ var_dump($days);
+
+                #reload the static arrays, because some of them could have changed
+                Concert::initStatics();
                 $concerts = $concertManager->selectAll();
             }
         }
@@ -300,7 +307,6 @@ class AdminController extends AbstractController
         $idConcertToUpdate = null;
         $usedValues = [];
 
-
         #Test for the presence of needed parameters
         foreach ($keyList as $key) {
             if (empty($values[$key])) {
@@ -323,7 +329,9 @@ class AdminController extends AbstractController
 
         #check if a day entry exist for this date, create one if not,
         # and get back the id into $usedValues['id_day']
-        if ($this->getIdForDay($values['concertDate'], $dayManager, $days, $usedValues['id_day'])) {
+        $usedValues['id_day'] = null;
+        if (!$this->getIdForDay($values['concertDate'], $dayManager, $days, $usedValues['id_day'])) {
+            $this->storeMsg('Impossible de créer la nouvelle entrée : erreur au sein de AdminController::getIdForDay()');
             return false;
         }
 
@@ -332,8 +340,23 @@ class AdminController extends AbstractController
         $h[2] = ':';
         $usedValues['hour'] = $h . ':00';
 
+
         #Validity checks
-        if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste') || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène') || !$this->checkValid($values['idConcertToUpdate'], $scenes, 'getId', $idConcertToUpdate, 'id de concert')) {
+        if (!$this->checkValid($values['artist'],
+                               $artists,
+                   'getName',
+                               $usedValues['id_artist'],
+                               'Artiste')
+            || !$this->checkValid($values['scene'],
+                                  $scenes,
+                                  'getName',
+                                  $usedValues['id_scene'],
+                                  'Nom de Scène')
+            || !$this->checkValid($values['idConcertToUpdate'],
+                                  $concerts, 'getId',
+                          $idConcertToUpdate,
+                                  'id de concert')
+        ) {
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         }
@@ -402,23 +425,18 @@ class AdminController extends AbstractController
         &$toVar,
         $errName
     ): bool {
-        $found = false;
+
         foreach ($into as $item) {
             if ($lookedFor == $item->$getterName()) {
-                $found = true;
                 $toVar = $item->getId();
-                break;
+                return true;
             }
         }
 
-        if (!$found) {
-            if (null !== $errName) {
-                $this->storeMsg("{$errName} Inconnu «{$lookedFor}» passé en paramètre. Pas d'enregistrement.");
-            }
-            return false;
+        if (null !== $errName) {
+            $this->storeMsg("{$errName} Inconnu «{$lookedFor}» passé en paramètre. Pas d'enregistrement.");
         }
-
-        return true;
+        return false;
     }
 
 
