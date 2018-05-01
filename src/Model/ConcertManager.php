@@ -1,7 +1,6 @@
 <?php
 namespace Model;
 
-
 class ConcertManager extends AbstractManager
 {
     const TABLE = 'Concert';

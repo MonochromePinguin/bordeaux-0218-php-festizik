@@ -236,7 +236,6 @@ class AdminController extends AbstractController
         }
         return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'styles' => $styles]);
     }
-}
 
 
     ## adminConcert Page functions ##
@@ -314,7 +313,7 @@ class AdminController extends AbstractController
             $h[2] = ':';
             $usedValues['hour'] = $h . ':00';
 
-        #Validity checks
+            #Validity checks
             if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste')
             || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène')
             ) {
@@ -384,20 +383,27 @@ class AdminController extends AbstractController
 
 
         #Validity checks
-        if (!$this->checkValid($values['artist'],
-                               $artists,
-                   'getName',
-                               $usedValues['id_artist'],
-                               'Artiste')
-            || !$this->checkValid($values['scene'],
-                                  $scenes,
-                                  'getName',
-                                  $usedValues['id_scene'],
-                                  'Nom de Scène')
-            || !$this->checkValid($values['idConcertToUpdate'],
-                                  $concerts, 'getId',
-                          $idConcertToUpdate,
-                                  'id de concert')
+        if (!$this->checkValid(
+            $values['artist'],
+            $artists,
+            'getName',
+            $usedValues['id_artist'],
+            'Artiste'
+        )
+            || !$this->checkValid(
+                $values['scene'],
+                $scenes,
+                'getName',
+                $usedValues['id_scene'],
+                'Nom de Scène'
+            )
+            || !$this->checkValid(
+                $values['idConcertToUpdate'],
+                $concerts,
+                'getId',
+                $idConcertToUpdate,
+                'id de concert'
+            )
         ) {
             $this->storeMsg('requête invalide : propriété absente');
             return false;

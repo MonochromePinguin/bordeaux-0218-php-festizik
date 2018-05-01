@@ -7,13 +7,13 @@ namespace Model;
  */
 
 
-Class Article
+class Article
 {
-	private $id_article;
+    private $id_article;
     private $title;
     private $id_page;
     private $picture;
-    private $content; 
+    private $content;
 
 
 
@@ -42,6 +42,4 @@ Class Article
     {
         return $this->picture;
     }
-
 }
-
