@@ -87,6 +87,7 @@ class Concert
     {
         if (! isset($this->dateObject)) {
             $day = static::$days[$this->id_day];
+
             if (isset($day)) {
                 $theDate = $day->getDateAsRaw();
             } else {

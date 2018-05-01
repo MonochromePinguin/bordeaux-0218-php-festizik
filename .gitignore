@@ -1,5 +1,8 @@
+.idea/
 /vendor/
 /temp/*
 /untracked/
 *.cache
 app/db.php
+.idea/
+composer.lock

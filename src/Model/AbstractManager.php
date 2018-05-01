@@ -23,29 +23,28 @@ abstract class AbstractManager
      *                   a different connection. By default, it is created at first call
      *                   if none specified
      */
-
     public function __construct(string $table, Connection $pdoConnection = null)
     {
         if (null != $pdoConnection) {
             #if the parameter $pdoConnection is set, use this connection,
-            self::$pdoConnection = $pdoConnection;
+            static::$pdoConnection = $pdoConnection;
         } elseif (null == static::$pdoConnection) {
             #else create a new connection shared by every child classes
             static::$pdoConnection = (new Connection())->getPdoConnection();
         }
-
+        self::$pdoConnection = (new Connection())->getPdoConnection();
         $this->table = $table;
         $this->className = __NAMESPACE__ . '\\' . $table;
     }
 
     /**
      * Get all row from database.
-     * @param string|null $orderBy give an optional parameter to the SQL query
+     * @param string|null $orderBy give an optional "ORDER BY" parameter to the SQL query
      * @return array
      */
     public function selectAll($orderBy = null): array
     {
-        return self::$pdoConnection->query(
+        return static::$pdoConnection->query(
             'SELECT * FROM ' . $this->table . (
                 isset($orderBy) ?
                     ' ORDER BY `' . substr(self::$pdoConnection->quote($orderBy), 1, -1) . '`' :  ''
@@ -85,24 +84,20 @@ abstract class AbstractManager
         return $statement->execute();
     }
 
-
-    /**
-     * INSERT one row in dataase
-     *
-     * @param Array $data
-     */
-    public function insert(array $data)
-    {
-        //TODO : Implements SQL INSERT request
-    }
-
-
     /**
      * @param int   $id   Id of the row to update
      * @param array $data $data to update
      */
     public function update(int $id, array $data)
     {
-        //TODO : Implements SQL UPDATE request
+        foreach ($data as $key => $value) {
+            // prepared request
+            $statement = $this::$pdoConnection->prepare("UPDATE $this->table 
+                                                                    SET `$key` = '$value' 
+                                                                    WHERE `id` = $id");
+            $statement->bindValue('id', $id, \PDO::PARAM_INT);
+            $statement->execute();
+        }
     }
+
 }

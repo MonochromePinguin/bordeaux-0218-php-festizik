@@ -1,19 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: laiah
- * Date: 04/04/18
- * Time: 10:52
- */
-
 namespace Controller;
 
+use Model\AdminBenevolManager;
 use Model\AdminManager;
+use Model\ArticleManager;
+use Model\ArtistManager;
 use Model\ConcertManager;
 use Model\Concert;
 use Model\DayManager;
 use Model\SceneManager;
-use Model\ArtistManager;
+use Model\StyleManager;
 
 /**
  *  Class AdminController
@@ -51,22 +47,42 @@ class AdminController extends AbstractController
             return $this->twig->render('Admin/login.html.twig', ['errors' => $errors]);
         } else {
             header('Location: /admin');
+            exit;
         }
     }
 
     public function admin()
     {
         session_start();
-        return $this->twig->render('Admin/logged.html.twig');
+
+        if (!isset($_SESSION['username'])) {
+            header('Location: /login');
+            exit;
+        } else {
+            return $this->twig->render('Admin/logged.html.twig');
+        }
     }
 
     public function logout()
     {
+        session_start();
+
         session_unset();
         session_destroy();
-
         header('Location: /login');
-        exit();
+        exit;
+    }
+
+
+    public function adminBenevol()
+    {
+        $benevolManager = new ArticleManager();
+        $benevol = $benevolManager->selectAll();
+
+        $title = $benevol[0]->getTitle();
+        $content = $benevol[0]->getContent();
+        $picture = $benevol[0]->getPicture();
+        return $this->twig->render('Admin/adminBenevol.html.twig', ['question' => $title, 'beneContent' => $content, 'picture' => $picture]);
     }
 
 
@@ -135,10 +151,7 @@ class AdminController extends AbstractController
             if ($actionFlag) {
                 $scenes = $sceneManager->selectAll('name');
                 #no need to reload the artists, we don't modify them
- var_dump($days);
- echo "●●●● <br>";
                 $days = $dayManager->selectAll('date');
- var_dump($days);
 
                 #reload the static arrays, because some of them could have changed
                 Concert::initStatics();
@@ -195,6 +208,35 @@ class AdminController extends AbstractController
             return generateEmergencyPage('Erreur de génération de la page', [$e->getMessage()]);
         }
     }
+
+    public function adminArtist()
+    {
+        $artistManager = new ArtistManager();
+        $styleManager = new StyleManager();
+        $styles = $styleManager->selectStyle();
+
+        if ($_POST) {
+            $data = ['name' => $_POST['name'],
+                     'about' => $_POST['about'],
+                     'id_style' => $_POST['id_style']];
+            if (strlen($_POST['picture']) > 0) {
+                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+            }
+            if (isset($_GET['artistSelect'])) {
+                $artistManager->update($_GET['artistSelect'], $data);
+            } else {
+                $artistManager->insert();
+            }
+        }
+
+        $artists = $artistManager->selectNameId();
+        if (isset($_GET['artistSelect'])) {
+            $artistId = $artistManager->selectOneById($_GET['artistSelect']);
+            return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'artistId' => $artistId, 'styles' => $styles]);
+        }
+        return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'styles' => $styles]);
+    }
+}
 
 
     ## adminConcert Page functions ##

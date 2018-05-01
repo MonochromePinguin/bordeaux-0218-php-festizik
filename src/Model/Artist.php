@@ -1,10 +1,6 @@
 <?php
 namespace Model;
 
-/**
- * Class Item
- *
- */
 class Artist
 {
     private $id;
@@ -48,19 +44,66 @@ class Artist
     {
         $style = static::$styles[$this->id_style];
         if ($style) {
-            return $style->getName();
+            return $this->getName();
         } else {
             return 'Index de style erroné : ' . $this->id_style;
         }
     }
 
+    /**
+     * @return string|null
+     */
     public function getImageURL()
     {
         return $this->picture;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription()
     {
         return $this->about;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param mixed $id_style
+     */
+    public function setIdStyle($id_style)
+    {
+        $this->id_style = $id_style;
+    }
+
+    /**
+     * @param mixed $picture
+     * @returns
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+    }
+
+    /**
+     * @param mixed $about
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+    }
+
+    /**
+     * @param mixed $styles
+     */
+    public static function setStyles($styles)
+    {
+        self::$styles = $styles;
     }
 }
