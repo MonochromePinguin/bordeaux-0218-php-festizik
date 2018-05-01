@@ -27,6 +27,7 @@ class DayManager extends AbstractManager
         $query->bindValue(':date', $values['date'], \PDO::PARAM_STR);
         return $query->execute();
     }
+
     /**
      * @param string $rawDate a date in the standard (HTML, SQL) numeric format (Year-month-day)
      * @return int the id of the day
@@ -35,7 +36,9 @@ class DayManager extends AbstractManager
     {
         $query = static::$pdoConnection->prepare("SELECT id FROM $this->table WHERE date = :date");
         $query->bindValue(':date', $rawDate, \PDO::PARAM_STR);
+        $query->setFetchMode(\PDO::FETCH_COLUMN, 0);
         $query->execute();
-        return $query->fetch()['id'];
+
+        return $query->fetch();
     }
 }

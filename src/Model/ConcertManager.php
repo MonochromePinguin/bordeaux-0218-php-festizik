@@ -30,17 +30,32 @@ class ConcertManager extends AbstractManager
      * @param array $values an associative array storing the values for the new row
      * @return bool the result of PDOPreparedStatement::execute()
      */
-    public function insert(array $values) : bool
+    public function insert(array $values): bool
     {
-        $query = static::$pdoConnection->prepare(
-            "INSERT INTO $this->table ( id_day, hour, id_scene, id_artist, cancelled )
-                VALUES ( :day, :hour, :scene, :artist, :cancelled )"
-        );
+        $query = static::$pdoConnection->prepare("INSERT INTO $this->table ( id_day, hour, id_scene, id_artist, cancelled )
+                VALUES ( :day, :hour, :scene, :artist, :cancelled )");
 
         $query->bindValue(':day', $values['id_day'], \PDO::PARAM_INT);
         $query->bindValue(':hour', $values['hour'], \PDO::PARAM_STR);
         $query->bindValue(':scene', $values['id_scene'], \PDO::PARAM_INT);
         $query->bindValue(':artist', $values['id_artist'], \PDO::PARAM_INT);
+        $query->bindValue(':cancelled', $values['cancelled'], \PDO::PARAM_INT);
+
+        return $query->execute();
+    }
+
+
+    public function update(int $id, array $values): bool
+    {
+        $query = static::$pdoConnection->prepare(
+            "UPDATE $this->table SET id_day = :idDay, hour = :hour, id_scene  = :idScene, id_artist = :idArtist, cancelled = :cancelled WHERE id = :id"
+        );
+
+        $query->bindValue(':id', $values['idConcertToUpdate'], \PDO::PARAM_INT);
+        $query->bindValue(':idDay', $values['id_day'], \PDO::PARAM_INT);
+        $query->bindValue(':hour', $values['hour'], \PDO::PARAM_STR);
+        $query->bindValue(':idScene', $values['id_scene'], \PDO::PARAM_INT);
+        $query->bindValue(':idArtist', $values['id_artist'], \PDO::PARAM_INT);
         $query->bindValue(':cancelled', $values['cancelled'], \PDO::PARAM_INT);
 
         return $query->execute();

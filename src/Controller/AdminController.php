@@ -71,13 +71,10 @@ class AdminController extends AbstractController
 
     public function concerts()
     {
- //TODO: ADD SESSION TIMING-OUT AND REFRESHING
+        //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
         if (empty($_SESSION['username'])) {
-            return $this->twig->render(
-                'Admin/login.html.twig',
-                ['errors' => [ 'La page d\'administration des concerts n\'est pas accessible sans identification'] ]
-            );
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['La page d\'administration des concerts n\'est pas accessible sans identification']]);
         }
 
         $sceneManager = new SceneManager($this->errorStore);
@@ -107,8 +104,8 @@ class AdminController extends AbstractController
         if (0 !== count($_POST)) {
             #list of allowed actions and associated functions ; these one are
             # activated by a classical POST page-reload
-            $actionKeys = [ 'addOneNewConcert', 'deleteOneConcert', 'modifyOneConcert' ];
-            $actionFunctions = [ 'addOneConcert', 'deleteOneConcert', 'modifyOneConcert' ];
+            $actionKeys = ['addOneNewConcert', 'deleteOneConcert', 'modifyOneConcert'];
+            $actionFunctions = ['addOneConcert', 'deleteOneConcert', 'modifyOneConcert'];
 
 //TODO : Should validate ALL parameters before doing anything,
 // instead of validation at the time of action
@@ -125,15 +122,7 @@ class AdminController extends AbstractController
                     if ($key == $actionKeys[$i]) {
                         #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
                         $func = $actionFunctions[$i];
-                        if ($this->$func(
-                            $concertManager,
-                            $dayManager,
-                            $concerts,
-                            $artists,
-                            $scenes,
-                            $days,
-                            $_POST
-                        )) {
+                        if ($this->$func($concertManager, $dayManager, $concerts, $artists, $scenes, $days, $_POST)) {
                             $actionFlag = true;
                         }
                     }
@@ -159,11 +148,8 @@ class AdminController extends AbstractController
             if (isset($_GET['sortBy'])) {
                 $sortBy = $_GET['sortBy'];
 
-                if (! $concertManager->sortArray($concerts, $sortBy)) {
-                    $this->storeMsg(
-                        'Le paramètre de tri «' . $sortBy
-                        . '» n\'est pas valide'
-                    );
+                if (!$concertManager->sortArray($concerts, $sortBy)) {
+                    $this->storeMsg('Le paramètre de tri «' . $sortBy . '» n\'est pas valide');
                 }
             }
 
@@ -189,26 +175,17 @@ class AdminController extends AbstractController
         }
 
         try {
-            return $this->twig->render(
-                'Admin/concerts.html.twig',
-                [
-                    'sortableProperties' => $props,
+            return $this->twig->render('Admin/concerts.html.twig', ['sortableProperties' => $props,
 
-                    'concerts' => $concerts,
-                    #these two are used by the template to generate options in select elements
-                    'sceneNames' => $sceneNameList,
-                    'artistNames' => $artistNameList,
-                    'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
+                    'concerts' => $concerts, #these two are used by the template to generate options in select elements
+                    'sceneNames' => $sceneNameList, 'artistNames' => $artistNameList, 'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
 
                     'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
                     'sortInverted' => $sortInverted,    # boolean
 
-                    'errorList' => $this->errorStore ?
-                        $this->errorStore->formatAllMsg() : null
-                ]
-            );
+                    'errorList' => $this->errorStore ? $this->errorStore->formatAllMsg() : null]);
         } catch (\Exception $e) {
-            return generateEmergencyPage('Erreur de génération de la page', [ $e->getMessage() ]);
+            return generateEmergencyPage('Erreur de génération de la page', [$e->getMessage()]);
         }
     }
 
@@ -232,7 +209,7 @@ class AdminController extends AbstractController
      * @param array $values all needed fields for a new row should be in this
      *                      associative array.
      *                      AWAITED KEYS:
-     *                          DateLocale, hour, scene, artist, cancelled
+     *                          concertDate, hour, scene, artist, cancelled
      * @return bool
      */
     private function addOneConcert(
@@ -244,11 +221,11 @@ class AdminController extends AbstractController
         array $days,
         array $values
     ) {
-        #the values looked up by $manager->insert() are:
-            # id_day, hour, id_scene, id_artist, cancelled
+        #the values looked up by $concertManager->insert() into $values are:
+        #       id_day, hour, id_scene, id_artist, cancelled
         # and the one found into $_POST[] are:
-            # DateLocale, hour, scene, artist, cancelled
-        $keyList = [ 'DateLocale', 'hour', 'scene', 'artist'];
+        #       concertDate, hour, scene, artist, cancelled
+        $keyList = ['concertDate', 'hour', 'scene', 'artist'];
         # REMEMBER : "cancelled" isn't sent if unchecked. So we don't test for its presence
 
         $usedValues = [];
@@ -274,66 +251,134 @@ class AdminController extends AbstractController
             $usedValues['cancelled'] = '0';
         }
 
+        #check if a day entry exist for this date, create one if not,
+        # and get back the id into $usedValues['id_day']
+        $usedValues['id_day'] = null;
+        if (!$this->getIdForDay($values['concertDate'], $dayManager, $days, $usedValues['id_day'])) {
+            $this->storeMsg('Impossible de créer la nouvelle entrée : erreur au sein de AdminController::getIdForDay()');
+            return false;
+        }
+
+        try {
+            #format the hour to the SQL format
+            $h = $values['hour'];
+            $h[2] = ':';
+            $usedValues['hour'] = $h . ':00';
+
+        #Validity checks
+            if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste')
+            || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène')
+            ) {
+                $this->storeMsg('requête invalide : propriété absente');
+                return false;
+            }
+
+            return $concertManager->insert($usedValues);
+        } catch (\Exception $e) {
+            $this->storeMsg('Impossible d\'enregistrer la nouvelle entrée : <br>' . $e->getMessage());
+            return false;
+        }
+    }
+
+
+    private function updateOneConcert(
+        ConcertManager $concertManager,
+        DayManager $dayManager,
+        array $concerts,
+        array $artists,
+        array $scenes,
+        array $days,
+        array $values
+    ) {
+        #the values looked up by $concertManager->update() into $values[] are:
+        #       id_day, hour, id_scene, id_artist, cancelled, idConcertToUpdate
+        # and the one found into $_POST[] are:
+        #       concertDate, hour, scene, artist, cancelled, idConcertToUpdate
+        $keyList = ['concertDate', 'hour', 'scene', 'artist', 'idConcertToUpdate'];
+        # REMEMBER : "cancelled" isn't sent if unchecked. So we don't test for its presence
+
+        $idConcertToUpdate = null;
+        $usedValues = [];
+
+
+        #Test for the presence of needed parameters
+        foreach ($keyList as $key) {
+            if (empty($values[$key])) {
+                $this->storeMsg("Propriété «{$key}» introuvable dans la requête. Enregistrement abandonné.");
+                return false;
+            }
+        }
+
+        #Translate the checkbox to a value usable by SQL
+        if (isset($values['cancelledConcert'])) {
+            $v = $values['cancelledConcert'];
+            if ($v != 'on') {
+                $this->storeMsg('Valeur invalide fournie pour la propriété «cancelledConcert». Pas d\'enregistrement');
+                return false;
+            }
+            $usedValues['cancelled'] = '1';
+        } else {
+            $usedValues['cancelled'] = '0';
+        }
+
+        #check if a day entry exist for this date, create one if not,
+        # and get back the id into $usedValues['id_day']
+        if ($this->getIdForDay($values['concertDate'], $dayManager, $days, $usedValues['id_day'])) {
+            return false;
+        }
+
         #format the hour to the SQL format
         $h = $values['hour'];
         $h[2] = ':';
         $usedValues['hour'] = $h . ':00';
 
         #Validity checks
-        if (!$this->checkValid(
-            $values['artist'],
-            $artists,
-            'getName',
-            $usedValues['id_artist'],
-            'Artiste'
-        )
-            || !$this->checkValid(
-                $values['scene'],
-                $scenes,
-                'getName',
-                $usedValues['id_scene'],
-                'Nom de Scène'
-            )
-         ) {
+        if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste') || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène') || !$this->checkValid($values['idConcertToUpdate'], $scenes, 'getId', $idConcertToUpdate, 'id de concert')) {
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         }
 
-        //check if a day entry exist for this date
-        if (!$this->checkValid(
-            $values['DateLocale'],
-            $days,
-            'getDateAsRaw',
-            $usedValues['id_day'],
-            null
-        )
-        ) {
-            #NO? we must create it
-            try {
-                $res = $dayManager->insert([ 'date' => $values['DateLocale'] ]);
-            } catch (\Exception $e) {
-                $this->storeMsg('Impossible de créer une entrée «jour» pour enregistrer la nouvelle entrée : <br>'
-                                . $e->getMessage());
-                return false;
-            }
-
-            if (!$res) {
-                $this->storeMsg('Impossible de créer une entrée «jour» pour enregistrer la nouvelle entrée ...<br>');
-                return false;
-            }
-
-            #creation succeded – we still must get back the id
-            $usedValues['id_day'] = $dayManager->getIdOfDate($values['DateLocale']);
-        }
-
-
         try {
-            return $concertManager->insert($usedValues);
+            return $concertManager->update($idConcertToUpdate, $usedValues);
         } catch (\Exception $e) {
-            $this->storeMsg('Impossible d\'enregistrer la nouvelle entrée : <br>'
-                                . $e->getMessage());
+            $this->storeMsg('Impossible de modifier entrée : <br>' . $e->getMessage());
             return false;
         }
+    }
+
+
+
+    /**
+     * check if a day entry exist for the date given into $dateToTest,
+     * create one if not, and get back the id of the corresponding Day object
+     * intointo &toId
+     * @param string $dateToTest        the date as a string in the SQL format YYYY-MM-DD
+     * @param DayManager $dayManager
+     * @param array $days               the array to parse
+     * @param $toId
+     * @return bool                     true if is a concert id was send back, false otherwise
+     */
+    private function getIdForDay(string $dateToTest, DayManager $dayManager, array $days, &$toId): bool
+    {
+        if ($this->checkValid($dateToTest, $days, 'getDateAsRaw', $toId, null)) {
+            return true;
+        }
+
+        try {
+            $res = $dayManager->insert(['date' => $dateToTest]);
+        } catch (\Exception $e) {
+            $this->storeMsg('Impossible de créer une entrée «jour» pour enregistrer la nouvelle entrée : <br>' . $e->getMessage());
+            return false;
+        }
+
+        if (!$res) {
+            $this->storeMsg('Impossible de créer une entrée «jour» pour enregistrer la nouvelle entrée ...<br>');
+            return false;
+        }
+
+        #creation succeded – we still must get back the id and store it
+        $toId = $dayManager->getIdOfDate($dateToTest);
+        return true;
     }
 
 
@@ -345,7 +390,7 @@ class AdminController extends AbstractController
      * @param string $lookedFor
      * @param array $into   array of examinated objects
      * @param string $getterName     name of the getter to use to compare data
-     * @param &$toVar       variable where the result should be set
+     * @param &$toVar       variable where the id of the corresponding object should be set
      * @param string|null $errName   name of the object for error message,
      *                               or null if nothing is to be shown
      * @return bool
@@ -416,11 +461,5 @@ class AdminController extends AbstractController
             $this->storeMsg('Impossible de supprimer l\'entrée : <br>' . $e->getMessage());
             return false;
         }
-    }
-
-
-    private function modifyOneConcert(int $id)
-    {
-        $this->storeMsg(__FUNCTION__);
     }
 }

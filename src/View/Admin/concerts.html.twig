@@ -230,7 +230,7 @@ _ jquery hook to show # of modified items, modified entries, ...
                     <div class="form-group">
                         <label class="mr-2">
                             Date&nbsp:
-                            <input type="date" name="DateLocale" required
+                            <input type="date" name="concertDate" required
                                     {# beware of the format we NEED to send to the browser : "Y-m-d"! #}
                                    value="{{ 'now' | date('Y-m-d') }}">
 
@@ -298,7 +298,7 @@ _ jquery hook to show # of modified items, modified entries, ...
                               <div class="form-group">
                                   <label class="mr-2">
                                       Date&nbsp:
-                                      <input type="date" name="DateLocale" required
+                                      <input type="date" name="concertDate" required
                                               {# beware of the format we NEED to the browser : "Y-m-d"! #}
                                              value="{{ concert.Date | date('Y-m-d') }}">
 
@@ -346,15 +346,32 @@ _ jquery hook to show # of modified items, modified entries, ...
 
                       </div> {# .row #}
 
-                      <div class="row form-group m-1">
+                      <div class="row form-group m-1 justify-content-end">
 
-                          <input type="hidden" name="concernedConcert"
+                          <input type="hidden" name="idConcertToUpdate"
                                  value="{{ concert.Id }}">
+
+                           <button type="submit" name="modifyOneConcert"
+                                  class="btn btn-primary m-2"
+                                  title="Envoyer les changements effectués vers le serveur">
+                              <span class="badge badge-light">
+                                  <img src="/assets/images/cloud-upload.svg" alt="">
+                              </span>
+                              Envoyer changements
+                          </button>
+
+                          <button type="reset" class="btn btn-secondary m-2"
+                                  title="annuler les changements effectués pour ce concert">
+                              <span class="badge badge-light">
+                                 <img src="/assets/images/sync.svg" alt="">
+                              </span>
+                              Annuler
+                          </button>
 
                           {#TODO : without JS this button should show a div containing the yes/no buttons,
                           and so show a different label ... #}
                           <button type="button"
-                                  class="btn btn-danger m-2 float-right askForDeleteBtn"
+                                  class="btn btn-danger m-2 askForDeleteBtn"
                                   data-target="#confirmDelete" data-toggle="modal"
                                   data-id-to-delete="{{ concert.Id }}"
                                   title="Supprimer ce concert (après confirmation)"
@@ -363,23 +380,6 @@ _ jquery hook to show # of modified items, modified entries, ...
                                   <img src="/assets/images/trashcan.svg" alt="">
                               </span>
                               Supprimer ...
-                          </button>
-
-                          <button type="submit" name="modifyOneConcert"
-                                  class="btn btn-primary m-2 float-right"
-                                  title="Envoyer les changements effectués vers le serveur">
-                              <span class="badge badge-light">
-                                  <img src="/assets/images/cloud-upload.svg" alt="">
-                              </span>
-                              Envoyer changements
-                          </button>
-
-                          <button type="reset" class="btn btn-secondary m-2 float-right"
-                                  title="annuler les changements effectués pour ce concert">
-                              <span class="badge badge-light">
-                                 <img src="/assets/images/sync.svg" alt="">
-                              </span>
-                              Annuler
                           </button>
 
                       </div> {# .row #}
