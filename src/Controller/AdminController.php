@@ -180,8 +180,10 @@ class AdminController extends AbstractController
             }
 
             if (isset($_GET['sortInverted'])) {
-                $sortInverted = true;
+                $sortInverted = 'checked';
                 $concerts = array_reverse($concerts);
+            } else {
+                $sortInverted = '';
             }
         }
 
@@ -207,7 +209,7 @@ class AdminController extends AbstractController
                     'sceneNames' => $sceneNameList, 'artistNames' => $artistNameList, 'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
 
                     'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
-                    'sortInverted' => $sortInverted,    # boolean
+                    'sortInvertedState' => $sortInverted,    # 'checked' or ''
 
                     'errorList' => $this->errorStore ? $this->errorStore->formatAllMsg() : null]);
         } catch (\Exception $e) {
