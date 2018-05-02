@@ -67,9 +67,14 @@
 }
 
 .benevoleForm {
-    margin-top : 250px;
+    margin-top : 10%;
 }
 
+/* -------- ARTISTES -------- */
+
+.artist-form {
+    width: 100%;
+}
 
     /* ---------------------------------------------------
     MEDIAQUERIES
