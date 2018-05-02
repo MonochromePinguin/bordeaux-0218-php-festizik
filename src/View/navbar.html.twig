@@ -1,43 +1,45 @@
 {% block navbar %}
 
     <nav class="navbar navbar-expand-lg barreNav" id="navbar">
+        <div class="navBarre">
+            <a href="" class="logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
 
-        <a href="" class="logo"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
+            <div class="collapse navbar-collapse nav-display" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/concerts" class="nav-link">Programmation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/artistes" class="nav-link">Artistes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/benevole" class="nav-link">Devenir bénévole</a>
+                    </li>
+                    <li class="nav-item nav-item-infos">
+                        <a href="/infos" class="nav-link">Infos pratiques</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/billetterie" class="nav-link">Billetterie</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="mailto:festizik@yopmail.com" class="nav-link">Nous contacter</a>
+                    </li>
+                </ul>
 
-        <div class="collapse navbar-collapse nav-display" id="navbarSupportedContent">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="/" class="nav-link">Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/concerts" class="nav-link">Programmation</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/artistes" class="nav-link">Artistes</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/benevole" class="nav-link">Devenir bénévole</a>
-                </li>
-                <li class="nav-item nav-item-infos">
-                    <a href="/infos" class="nav-link">Infos pratiques</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/billetterie" class="nav-link">Billetterie</a>
-                </li>
-                <li class="nav-item">
-                    <a href="mailto:festizik@yopmail.com" class="nav-link">Nous contacter</a>
-                </li>
-            </ul>
-
-            <ul class="social-icons navbar-nav">
-                <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
-                <li><a href=""><i class="fab fa-twitter"></i></a></li>
-            </ul>
+                <ul class="social-icons navbar-nav">
+                    <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                </ul>
+            </div>
         </div>
+
     </nav>
 
 {% endblock %}

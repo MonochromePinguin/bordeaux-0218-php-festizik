@@ -36,7 +36,7 @@ body {
     display    : inline-block;
 }
 
-.barreNav div {
+#navbarSupportedContent {
     height     : 85vh;
     text-align : center;
 }
@@ -175,6 +175,7 @@ body {
     margin-bottom : 8%;
     margin-left   : 5%;
     color         : #009685;
+    animation: zoomIn 1s;
 }
 
 .infos {
@@ -197,10 +198,7 @@ body {
     color : #009685;
 }
 
-.billetterie:hover {
-    color           : white;
-    text-decoration : none;
-}
+
 
 /* -------- BILLETTERIE -------- */
 .billetterieTitle {
@@ -214,16 +212,19 @@ body {
 }
 
 .firstDay {
-    background-color : #00B6A2;
+    background-color : #007A84;
+    animation : fadeInLeft 1s;
 }
 
 .secondDay {
     background-color : #009685;
     margin           : 15px 0;
+    animation : fadeInDown 1s;
 }
 
 .thirdDay {
-    background-color : #007A84;
+    background-color : #00B6A2;
+    animation : fadeInRight 1s;
 }
 
 .bjr {
@@ -289,6 +290,7 @@ body {
     height          : auto;
     margin          : 6% auto;
     justify-content : space-around;
+    animation : bounceInUp 1s;
 }
 
 .btnReservation {
@@ -327,6 +329,10 @@ body {
     }
 
     /* -------- NAVBAR -------- */
+    .barreNav li a:hover {
+        animation : pulse 1s;
+    }
+
     .barreNav {
         min-width        : 7.5%;
         height           : 100vh;
@@ -336,19 +342,32 @@ body {
         background-color : rgba(58, 56, 62, 0.6);
     }
 
+    .navBarre:hover {
+        animation : slideInLeft 1s;
+    }
+
+    .navBarre {
+        width: 100%;
+        height: 100%;
+    }
+
+    .navbar {
+        padding : 0;
+    }
+
     .logo {
         background : url("/assets/images/favicon.png") no-repeat round;
         position   : absolute;
         height     : 10%;
-        width      : 100%;
         top        : 3%;
+        margin-left: 16%;
     }
 
     .barreNav:hover .logo {
-        background : url("/assets/images/logo.png") no-repeat round;
-        height     : 13%;
-        width      : 55%;
-        margin     : 0 14%;
+        background  : url("/assets/images/logo.png") no-repeat round;
+        height      : 13vh;
+        margin-left : 24%;
+        top         : 3%;
     }
 
     #navbarSupportedContent {
@@ -357,6 +376,9 @@ body {
 
     .barreNav:hover #navbarSupportedContent {
         display : block !important;
+        padding: .5rem 1rem;
+        margin-top : 20%;
+
     }
 
     .barreNav ul {
@@ -378,6 +400,43 @@ body {
     }
 
     /* -------- VIDEO -------- */
+    @-webkit-keyframes rotate {
+        from {
+            -webkit-transform-origin : center;
+            transform-origin         : center;
+            -webkit-transform        : rotate(360deg);
+            transform                : rotate(360deg);
+        }
+
+        to {
+            -webkit-transform-origin : center;
+            transform-origin         : center;
+            -webkit-transform        : rotate(0deg);
+            transform                : rotate(0deg);
+        }
+    }
+
+    @keyframes rotate {
+        from {
+            -webkit-transform-origin : center;
+            transform-origin         : center;
+            -webkit-transform        : rotate(360deg);
+            transform                : rotate(360deg);
+        }
+
+        to {
+            -webkit-transform-origin : center;
+            transform-origin         : center;
+            -webkit-transform        : rotate(0deg);
+            transform                : rotate(0deg);
+        }
+    }
+
+    .rotate {
+        -webkit-animation-name : rotateIn;
+        animation-name         : rotateIn;
+    }
+
     .video {
         height : 92vh;
     }
@@ -386,9 +445,21 @@ body {
         right : 0;
     }
 
-    .content img {
-        width : auto;
-        top   : 30%;
+    .content .index-logo {
+        width      : auto;
+        top        : 30%;
+        transition : opacity 1s ease-in;
+        animation  : rotate 1s ease-in infinite;
+        position   : relative;
+    }
+
+    .content .index-logo-mini {
+        width      : auto;
+        top        : 106%;
+        transition : opacity 1s ease-in;
+        animation  : zoomIn 1s ease-in 0.2s;
+        position   : absolute;
+        left       : 37.5%;
     }
 
     /* -------- FOOTER -------- */
@@ -442,8 +513,10 @@ body {
 
     /* -------- INFOS PRATIQUES ------- */
     .date {
-        margin-left   : 24vw;
+        margin-left   : 0;
         margin-bottom : 5%;
+        width: 100%;
+        text-align: center;
     }
 
     .presentation {
@@ -459,10 +532,21 @@ body {
         background-color : rgba(58, 52, 62, 0.6);
         box-shadow       : 5px 5px 20px black;
         border-radius    : 3%;
+        animation : rotateInUpRight 1s;
+    }
+
+    .googleMap {
+        animation : rotateInUpLeft 1s;
+        background-image: url("assets/images/map.jpg");
     }
 
     .titleInfos {
         margin : 4% auto;
+    }
+
+    .billetterie:hover {
+        color           : white;
+        text-decoration : none;
     }
 
     /* -------- BILLETTERIE -------- */
@@ -487,6 +571,10 @@ body {
 
     .btnReservation {
         width : 8vw;
+    }
+
+    .btnReservation:hover {
+        animation: tada 1s;
     }
 
     .btn-1:hover, .btn-2:hover {
