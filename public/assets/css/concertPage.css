@@ -74,7 +74,12 @@
     font-weight: bold;
     font-size: larger;
     text-indent: inherit;
-}/*
+}
+
+::-webkit-scrollbar {
+display: none;
+}
+/*
 .programmation svg {
     position : absolute;
     width: 100%;
