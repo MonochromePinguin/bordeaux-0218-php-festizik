@@ -1,9 +1,15 @@
+.container {
+    position : relative;
+    left     : 7%;
+    width    : 80%;
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
 #sidebar {
-    width      : 250px;
+    width      : 15%;
     position   : fixed;
     top        : 0;
     left       : 0;
@@ -19,7 +25,7 @@
 }
 
 #sidebar .sidebar-header {
-    padding    : 20px;
+    padding    : 5%;
     background : #009685;
 }
 
@@ -52,34 +58,39 @@
 }
 
 .benevoleForm {
-    margin-top : 250px;
-    left       : 19%;
-    position   : absolute;
-    width      : 80%;
+    margin-top : 150px;
 }
 
-/* ---------------------------------------------------
-MEDIAQUERIES
+.picture {
+  justify-content: center;
+  width: 400px;
+  height: 300px;
+}
+
+.upDateBene {
+  padding-left: 120px;
+}
+
+
+
+    /* ---------------------------------------------------
+    MEDIAQUERIES
 ----------------------------------------------------- */
-/******sidenav*******/
-@media (max-width : 768px) {
-    #sidebar {
-        margin-left : -250px;
-    }
-
-    #sidebar.active {
-        margin-left : 0;
-    }
-
-    #content {
-        width : 100%;
-    }
-
-    #content.active {
-        width : calc(100% - 250px);
-    }
-
-    #sidebarCollapse span {
-        display : none;
-    }
+    /******sidenav*******/
+@media (max-width: 768px) {
+      #sidebar {
+        margin-left: -250px;
+      }
+      #sidebar.active {
+        margin-left: 0;
+      }
+      #content {
+        width: 100%;
+      }
+      #content.active {
+        width: calc(100% - 250px);
+      }
+      #sidebarCollapse span {
+        display: none;
+      }
 }

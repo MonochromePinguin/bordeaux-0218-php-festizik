@@ -7,7 +7,7 @@ namespace Model;
  */
 class Artist
 {
-    private $id_artist;
+    private $id;
     private $name;
     private $id_style;
     private $about;
@@ -25,7 +25,7 @@ class Artist
      */
     public function getId(): int
     {
-        return $this->id_artist;
+        return $this->id;
     }
 
    /**
@@ -57,5 +57,45 @@ class Artist
     public function getDescription() : string
     {
         return $this->about;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param mixed $id_style
+     */
+    public function setIdStyle($id_style)
+    {
+        $this->id_style = $id_style;
+    }
+
+    /**
+     * @param mixed $picture
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+    }
+
+    /**
+     * @param mixed $about
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+    }
+
+    /**
+     * @param mixed $styles
+     */
+    public static function setStyles($styles)
+    {
+        self::$styles = $styles;
     }
 }

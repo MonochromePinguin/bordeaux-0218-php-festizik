@@ -16,6 +16,7 @@ use Model\AdminBenevolManager;
 use Model\StyleManager;
 use Model\ConcertManager;
 
+
 /**
  *  Class AdminController
  */
@@ -76,6 +77,16 @@ class AdminController extends AbstractController
         $benevolManager = new ArticleManager();
         $benevol = $benevolManager->selectAll();
 
+         if ($_POST) {
+            $data = ['title' => $_POST['title'],
+                     'content' => $_POST['content']
+                    ];
+            if (strlen($_POST['picture'])> 0){
+                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+            }
+            $benevolManager->update(6, $data);
+        }
+        $benevol = $benevolManager->selectAll();
         $title = $benevol[0]->getTitle();
         $content = $benevol[0]->getContent();
         $picture = $benevol[0]->getPicture();
@@ -87,14 +98,7 @@ class AdminController extends AbstractController
         $infos = $infosManager->selectAll();
         $title = $infos[1]->getTitle();
         $content = $infos[1]->getContent();
-        return $this->twig->render('Admin/adminInfos.html.twig', ['title'=>$title, 'content'=>$content]);
-
-    }
-    public function benevolContentUpdated()
-    {
-        $BenevolManager = new AdminBenevolManager();
-        $benevol = $BenevolManager->benevolContentUpdate($_POST);
-        return $this->twig->render('Admin/logged.html.twig');
+        return $this->twig->render('Admin/adminInfos.html.twig', ['title' => $title, 'content' => $content]);
     }
 
     public function adminArtist()
@@ -108,7 +112,7 @@ class AdminController extends AbstractController
                      'about' => $_POST['about'],
                      'id_style' => $_POST['id_style']];
             if (strlen($_POST['picture']) > 0) {
-                $data['picture'] = '/assets/DBimages/' . $_POST['picture'];
+                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
             }
             if (isset($_GET['artistSelect'])) {
                 $artistManager->update($_GET['artistSelect'], $data);
@@ -144,9 +148,9 @@ class AdminController extends AbstractController
         #allow to sort data out of the model, so we save an SQL request
         static $props = null;
 
-       /* if (null === $props) {
+        if (null === $props) {
             $props = $concertManager::getAvailableSortCriterias();
-        }*/
+        }
 
         if (0 !== count($_GET)) {
             ## the goal of a GET method is to sort the available datas

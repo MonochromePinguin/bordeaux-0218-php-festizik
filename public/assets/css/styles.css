@@ -22,6 +22,9 @@ body {
     background-image : url('https://www.toptal.com/designers/subtlepatterns/patterns/footer_lodyas.png');
 }
 
+::-webkit-scrollbar {
+display: none;
+}
 /* -------- NAVBAR -------- */
 .barreNav {
     background-color : rgba(253, 185, 64, 0.9);
@@ -318,6 +321,8 @@ body {
     margin-top       : 3%;
 }
 
+
+
 /* -------- MEDIA QUERIES -------- */
 
 @media screen and (min-width : 992px) {
@@ -590,7 +595,7 @@ body {
     }
 
     /* -------- ARTISTES -------- */
-    .artist-header {
+   /* .artist-header {
         margin-bottom : 5%;
         color         : white;
     }
@@ -602,7 +607,8 @@ body {
 
     .artist img {
         width : inherit;
-    }
+    }*/
+
 
 }
 

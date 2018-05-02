@@ -11,6 +11,8 @@
 
     <!-- to deactivate the «IE compatibility mode» of explorer -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
       <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
       <link rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -21,15 +23,13 @@
 
     <link rel="stylesheet" href="/assets/css/styles.css">
     {% block stylesheet %}{% endblock %}
-
     <link rel="icon" href="/assets/images/favicon.png">
-
 </head>
 
 <body {% block bodyProperties %}{% endblock %} >
-  {% block navbar %}
-    {% include 'navbar.html.twig' %}
-{% endblock %}
+    {% block navbar %}
+        {% include 'navbar.html.twig' %}
+    {% endblock %}
 
 {% block content %}{% endblock %}
 

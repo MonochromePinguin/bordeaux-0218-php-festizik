@@ -12,4 +12,9 @@ class StyleManager extends AbstractManager
     {
         parent::__construct(self::TABLE);
     }
+
+    public function selectStyle()
+    {
+        return static::$pdoConnection->query("SELECT id, name FROM " . $this->table . " ORDER BY name", \PDO::FETCH_ASSOC)->fetchAll();
+    }
 }
