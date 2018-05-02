@@ -15,6 +15,7 @@ use Model\ArtistManager;
 use Model\AdminBenevolManager;
 use Model\StyleManager;
 
+
 /**
  *  Class AdminController
  */
@@ -71,16 +72,16 @@ class AdminController extends AbstractController
 
      public function adminBenevol()
     {
-        return $this->twig->render('Admin/adminBenevol.html.twig');
+        $benevolManager = new ArticleManager();
+        $benevol = $benevolManager->selectAll();
 
-    }     
+
+        $title = $benevol[0]->getTitle();
+        $content = $benevol[0]->getContent();
+        $picture = $benevol[0]->getPicture();
+        return $this->twig->render('Admin/adminBenevol.html.twig', ['question'=>$title, 'beneContent'=>$content, 'picture'=>$picture]);
 
 
-    public function benevolContentUpdated()
-    {
-        $BenevolManager = new AdminBenevolManager();
-        $benevol = $BenevolManager->benevolContentUpdate($_POST);
-        return $this->twig->render('Admin/logged.html.twig');
     }
 
     public function adminArtist()
@@ -114,19 +115,19 @@ class AdminController extends AbstractController
         public function adminInfos()
     {
         $infosManager = new ArticleManager();
-        $infos = $infosManager->selectAll();
 
-        $title = $infos[1]->getTitle();
-        $content = $infos[1]->getContent();
+
 
         if ($_POST) {
     $data = ['title' => $_POST['title'],
-        'content' => $_POST['content'],
-        'picture' => '/assets/DBimages/'.$_POST['picture']];
-    $infosManager->update(7, $data);
+        'content' => $_POST['content']];
+        $infosManager->update(7, $data);
             }
 
 
+        $infos = $infosManager->selectAll();
+        $title = $infos[1]->getTitle();
+        $content = $infos[1]->getContent();
         return $this->twig->render('Admin/adminInfos.html.twig', ['title'=>$title, 'content'=>$content]);
     }
 }

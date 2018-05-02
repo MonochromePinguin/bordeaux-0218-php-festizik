@@ -92,7 +92,7 @@ class UserController extends AbstractController
 
     }
 
-    public function benevol()
+        public function benevol()
     {
         $benevolManager = new ArticleManager();
         $benevol = $benevolManager->selectAll();
@@ -124,4 +124,5 @@ class UserController extends AbstractController
         $content = $infos[1]->getContent();
         return $this->twig->render('User/infos.html.twig', ['date'=>$title, 'content'=>$content]);
     }
+
 }

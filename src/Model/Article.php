@@ -22,6 +22,7 @@ Class Article
      */
     public function getId(): int
     {
+
         return $this->id;
     }
 
@@ -37,6 +38,7 @@ Class Article
     {
         return $this->content;
     }
+
     public function getPicture(): string
 	{
 		return $this->picture; 

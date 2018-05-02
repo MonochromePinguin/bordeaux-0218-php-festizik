@@ -15,49 +15,50 @@ namespace Model;
  */
 class adminBenevol
 {
-    private $id;
+    private $id_article;
+    private $title;
+    private $id_page;
+    private $picture;
+    private $content; 
 
-    private $photo;
-
-    private $article;
-
-    /**
+     /**
      * @return int
      */
-     function __construct($id, $photo, $article)
+    public function getId(): int
     {
-         $this->id = $id;
-         $this->photo = $photo;
-         $this->article = $article;
+        return $this->id_article;
     }
 
-    function getId()
+   /**
+     * @return string
+     */
+    public function getTitle(): string
     {
-        return $this->id_volunteer;
+        return $this->title;
     }
 
-    function setId()
+    public function setTitle(): string
     {
-        return $this->id_volunteer;
+        return $this->title;
     }
 
-    function getPhoto()
+    public function getContent() : string
     {
-        return $this->name;
+        return $this->content;
     }
 
-    function setPhoto()
+    public function setContent(): string
     {
-        return $this->name;
+        return $this->content;
     }
 
-    function getArticle()
+    public function getPicture() : string
     {
-        return $this->surname;
+        return $this->picture;
     }
 
-    function setArticle()
+    public function setPicture(): string
     {
-        return $this->surname;
+        return $this->picture;
     }
 }

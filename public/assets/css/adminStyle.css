@@ -48,7 +48,6 @@
 #sidebar ul li a:hover {
     color      : #7386D5;
     background : #FFF;
-<<<<<<< HEAD
 }
 
 /*******************INFORMATIONS*****************************/
@@ -58,10 +57,10 @@
 
 .txtInfos{
     height: 50vh;
-=======
->>>>>>> c9c6cdad476c531f7a3de6915fc8bee566ab332d
 }
-
+.btnInfos{
+    padding-left: 175px; 
+}
 /*******************BENEVOLES*****************************/
 .benevolTitle {
     display         : flex;
@@ -93,9 +92,5 @@
       #sidebarCollapse span {
         display: none;
       }
-<<<<<<< HEAD
     }
-=======
 
->>>>>>> c9c6cdad476c531f7a3de6915fc8bee566ab332d
-}
