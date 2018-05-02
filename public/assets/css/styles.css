@@ -23,8 +23,11 @@ body {
 }
 
 ::-webkit-scrollbar {
-display: none;
+    display : none;
 }
+
+
+
 /* -------- NAVBAR -------- */
 .barreNav {
     background-color : rgba(253, 185, 64, 0.9);
@@ -178,7 +181,7 @@ display: none;
     margin-bottom : 8%;
     margin-left   : 5%;
     color         : #009685;
-    animation: zoomIn 1s;
+    animation     : zoomIn 1s;
 }
 
 .infos {
@@ -201,8 +204,6 @@ display: none;
     color : #009685;
 }
 
-
-
 /* -------- BILLETTERIE -------- */
 .billetterieTitle {
     text-align : center;
@@ -216,18 +217,18 @@ display: none;
 
 .firstDay {
     background-color : #007A84;
-    animation : fadeInLeft 1s;
+    animation        : fadeInLeft 1s;
 }
 
 .secondDay {
     background-color : #009685;
     margin           : 15px 0;
-    animation : fadeInDown 1s;
+    animation        : fadeInDown 1s;
 }
 
 .thirdDay {
     background-color : #00B6A2;
-    animation : fadeInRight 1s;
+    animation        : fadeInRight 1s;
 }
 
 .bjr {
@@ -293,7 +294,7 @@ display: none;
     height          : auto;
     margin          : 6% auto;
     justify-content : space-around;
-    animation : bounceInUp 1s;
+    animation       : bounceInUp 1s;
 }
 
 .btnReservation {
@@ -323,23 +324,23 @@ display: none;
 
 /* -------- PROGRAMMATION -------- */
 .prog-scene {
-    color: white;
-    background-color: rgba(0, 182, 162, 0.6);
-    border-radius: 10px;
+    color            : white;
+    background-color : rgba(0, 182, 162, 0.6);
+    border-radius    : 10px;
 }
 
 .prog-scene h2 {
-    padding-top: 3%;
+    padding-top : 3%;
 }
 
 .day-concert {
-    color : white;
+    color      : white;
     margin-top : 5%;
 }
 
 .prog-concert {
     justify-content : space-evenly;
-    margin-bottom: 5%;
+    margin-bottom   : 5%;
 }
 
 /* -------- MEDIA QUERIES -------- */
@@ -353,6 +354,37 @@ display: none;
     }
 
     /* -------- NAVBAR -------- */
+    @-webkit-keyframes slideIn {
+        from {
+            -webkit-transform: translate3d(-20%, 0, 0);
+            transform: translate3d(-20%, 0, 0);
+            visibility: visible;
+        }
+
+        to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @keyframes slideIn{
+        from {
+            -webkit-transform: translate3d(-20%, 0, 0);
+            transform: translate3d(-20%, 0, 0);
+            visibility: visible;
+        }
+
+        to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    .slideIn {
+        -webkit-animation-name: slideIn;
+        animation-name: slideIn;
+    }
+
     .barreNav li a:hover {
         animation : pulse 1s;
     }
@@ -366,13 +398,13 @@ display: none;
         background-color : rgba(58, 56, 62, 0.6);
     }
 
-    .navBarre:hover {
-        animation : slideInLeft 1s;
+    .barreNav:hover {
+        animation : slideIn 1s;
     }
 
     .navBarre {
-        width: 100%;
-        height: 100%;
+        width  : 100%;
+        height : 100%;
     }
 
     .navbar {
@@ -380,11 +412,11 @@ display: none;
     }
 
     .logo {
-        background : url("/assets/images/favicon.png") no-repeat round;
-        position   : absolute;
-        height     : 10%;
-        top        : 3%;
-        margin-left: 16%;
+        background  : url("/assets/images/favicon.png") no-repeat round;
+        position    : absolute;
+        height      : 10%;
+        top         : 3%;
+        margin-left : 16%;
     }
 
     .barreNav:hover .logo {
@@ -399,10 +431,9 @@ display: none;
     }
 
     .barreNav:hover #navbarSupportedContent {
-        display : block !important;
-        padding: .5rem 1rem;
+        display    : block !important;
+        padding    : .5rem 1rem;
         margin-top : 20%;
-
     }
 
     .barreNav ul {
@@ -539,8 +570,8 @@ display: none;
     .date {
         margin-left   : 0;
         margin-bottom : 5%;
-        width: 100%;
-        text-align: center;
+        width         : 100%;
+        text-align    : center;
     }
 
     .presentation {
@@ -556,12 +587,12 @@ display: none;
         background-color : rgba(58, 52, 62, 0.6);
         box-shadow       : 5px 5px 20px black;
         border-radius    : 3%;
-        animation : rotateInUpRight 1s;
+        animation        : rotateInUpRight 1s;
     }
 
     .googleMap {
-        animation : rotateInUpLeft 1s;
-        background-image: url("assets/images/map.jpg");
+        animation        : rotateInUpLeft 1s;
+        background-image : url("assets/images/map.jpg");
     }
 
     .titleInfos {
@@ -598,7 +629,7 @@ display: none;
     }
 
     .btnReservation:hover {
-        animation: tada 1s;
+        animation : tada 1s;
     }
 
     .btn-1:hover, .btn-2:hover {
@@ -614,20 +645,19 @@ display: none;
     }
 
     /* -------- ARTISTES -------- */
-   /* .artist-header {
-        margin-bottom : 5%;
-        color         : white;
-    }
+    /* .artist-header {
+         margin-bottom : 5%;
+         color         : white;
+     }
 
-    .artist {
-        background-color : rgba(58, 52, 62, 0.6);
-        color            : white;
-    }
+     .artist {
+         background-color : rgba(58, 52, 62, 0.6);
+         color            : white;
+     }
 
-    .artist img {
-        width : inherit;
-    }*/
-
+     .artist img {
+         width : inherit;
+     }*/
 
 }
 
