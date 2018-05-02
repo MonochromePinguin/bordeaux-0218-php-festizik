@@ -7,7 +7,7 @@ namespace Model;
  */
 class Scene
 {
-    private $id_scene;
+    private $id;
     private $name;
 
     /**
@@ -15,7 +15,7 @@ class Scene
      */
     public function getId(): int
     {
-        return $this->id_scene;
+        return $this->id;
     }
 
     /**

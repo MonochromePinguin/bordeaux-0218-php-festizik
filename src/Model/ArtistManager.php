@@ -30,5 +30,4 @@ class ArtistManager extends AbstractManager
         $statement->bindValue(':picture', '/assets/DBimages/'.$_POST['picture']);
         $statement->execute();
     }
-
 }

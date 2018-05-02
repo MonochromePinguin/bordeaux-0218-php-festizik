@@ -19,7 +19,7 @@ class adminBenevol
     private $title;
     private $id_page;
     private $picture;
-    private $content; 
+    private $content;
 
      /**
      * @return int
