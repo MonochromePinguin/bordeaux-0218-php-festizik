@@ -30,7 +30,6 @@ class AdminController extends AbstractController
     {
         $errors = [];
         if ($_POST) {
-
             $username = $_POST['username'];
             $password = $_POST['password'];
 
@@ -70,7 +69,6 @@ class AdminController extends AbstractController
         session_destroy();
         header('Location: /login');
     }
-
 
     public function adminBenevol()
     {
@@ -129,14 +127,22 @@ class AdminController extends AbstractController
         return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'styles' => $styles]);
     }
 
+    public function benevolContentUpdated()
+    {
+        $BenevolManager = new AdminBenevolManager();
+        $benevol = $BenevolManager->benevolContentUpdate($_POST);
+        return $this->twig->render('Admin/logged.html.twig');
+    }
+
+
     public function concerts()
     {
-        //TODO: ADD SESSION TIMING-OUT AND REFRESHING
+ //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
         if (empty($_SESSION['username'])) {
             return $this->twig->render(
                 'Admin/login.html.twig',
-                ['errors' => ['La page d\'administration des concerts n\'est pas accessible sans identification']]
+                ['errors' => [ 'La page d\'administration des concerts n\'est pas accessible sans identification'] ]
             );
         }
 
@@ -158,7 +164,7 @@ class AdminController extends AbstractController
             if (isset($_GET['sortBy'])) {
                 $sortBy = $_GET['sortBy'];
 
-                if (!$concertManager->sortArray($concerts, $sortBy)) {
+                if (! $concertManager->sortArray($concerts, $sortBy)) {
                     $this->storeMsg(
                         'Le paramètre de tri «' . $sortBy
                         . '» n\'est pas valide'
@@ -168,6 +174,7 @@ class AdminController extends AbstractController
                 $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');
             };
         }
+
 
         if (0 !== count($_POST)) {
             $this->storeMsg('TODO : Cette page n\'est pas encore fonctionnelle avec la méthode POST');

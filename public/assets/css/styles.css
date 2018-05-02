@@ -13,7 +13,7 @@ p, .barreNav a {
     font-family : 'Open Sans', sans-serif;
 }
 
-.date, .titleInfos, .titleDay, .artist h3 {
+.date, .titleInfos, .titleDay, .artist h3, .day-concert {
     font-family : 'neon';
 }
 
@@ -156,7 +156,7 @@ display: none;
     padding    : 2% 4%;
 }
 
-.infos-header {
+.infos-header, .prog-header {
     color : white;
 }
 
@@ -321,7 +321,26 @@ display: none;
     margin-top       : 3%;
 }
 
+/* -------- PROGRAMMATION -------- */
+.prog-scene {
+    color: white;
+    background-color: rgba(0, 182, 162, 0.6);
+    border-radius: 10px;
+}
 
+.prog-scene h2 {
+    padding-top: 3%;
+}
+
+.day-concert {
+    color : white;
+    margin-top : 5%;
+}
+
+.prog-concert {
+    justify-content : space-evenly;
+    margin-bottom: 5%;
+}
 
 /* -------- MEDIA QUERIES -------- */
 
@@ -486,7 +505,7 @@ display: none;
     }
 
     /* -------- BENEVOLES -------- */
-    .benevole-header, .infos-header, .artist-header, .billetterie-header {
+    .benevole-header, .infos-header, .artist-header, .billetterie-header, .prog-header {
         text-align       : center;
         background-color : #FDB940;
         padding-top      : 2%;
