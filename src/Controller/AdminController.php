@@ -9,7 +9,6 @@
 namespace Controller;
 
 use Model\AdminManager;
-
 use Model\ArticleManager;
 use Model\ArtistManager;
 use Model\AdminBenevolManager;

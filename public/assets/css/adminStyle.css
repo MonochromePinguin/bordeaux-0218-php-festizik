@@ -77,7 +77,7 @@
     MEDIAQUERIES
 ----------------------------------------------------- */
     /******sidenav*******/
-    @media (max-width: 768px) {
+@media (max-width: 768px) {
       #sidebar {
         margin-left: -250px;
       }
@@ -93,5 +93,4 @@
       #sidebarCollapse span {
         display: none;
       }
-    }
 }
