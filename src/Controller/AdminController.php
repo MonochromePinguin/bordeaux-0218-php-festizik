@@ -76,6 +76,12 @@ class AdminController extends AbstractController
 
     public function adminBenevol()
     {
+        //TODO: ADD SESSION TIMING-OUT AND REFRESHING
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
+        }
+
         $benevolManager = new ArticleManager();
         $benevol = $benevolManager->selectAll();
 
@@ -91,7 +97,7 @@ class AdminController extends AbstractController
         //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
         if (empty($_SESSION['username'])) {
-            return $this->twig->render('Admin/login.html.twig', ['errors' => ['La page d\'administration des concerts n\'est pas accessible sans identification']]);
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
         }
 
         $sceneManager = new SceneManager($this->errorStore);
