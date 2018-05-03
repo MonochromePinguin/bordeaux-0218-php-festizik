@@ -33,13 +33,13 @@ class BenevolManager extends AbstractManager
      *
      * @param Array $data
      */
-     public function insertBenevol(array $data)
-    	{
+    public function insertBenevol(array $data)
+    {
         $statement = $this::$pdoConnection->prepare("INSERT INTO $this->table (name, surname, phone, disponibility_start, disponibility_end) VALUES (:name, :surname, :phone, :dispoStart, :dispoEnd)");
         $statement->setFetchMode(\PDO::FETCH_CLASS, $this->className);
-        $statement->bindValue(':name', $data['name'] , \PDO::PARAM_STR);
-        $statement->bindValue(':surname', $data['surname'] , \PDO::PARAM_STR);
-        $statement->bindValue(':phone', $data['phone'] , \PDO::PARAM_STR);
+        $statement->bindValue(':name', $data['name'], \PDO::PARAM_STR);
+        $statement->bindValue(':surname', $data['surname'], \PDO::PARAM_STR);
+        $statement->bindValue(':phone', $data['phone'], \PDO::PARAM_STR);
         $statement->bindValue(':dispoStart', $data['dispoStart']);
         $statement->bindValue(':dispoEnd', $data['dispoEnd']);
         $statement->execute();
@@ -52,5 +52,6 @@ class BenevolManager extends AbstractManager
         $statement->execute();
     }
 
-   
+
+
 }

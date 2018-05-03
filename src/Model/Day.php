@@ -7,7 +7,7 @@ namespace Model;
  */
 class Day
 {
-    private $id_day;
+    private $id;
     private $name;
     private $date;
 
@@ -16,7 +16,7 @@ class Day
      */
     public function getId(): int
     {
-        return $this->id_day;
+        return $this->id;
     }
 
 //TODO : delete the «name» field unless someone find a good reason to keep it.
@@ -40,7 +40,7 @@ class Day
     }
 
     /**
-     * @return string
+     * @return string return a formatted date (french)
      */
     public function getDateAsString(): string
     {

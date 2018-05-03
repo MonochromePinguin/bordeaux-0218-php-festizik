@@ -1,0 +1,83 @@
+/* common reused styles */
+
+.bordered {
+    border: 1px solid darkred;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+.sublined {
+/* this "!important" is needed to neutralize bootstrap's "!important" usage */
+    border: none !important;
+    border-bottom: 2px solid darkred !important;
+}
+
+/* for images into the articles */
+.downsized {
+    max-width: 15vw;
+    max-height: 15vh;
+}
+
+/* page-global styling and boostrap overriding */
+
+.adminConcert .btn-info:focus,
+.adminConcert .btn-danger :focus,
+.adminConcert .btn-primary:focus,
+.adminConcert .btn-secondary:focus,
+input:focus,
+select:focus {
+    box-shadow: 0 0 0 .2rem rgb(67, 251, 93);
+}
+
+.btn-info:not(:disabled):not(.disabled).active:focus, .btn-info:not(:disabled):not(.disabled):active:focus,
+.show > .btn-info.dropdown-toggle:focus {
+    box-shadow: 0 0 0 .3rem rgb(60, 201, 86);
+}
+
+input:invalid {
+    background-color: lightpink;
+}
+
+
+input:valid + .showInputInfo { display: none }
+
+input:invalid + .showInputInfo {
+    display : block;
+    font-style: italic;
+    color: red;
+}
+
+
+input:invalid:focus {
+    box-shadow: 0 0 0 .2rem red;
+
+}
+
+
+/* for the "input[checkbox]:checked + elem" trick (hidding without JS) */
+
+.showNext,
+.unHiddenable{ display: none }
+
+input[type='checkbox'].showNext:checked + .unHiddenable {
+    display: block;
+}
+
+/* for the "Annulation" checkbox */
+.adminConcert .cancelled::after {
+    content: 'Annulation';
+}
+
+input[type="checkbox"]:checked + .cancelled::after {
+    font-style: italic;
+    color: red;
+    content: 'Annulé';
+}
+
+
+/* ------- */
+
+.adminConcert > aside,
+.adminConcert > nav {
+    margin: 3%;
+}

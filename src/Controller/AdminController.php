@@ -10,9 +10,8 @@ use Model\ConcertManager;
 use Model\Concert;
 use Model\DayManager;
 use Model\SceneManager;
-use Model\BenevolManager;
 use Model\StyleManager;
-
+use Model\ConcertManager;
 
 /**
  *  Class AdminController
@@ -29,6 +28,7 @@ class AdminController extends AbstractController
         session_start();
 
         $errors = [];
+
         if ($_POST) {
             $username = $_POST['username'];
             $password = $_POST['password'];
@@ -40,9 +40,7 @@ class AdminController extends AbstractController
                 } else {
                     $errors[] = 'Le nom d\'utilisateur et/ou le mot de passe est incorrect.';
                 }
-            }
-            catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 echo $e->getMessage();
             }
         }
@@ -76,7 +74,6 @@ class AdminController extends AbstractController
         header('Location: /login');
         exit;
     }
-
 
     public function adminBenevol()
     {

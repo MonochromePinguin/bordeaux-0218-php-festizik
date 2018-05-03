@@ -12,7 +12,7 @@ class ErrorStore
 
     public function storeMsg(string $msg)
     {
-        $this->messages[] = $msg;
+        $this->messages[] = htmlspecialchars($msg);
     }
 
     public function getMsgNumber() : int

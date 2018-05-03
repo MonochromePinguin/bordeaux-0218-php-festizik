@@ -23,7 +23,6 @@ abstract class AbstractManager
      *                   a different connection. By default, it is created at first call
      *                   if none specified
      */
-
     public function __construct(string $table, Connection $pdoConnection = null)
     {
         if (null != $pdoConnection) {
@@ -40,21 +39,16 @@ abstract class AbstractManager
 
     /**
      * Get all row from database.
-     *
-     * @param string|null $orderBy optional "order by" parameter for the SQL request
+     * @param string|null $orderBy give an optional "ORDER BY" parameter to the SQL query
      * @return array
      */
-
     public function selectAll($orderBy = null): array
-
     {
-        $queryString = 'SELECT * FROM ' . $this->table;
-        if (null != $orderBy) {
-            $queryString .= ' ORDER BY ' . (static::$pdoConnection)->quote($orderBy);
-        }
-
         return static::$pdoConnection->query(
-            $queryString,
+            'SELECT * FROM ' . $this->table . (
+                isset($orderBy) ?
+                    ' ORDER BY `' . substr(self::$pdoConnection->quote($orderBy), 1, -1) . '`' :  ''
+            ),
             \PDO::FETCH_CLASS,
             $this->className
         )->fetchAll();
@@ -70,7 +64,7 @@ abstract class AbstractManager
     public function selectOneById(int $id)
     {
         // prepared request
-        $statement = $this::$pdoConnection->prepare("SELECT * FROM " . $this->table . " WHERE id =:id");
+        $statement = self::$pdoConnection->prepare("SELECT * FROM $this->table WHERE id=:id");
         $statement->setFetchMode(\PDO::FETCH_CLASS, $this->className);
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
@@ -85,7 +79,9 @@ abstract class AbstractManager
      */
     public function delete(int $id)
     {
-        //TODO : Implements SQL DELETE request
+        $statement = self::$pdoConnection->prepare("DELETE FROM $this->table WHERE id=:id");
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        return $statement->execute();
     }
 
     /**
@@ -101,6 +97,4 @@ abstract class AbstractManager
             $statement->execute();
         }
     }
-
-
 }
