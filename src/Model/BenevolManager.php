@@ -43,6 +43,7 @@ class BenevolManager extends AbstractManager
         $statement->bindValue(':dispoStart', $data['dispoStart']);
         $statement->bindValue(':dispoEnd', $data['dispoEnd']);
         $statement->execute();
+
         }
 
     public function deleteBenevol($id)
@@ -51,7 +52,5 @@ class BenevolManager extends AbstractManager
         $statement->bindValue(':id', $id);
         $statement->execute();
     }
-
-
 
 }

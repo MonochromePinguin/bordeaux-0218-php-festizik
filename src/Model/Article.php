@@ -9,6 +9,7 @@ namespace Model;
 
 class Article
 {
+
     private $id;
     private $title;
     private $id_page;
@@ -53,6 +54,7 @@ class Article
         $this->title = $title;
     }
 
+
     /**
      * @param mixed $id_style
      */
@@ -68,7 +70,4 @@ class Article
     {
         $this->picture = $picture;
     }
-
-
-
 }

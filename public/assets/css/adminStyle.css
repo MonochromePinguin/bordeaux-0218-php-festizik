@@ -59,9 +59,11 @@
 .txtInfos{
     height: 50vh;
 }
+
 .btnInfos{
     padding-left: 175px;
 }
+
 /*******************BENEVOLES*****************************/
 .benevolTitle {
     display         : flex;
