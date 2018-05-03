@@ -11,7 +11,7 @@ use Model\Concert;
 use Model\DayManager;
 use Model\SceneManager;
 use Model\StyleManager;
-use Model\ConcertManager;
+
 
 /**
  *  Class AdminController
@@ -476,47 +476,48 @@ class AdminController extends AbstractController
 
 
 
-/**
- * DeleteOneConcert by Id.
- *
- * @param ConcertManager $concertManager
- * @param DayManager     $dayManager
- * @param array          $concerts
- * @param array          $artists unused
- * @param array          $scenes  unused
- * @param array          $days    unused
- * @param array          $values  unused
- */
-private
-function deleteOneConcert(
-    ConcertManager $concertManager,
-    DayManager $dayManager,
-    array $concerts,
-    array $artists,
-    array $scenes,
-    array $days,
-    array $values
-)
-{
-    $id = '';
-    if (!$this->checkValid(
-        $values['idConcertToDelete'],
-        $concerts,
-        'getId',
-        $id,
-        'Concert'
-    )) {
-        $this->storeMsg('requête invalide : propriété absente');
-        return false;
-    };
+    /**
+     * DeleteOneConcert by Id.
+     *
+     * @param ConcertManager $concertManager
+     * @param DayManager     $dayManager
+     * @param array          $concerts
+     * @param array          $artists unused
+     * @param array          $scenes  unused
+     * @param array          $days    unused
+     * @param array          $values  unused
+     */
+    private
+    function deleteOneConcert(
+        ConcertManager $concertManager,
+        DayManager $dayManager,
+        array $concerts,
+        array $artists,
+        array $scenes,
+        array $days,
+        array $values
+    )
+    {
+        $id = '';
+        if (!$this->checkValid(
+            $values['idConcertToDelete'],
+            $concerts,
+            'getId',
+            $id,
+            'Concert'
+        )) {
+            $this->storeMsg('requête invalide : propriété absente');
+            return false;
+        };
 
-    //TODO: DELETE THE DAY ENTRY IF NO MORE REFERENCES
-    try {
-        $concertManager->delete($id);
-        return true;
-    } catch (\Exception $e) {
-        $this->storeMsg('Impossible de supprimer l\'entrée : <br>' . $e->getMessage());
-        return false;
+        //TODO: DELETE THE DAY ENTRY IF NO MORE REFERENCES
+        try {
+            $concertManager->delete($id);
+            return true;
+        } catch (\Exception $e) {
+            $this->storeMsg('Impossible de supprimer l\'entrée : <br>' . $e->getMessage());
+            return false;
+        }
+
     }
-
-}}
+}
