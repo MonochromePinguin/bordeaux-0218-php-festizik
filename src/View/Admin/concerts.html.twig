@@ -292,7 +292,7 @@ _ jquery hook to show # of modified items, modified entries, ...
 
           </div> #}{# #oneConcertBlock #}
 
-            
+
           <div id="concertListBlock">
 
             {# ADDITION OF A NEW ENTRY #}
@@ -377,7 +377,7 @@ _ jquery hook to show # of modified items, modified entries, ...
           {##}
           {% for concert in concerts %}
               <article class="bordered m-2 p-1 container">
-                  <form method="POST" action="">
+                  <form method="POST" action="" >
 
                       <div class="row">
 
@@ -425,14 +425,12 @@ _ jquery hook to show # of modified items, modified entries, ...
 
                            </div> {# .col... #}
 
-                         {% if concert.Artist.ImageURL %}
-                            <div class="hidden-sm-down col">
-                                <img class="img-fluid float-right img-thumbnail downsized"
-                                       src="{{ concert.Artist.ImageURL }}"
-                                       title="{{ concert.Artist.Name }}"
-                                       alt="image pour «{{ concert.Artist.Name }}» absente">
-                            </div>
-                         {% endif %}
+                           <div class="hidden-xs hidden-sm hidden-md col-2">
+                               <img class="img-fluid float-right img-thumbnail downsized"
+                                   src="{{ concert.Artist.ImageURL }}"
+                                   title="{{ concert.Artist.Name }}"
+                                   alt="image pour «{{ concert.Artist.Name }}» absente">
+                           </div>
 
                       </div> {# .row #}
 
