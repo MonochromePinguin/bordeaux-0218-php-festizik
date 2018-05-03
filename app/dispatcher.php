@@ -10,8 +10,8 @@
  */
 
 use Misc\ErrorStore as ErrorStore;
-use App\Connection;
 
+require_once __DIR__ . '/../src/Misc/generateEmergencyPage.php';
 require_once __DIR__ . '/routing.php';
 $routesCollection = function (FastRoute\RouteCollector $r) use ($routes) {
     foreach ($routes as $controller => $actions) {
@@ -52,7 +52,7 @@ switch ($routeInfo[0]) {
 
         try {
             $errorStore = new ErrorStore();
-        } catch ( Exception $e ) {
+        } catch (Exception $e) {
             //DO NOT SHOW ANY ERROR MESSAGE. We can live without it.
             $errorStore = null;
         }

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Returns a whole page to show in case of critical error
+ * Returns a whole page to show something in case of critical error
  * @param string $title title of the warning page
- * @param string $msg body of the warning page
- * @return string the raw, formated page to show
+ * @param array $messages array of string to add into the body of the warning page
+ * @return string the raw, HTML-formated page to show
  */
-function emergencyPage(string $title, string $msg) : string
+function generateEmergencyPage(string $title, array $messages) : string
 {
-    return <<< EOP
+    $ret = <<< EOP
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -27,6 +27,8 @@ function emergencyPage(string $title, string $msg) : string
 	        font-style: italic bold;
 	        border: 1px solid darkred;
 	        border-radius: 1rem;
+	        margin: 5vw;
+	        padding: 1rem;
 	     }
     </style>
   </head>
@@ -34,16 +36,22 @@ function emergencyPage(string $title, string $msg) : string
   <body>
     <header>
         <h1>{$title}</h1>
+        <h2>Les messages d'erreur suivants ont été renvoyés&nbsp;:</h2>
     </header>
 
     <main>
-        <p>Message d'erreur&nbsp;:</p>
-        <p class="error">
-            {$msg}
-        </p>    
+EOP;
+
+    foreach ($messages as $msg) {
+        $ret .= '<p class="error">' . $msg . "</p>\n" ;
+    }
+
+    $ret .= <<< EOP
     </main>
 
   </body>
 </html>
 EOP;
+
+    return $ret;
 }

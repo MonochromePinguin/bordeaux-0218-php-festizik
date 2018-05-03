@@ -52,8 +52,10 @@ abstract class AbstractController
     * store an error message IF an errorStore is present
     * @param string
     */
-    protected function storeMsg( string $string ) {
-        if ( $this->errorStore )
-            $this->errorStore->storeMsg( $string );
+    protected function storeMsg(string $string)
+    {
+        if ($this->errorStore) {
+            $this->errorStore->storeMsg($string);
+        }
     }
 }
