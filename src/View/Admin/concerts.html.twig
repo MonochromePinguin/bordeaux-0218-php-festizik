@@ -222,7 +222,7 @@ _ jquery hook to show # of modified items, modified entries, ...
           </div>
 
 
-           <div id="oneConcertBlock">
+ {#          <div id="oneConcertBlock">
                <article class="bordered m-2 container">
                   <form method="POST" action="" class="unHiddenable">
                        <div>
@@ -237,7 +237,7 @@ _ jquery hook to show # of modified items, modified entries, ...
                            <label class="mr-2">
                                Date&nbsp:
                                <input type="date" name="concertDate" required
-                                       {# beware of the format we NEED to send to the browser : "Y-m-d"! #}
+                                       #}{# beware of the format we NEED to send to the browser : "Y-m-d"! #}{#
                                       value="{{ 'now' | date('Y-m-d') }}">
 
                                <p class="showInputInfo">
@@ -290,8 +290,9 @@ _ jquery hook to show # of modified items, modified entries, ...
                    </form>
                </article>
 
-          </div> {# #oneConcertBlock #}
+          </div> #}{# #oneConcertBlock #}
 
+            
           <div id="concertListBlock">
 
             {# ADDITION OF A NEW ENTRY #}
