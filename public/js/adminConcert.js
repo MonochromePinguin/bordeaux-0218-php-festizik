@@ -2,26 +2,9 @@
 ( function() {
     $(document).ready( function() {
 
-        //these two callbacks are used to show / hide the different view blocks
-        //
- /*       $('#radiooneConcert').click(function () {
-            $('.radioconcertList').removeClass('active');
-            $(this).addClass('active');
+//TODO: INSERT CODE FOR THE ONE-BLOCK-ONLY VIEW HERE:
+// « these two callbacks are used to show / hide the different view blocks »
 
-            $('#concertListBlock').addClass('hidden');
-            $('#oneConcertBlock').removeClass('hidden');
-        });
-        $('#radioconcertList').click(function () {
-            $('.radiooneConcert').removeClass('active');
-            $(this).addClass('active');
-
-            $('#oneConcertBlock').addClass('hidden');
-            $('#concertListBlock').removeClass('hidden');
-        });
-
-        $('#radio' + viewMode).click();
-
-*/
         //the image associated to an artist change depending on the
         // <select> element content;
         // URLimgs[] is defined in a script into the <head> element
