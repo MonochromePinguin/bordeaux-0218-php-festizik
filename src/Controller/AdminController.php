@@ -91,7 +91,7 @@ class AdminController extends AbstractController
 
     }
 
-    }
+    
 
     public function adminArtist()
     {
