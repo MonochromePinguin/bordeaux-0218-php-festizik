@@ -7,7 +7,6 @@ class ConcertManager extends AbstractManager
 
     const AVAILABLE_SORT_CRITERIAS = [
         [ 'name' => 'Day', 'label' => 'journée' ],
-        [ 'name' => 'ArtistName', 'label' => "nom d'artiste" ],
         [ 'name' => 'Scene', 'label' => 'scène' ]
     ];
 
@@ -19,9 +18,53 @@ class ConcertManager extends AbstractManager
     {
         Concert::initStatics();
         parent::__construct(static::TABLE);
+
     }
 
 
+    /**
+     * Insert ONE row into the DB
+     * @param array $values an associative array storing the values for the new row
+     * @return bool the result of PDOPreparedStatement::execute()
+     */
+    public function insert(array $values): bool
+    {
+        $query = static::$pdoConnection->prepare("INSERT INTO $this->table ( id_day, hour, id_scene, id_artist, cancelled )
+                VALUES ( :day, :hour, :scene, :artist, :cancelled )");
+
+        $query->bindValue(':day', $values['id_day'], \PDO::PARAM_INT);
+        $query->bindValue(':hour', $values['hour'], \PDO::PARAM_STR);
+        $query->bindValue(':scene', $values['id_scene'], \PDO::PARAM_INT);
+        $query->bindValue(':artist', $values['id_artist'], \PDO::PARAM_INT);
+        $query->bindValue(':cancelled', $values['cancelled'], \PDO::PARAM_INT);
+
+        return $query->execute();
+    }
+
+
+    public function update(int $id, array $values): bool
+    {
+        $query = static::$pdoConnection->prepare(
+            "UPDATE $this->table SET id_day = :idDay, hour = :hour, id_scene  = :idScene, id_artist = :idArtist, cancelled = :cancelled WHERE id = :id"
+        );
+
+        $query->bindValue(':id', $id, \PDO::PARAM_INT);
+        $query->bindValue(':idDay', $values['id_day'], \PDO::PARAM_INT);
+        $query->bindValue(':hour', $values['hour'], \PDO::PARAM_STR);
+        $query->bindValue(':idScene', $values['id_scene'], \PDO::PARAM_INT);
+        $query->bindValue(':idArtist', $values['id_artist'], \PDO::PARAM_INT);
+        $query->bindValue(':cancelled', $values['cancelled'], \PDO::PARAM_INT);
+
+        return $query->execute();
+    }
+
+
+//TODO : write insertMultiple() : multiple values in ONE SQL request, for more efficiency
+
+
+//-------- sorting function --------
+
+//TODO: this should be generalized to all tables into AbstractManager
     /**
      * Insert ONE row into the DB
      * @param array $values an associative array storing the values for the new row
@@ -100,5 +143,17 @@ class ConcertManager extends AbstractManager
         # a callable is definable by an array [ Object, method, params... ],
         # perhaps the only way when you must reference a static method ...
         return  usort($list, [ 'Model\Concert', $sortFunc ]);
+    }
+
+    public function selectAllByDay($day, $scene)
+    {
+        return static::$pdoConnection->query("SELECT hour, Scene.name AS Scene, Artist.name AS Artist, Day.name AS Day
+          FROM Concert 
+          JOIN Scene ON id_scene = Scene.id  
+          JOIN Artist ON id_artist = Artist.id  
+          JOIN Day ON id_day = Day.id
+          WHERE id_day = $day
+          AND id_scene = $scene",
+            \PDO::FETCH_CLASS, $this->className)->fetchAll();
     }
 }

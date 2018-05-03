@@ -117,8 +117,7 @@ _ jquery hook to show # of modified items, modified entries, ...
                 <p class="mb-0 font-weight-bold font-weight-italic">Trier&nbsp;...</p>
 
                 <label class="form-group">
-                    <input type="checkbox" class="btn btn-info checkbox-highlight"
-                           name="sortInverted" {% if sortInverted is not null %}checked{% endif %}>
+                    <input type="checkbox" class="btn btn-info checkbox-highlight" name="sortInverted" {{sortInvertedState}}>
                     Ordre inversé
                 </label>
 

@@ -13,7 +13,7 @@ p, .barreNav a {
     font-family : 'Open Sans', sans-serif;
 }
 
-.date, .titleInfos, .titleDay, .artist h3 {
+.date, .titleInfos, .titleDay, .artist h3, .day-concert {
     font-family : 'neon';
 }
 
@@ -23,8 +23,11 @@ body {
 }
 
 ::-webkit-scrollbar {
-display: none;
+    display : none;
 }
+
+
+
 /* -------- NAVBAR -------- */
 .barreNav {
     background-color : rgba(253, 185, 64, 0.9);
@@ -39,7 +42,7 @@ display: none;
     display    : inline-block;
 }
 
-.barreNav div {
+#navbarSupportedContent {
     height     : 85vh;
     text-align : center;
 }
@@ -175,7 +178,7 @@ display: none;
 
 
 
-.wallpaper{ 
+.wallpaper{
     background-image: url(https://media.giphy.com/media/wzxnvSVAMEjC0/giphy.gif);
     background-repeat: no-repeat;
     background-size: 1920px 981px;
@@ -204,7 +207,7 @@ display: none;
     padding    : 2% 4%;
 }
 
-.infos-header {
+.infos-header, .prog-header {
     color : white;
 }
 
@@ -226,6 +229,7 @@ display: none;
     margin-bottom : 8%;
     margin-left   : 5%;
     color         : #009685;
+    animation     : zoomIn 1s;
 }
 
 .infos {
@@ -248,11 +252,6 @@ display: none;
     color : #009685;
 }
 
-.billetterie:hover {
-    color           : white;
-    text-decoration : none;
-}
-
 /* -------- BILLETTERIE -------- */
 .billetterieTitle {
     text-align : center;
@@ -265,16 +264,19 @@ display: none;
 }
 
 .firstDay {
-    background-color : #00B6A2;
+    background-color : #007A84;
+    animation        : fadeInLeft 1s;
 }
 
 .secondDay {
     background-color : #009685;
     margin           : 15px 0;
+    animation        : fadeInDown 1s;
 }
 
 .thirdDay {
-    background-color : #007A84;
+    background-color : #00B6A2;
+    animation        : fadeInRight 1s;
 }
 
 .bjr {
@@ -340,6 +342,7 @@ display: none;
     height          : auto;
     margin          : 6% auto;
     justify-content : space-around;
+    animation       : bounceInUp 1s;
 }
 
 .btnReservation {
@@ -367,7 +370,28 @@ display: none;
     margin-top       : 3%;
 }
 
+/* -------- PROGRAMMATION -------- */
+.prog-scene {
+    color: white;
+    background-color: rgba(0, 182, 162, 0.6);
+    border-radius: 10px;
+}
 
+.prog-scene h2 {
+    padding-top: 3%;
+}
+
+.day-concert {
+    color : white;
+
+    margin-top : 5%;
+}
+
+.prog-concert {
+    justify-content : space-evenly;
+    margin-bottom: 5%;
+
+}
 
 /* -------- MEDIA QUERIES -------- */
 
@@ -380,6 +404,41 @@ display: none;
     }
 
     /* -------- NAVBAR -------- */
+    @-webkit-keyframes slideIn {
+        from {
+            -webkit-transform: translate3d(-20%, 0, 0);
+            transform: translate3d(-20%, 0, 0);
+            visibility: visible;
+        }
+
+        to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @keyframes slideIn{
+        from {
+            -webkit-transform: translate3d(-20%, 0, 0);
+            transform: translate3d(-20%, 0, 0);
+            visibility: visible;
+        }
+
+        to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    .slideIn {
+        -webkit-animation-name: slideIn;
+        animation-name: slideIn;
+    }
+
+    .barreNav li a:hover {
+        animation : pulse 1s;
+    }
+
     .barreNav {
         min-width        : 7.5%;
         height           : 100vh;
@@ -389,19 +448,32 @@ display: none;
         background-color : rgba(58, 56, 62, 0.6);
     }
 
+    .barreNav:hover {
+        animation : slideIn 1s;
+    }
+
+    .navBarre {
+        width  : 100%;
+        height : 100%;
+    }
+
+    .navbar {
+        padding : 0;
+    }
+
     .logo {
-        background : url("/assets/images/favicon.png") no-repeat round;
-        position   : absolute;
-        height     : 10%;
-        width      : 100%;
-        top        : 3%;
+        background  : url("/assets/images/favicon.png") no-repeat round;
+        position    : absolute;
+        height      : 10%;
+        top         : 3%;
+        margin-left : 16%;
     }
 
     .barreNav:hover .logo {
-        background : url("/assets/images/logo.png") no-repeat round;
-        height     : 13%;
-        width      : 55%;
-        margin     : 0 14%;
+        background  : url("/assets/images/logo.png") no-repeat round;
+        height      : 13vh;
+        margin-left : 24%;
+        top         : 3%;
     }
 
     #navbarSupportedContent {
@@ -409,7 +481,9 @@ display: none;
     }
 
     .barreNav:hover #navbarSupportedContent {
-        display : block !important;
+        display    : block !important;
+        padding    : .5rem 1rem;
+        margin-top : 20%;
     }
 
     .barreNav ul {
@@ -431,6 +505,43 @@ display: none;
     }
 
     /* -------- VIDEO -------- */
+    @-webkit-keyframes rotate {
+        from {
+            -webkit-transform-origin : center;
+            transform-origin         : center;
+            -webkit-transform        : rotate(360deg);
+            transform                : rotate(360deg);
+        }
+
+        to {
+            -webkit-transform-origin : center;
+            transform-origin         : center;
+            -webkit-transform        : rotate(0deg);
+            transform                : rotate(0deg);
+        }
+    }
+
+    @keyframes rotate {
+        from {
+            -webkit-transform-origin : center;
+            transform-origin         : center;
+            -webkit-transform        : rotate(360deg);
+            transform                : rotate(360deg);
+        }
+
+        to {
+            -webkit-transform-origin : center;
+            transform-origin         : center;
+            -webkit-transform        : rotate(0deg);
+            transform                : rotate(0deg);
+        }
+    }
+
+    .rotate {
+        -webkit-animation-name : rotateIn;
+        animation-name         : rotateIn;
+    }
+
     .video {
         height : 92vh;
     }
@@ -439,9 +550,21 @@ display: none;
         right : 0;
     }
 
-    .content img {
-        width : auto;
-        top   : 30%;
+    .content .index-logo {
+        width      : auto;
+        top        : 30%;
+        transition : opacity 1s ease-in;
+        animation  : rotate 1s ease-in infinite;
+        position   : relative;
+    }
+
+    .content .index-logo-mini {
+        width      : auto;
+        top        : 106%;
+        transition : opacity 1s ease-in;
+        animation  : zoomIn 1s ease-in 0.2s;
+        position   : absolute;
+        left       : 37.5%;
     }
 
     /* -------- FOOTER -------- */
@@ -463,7 +586,7 @@ display: none;
     }
 
     /* -------- BENEVOLES -------- */
-    .benevole-header, .infos-header, .artist-header, .billetterie-header {
+    .benevole-header, .infos-header, .artist-header, .billetterie-header, .prog-header {
         text-align       : center;
         background-color : #FDB940;
         padding-top      : 2%;
@@ -495,8 +618,10 @@ display: none;
 
     /* -------- INFOS PRATIQUES ------- */
     .date {
-        margin-left   : 24vw;
+        margin-left   : 0;
         margin-bottom : 5%;
+        width         : 100%;
+        text-align    : center;
     }
 
     .presentation {
@@ -512,10 +637,21 @@ display: none;
         background-color : rgba(58, 52, 62, 0.6);
         box-shadow       : 5px 5px 20px black;
         border-radius    : 3%;
+        animation        : rotateInUpRight 1s;
+    }
+
+    .googleMap {
+        animation        : rotateInUpLeft 1s;
+        background-image : url("assets/images/map.jpg");
     }
 
     .titleInfos {
         margin : 4% auto;
+    }
+
+    .billetterie:hover {
+        color           : white;
+        text-decoration : none;
     }
 
     /* -------- BILLETTERIE -------- */
@@ -542,6 +678,10 @@ display: none;
         width : 8vw;
     }
 
+    .btnReservation:hover {
+        animation : tada 1s;
+    }
+
     .btn-1:hover, .btn-2:hover {
         background-color : #007A84;
     }
@@ -554,21 +694,11 @@ display: none;
         background-color : #009685;
     }
 
-    /* -------- ARTISTES -------- */
-   /* .artist-header {
-        margin-bottom : 5%;
-        color         : white;
+    /* -------- PROGRAMMATION -------- */
+
+    .prog-scene {
+        box-shadow       : 5px 5px 20px black;
+        animation : bounceIn 1s;
     }
-
-    .artist {
-        background-color : rgba(58, 52, 62, 0.6);
-        color            : white;
-    }
-
-    .artist img {
-        width : inherit;
-    }*/
-
-
 }
 

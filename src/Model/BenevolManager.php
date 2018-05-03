@@ -53,5 +53,4 @@ class BenevolManager extends AbstractManager
         $statement->execute();
     }
 
-    }
 }

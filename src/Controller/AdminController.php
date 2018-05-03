@@ -1,9 +1,11 @@
 <?php
+
 namespace Controller;
 
 use Model\AdminBenevolManager;
 use Model\AdminManager;
 use Model\ArticleManager;
+use Model\AdminInfosManager;
 use Model\ArtistManager;
 use Model\BenevolManager;
 use Model\ConcertManager;
@@ -23,7 +25,6 @@ class AdminController extends AbstractController
      */
     public function login()
     {
-//TODO : won't it be better to start the session below after authentication?
         session_start();
 
         $errors = [];
@@ -44,7 +45,7 @@ class AdminController extends AbstractController
             }
         }
 
-        if (!isset($_SESSION['username'])) {
+        if (!isset($_SESSION['username'])  || !empty($errors)) {
             return $this->twig->render('Admin/login.html.twig', ['errors' => $errors]);
         } else {
             header('Location: /admin');
@@ -74,27 +75,28 @@ class AdminController extends AbstractController
         exit;
     }
 
-
     public function adminBenevol()
     {
+        //TODO: ADD SESSION TIMING-OUT AND REFRESHING
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
+        }
         $contentManager = new ArticleManager();
         $benevolManager = new BenevolManager();
 
-
-
-        if (isset($_GET['delete'])){
+        if (isset($_GET['delete'])) {
             $delete = $benevolManager->deleteBenevol($_GET['delete']);
         }
         $benevol = $benevolManager->selectNameId();
-         if ($_POST) {
-            $data = ['title' => $_POST['title'],
-                     'content' => $_POST['content']
-                    ];
-            if (strlen($_POST['picture'])> 0){
-                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+        if ($_POST) {
+            $data = ['title' => $_POST['title'], 'content' => $_POST['content']];
+            if (strlen($_POST['picture']) > 0) {
+                $data['picture'] = '/assets/DBimages/' . $_POST['picture'];
             }
             $contentManager->update(6, $data);
         }
+
         $content = $contentManager->selectOneById(6);
         return $this->twig->render('Admin/adminBenevol.html.twig', ['content'=>$content, 'benevol'=>$benevol]);
         
@@ -201,6 +203,30 @@ class AdminController extends AbstractController
         $sceneNameList = [];
         foreach ($artists as $artist) {
             $name = $artist->getName();
+        return $this->twig->render('Admin/adminBenevol.html.twig', ['content' => $content, 'benevol' => $benevol]);
+    }
+  
+  
+    public function adminInfos()
+    {
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
+        }
+        $infosManager = new ArticleManager();
+
+
+        if ($_POST) {
+            $data = ['title' => $_POST['title'],
+                'content' => $_POST['content']];
+            $infosManager->update(7, $data);
+        }
+
+
+        $infos = $infosManager->selectAll();
+        $title = $infos[1]->getTitle();
+        $content = $infos[1]->getContent();
+        return $this->twig->render('Admin/adminInfos.html.twig', ['title' => $title, 'content' => $content]);
 
             $artistNameList[] = $name;
             $artistImgList[$name] = $artist->getImageURL();
@@ -224,8 +250,14 @@ class AdminController extends AbstractController
         }
     }
 
+
     public function adminArtist()
     {
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
+        }
+
         $artistManager = new ArtistManager();
         $styleManager = new StyleManager();
         $styles = $styleManager->selectStyle();
@@ -235,7 +267,7 @@ class AdminController extends AbstractController
                      'about' => $_POST['about'],
                      'id_style' => $_POST['id_style']];
             if (strlen($_POST['picture']) > 0) {
-                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+                $data['picture'] = '/assets/DBimages/' . $_POST['picture'];
             }
             if (isset($_GET['artistSelect'])) {
                 $artistManager->update($_GET['artistSelect'], $data);
@@ -252,6 +284,142 @@ class AdminController extends AbstractController
         return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'styles' => $styles]);
     }
 
+    public function benevolContentUpdated()
+    {
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
+        }
+
+        $BenevolManager = new AdminBenevolManager();
+        $benevol = $BenevolManager->benevolContentUpdate($_POST);
+        return $this->twig->render('Admin/logged.html.twig');
+    }
+
+    public function concerts()
+    {
+        //TODO: ADD SESSION TIMING-OUT AND REFRESHING
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
+        }
+
+        $sceneManager = new SceneManager($this->errorStore);
+        $scenes = $sceneManager->selectAll('name');
+
+        $artistManager = new ArtistManager($this->errorStore);
+        $artists = $artistManager->selectAll('name');
+
+        $dayManager = new DayManager($this->errorStore);
+        $days = $dayManager->selectAll('date');
+
+        $concertManager = new ConcertManager($this->errorStore);
+        $concerts = $concertManager->selectAll();
+
+        //sort criterias sent in the URL
+        $sortBy = null;
+        $sortInverted = false;
+
+        #allow to sort data out of the model, so we save an SQL request
+        static $props = null;
+        if (null === $props) {
+            $props = $concertManager::getAvailableSortCriterias();
+        }
+
+        ## STORING DATA ##
+        #
+        if (0 !== count($_POST)) {
+            #list of allowed actions and associated functions ; these one are
+            # activated by a classical POST page-reload
+            $actionKeys = ['addOneNewConcert', 'deleteOneConcert', 'modifyOneConcert'];
+            $actionFunctions = ['addOneConcert', 'deleteOneConcert', 'updateOneConcert'];
+
+//TODO : Should validate ALL parameters before doing anything,
+// instead of validation at the time of action
+// – and use $this->storeMsg('Cette page n\'accepte pas l\'action «' . $key . '» par la méthode POST');
+
+            #did at least an action succefully run and changed something?
+            # → we need to reload the datas
+            $actionFlag = false;
+
+//TODO : for now we are open to multiple actions in a same POST request, so we do that in a loop
+            $l = count($actionFunctions);
+            foreach ($_POST as $key => $value) {
+                for ($i = 0; $i < $l; ++$i) {
+                    if ($key == $actionKeys[$i]) {
+                        #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
+                        $func = $actionFunctions[$i];
+                        if ($this->$func($concertManager, $dayManager, $concerts, $artists, $scenes, $days, $_POST)) {
+                            $actionFlag = true;
+                        }
+                    }
+                }
+            }
+
+//TODO : We need to load datas for validation, ok, but can we do this better
+//than by reloading the whole set ?
+            if ($actionFlag) {
+                $scenes = $sceneManager->selectAll('name');
+                #no need to reload the artists, we don't modify them
+                $days = $dayManager->selectAll('date');
+
+                #reload the static arrays, because some of them could have changed
+                Concert::initStatics();
+                $concerts = $concertManager->selectAll();
+            }
+        }
+
+
+        ## SORTING DATA ##
+        #
+        if (0 !== count($_GET)) {
+            ## the goal of a GET method is to sort the available datas
+            # into the controller, thus saving some SQL different requests
+            if (isset($_GET['sortBy'])) {
+                $sortBy = $_GET['sortBy'];
+
+                if (!$concertManager->sortArray($concerts, $sortBy)) {
+                    $this->storeMsg('Le paramètre de tri «' . $sortBy . '» n\'est pas valide');
+                }
+            }
+
+            if (isset($_GET['sortInverted'])) {
+                $sortInverted = 'checked';
+                $concerts = array_reverse($concerts);
+            } else {
+                $sortInverted = '';
+            }
+        }
+
+
+        #these 3 lists are parameters for twig
+        $artistNameList = [];
+        $artistImgList = [];
+        $sceneNameList = [];
+        foreach ($artists as $artist) {
+            $name = $artist->getName();
+
+            $artistNameList[] = $name;
+            $artistImgList[$name] = $artist->getImageURL();
+        }
+        foreach ($scenes as $scene) {
+            $sceneNameList[] = $scene->getName();
+        }
+
+        try {
+            return $this->twig->render('Admin/concerts.html.twig', ['sortableProperties' => $props,
+
+                'concerts' => $concerts, #these two are used by the template to generate options in select elements
+                'sceneNames' => $sceneNameList, 'artistNames' => $artistNameList, 'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
+
+                'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
+                'sortInvertedState' => $sortInverted,    # 'checked' or ''
+
+                'errorList' => $this->errorStore ? $this->errorStore->formatAllMsg() : null]);
+        } catch (\Exception $e) {
+            return generateEmergencyPage('Erreur de génération de la page', [$e->getMessage()]);
+        }
+    }
 
     ## adminConcert Page functions ##
     # THESE FUNCTIONS NEED TO FOLLOW THE SAME PROTOTYPE.
@@ -332,6 +500,8 @@ class AdminController extends AbstractController
             if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste')
             || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène')
             ) {
+            if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste') || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène')) {
+
                 $this->storeMsg('requête invalide : propriété absente');
                 return false;
             }
@@ -342,6 +512,7 @@ class AdminController extends AbstractController
             return false;
         }
     }
+
 
 
     private function updateOneConcert(
@@ -420,6 +591,8 @@ class AdminController extends AbstractController
                 'id de concert'
             )
         ) {
+        if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste') || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène') || !$this->checkValid($values['idConcertToUpdate'], $concerts, 'getId', $idConcertToUpdate, 'id de concert')) {
+
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         }
@@ -431,8 +604,6 @@ class AdminController extends AbstractController
             return false;
         }
     }
-
-
 
     /**
      * check if a day entry exist for the date given into $dateToTest,
@@ -487,8 +658,7 @@ class AdminController extends AbstractController
         string $getterName,
         &$toVar,
         $errName
-    ): bool {
-
+    ): bool {    
         foreach ($into as $item) {
             if ($lookedFor == $item->$getterName()) {
                 $toVar = $item->getId();
@@ -530,11 +700,11 @@ class AdminController extends AbstractController
             $id,
             'Concert'
         )) {
+
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         };
-
- //TODO: DELETE THE DAY ENTRY IF NO MORE REFERENCES
+      
         try {
             $concertManager->delete($id);
             return true;

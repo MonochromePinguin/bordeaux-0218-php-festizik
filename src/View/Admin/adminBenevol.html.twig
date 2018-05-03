@@ -49,7 +49,7 @@
     <h2>Liste des candidats bénévoles</h2>
   </div>
 <div class="container listBenevole">
-  <table class="table table-hover"> 
+  <table class="table table-hover">
     <thead>
       <td scope="col" class="font-weight-bold">Prenom</td>
       <td scope="col" class="font-weight-bold">Nom</td>
@@ -66,7 +66,7 @@
       <td>{{ benevole.disponibility_end }}</td>
       <td><form method="get"><button class="submit btn btn-danger" type="submit" value="{{ benevole.id }}" name="delete">supprimer</button></form></td>
     </tr>
-                    
+
   {% endfor %}
   </table>
 </div>

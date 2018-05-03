@@ -51,6 +51,19 @@
     background : #FFF;
 }
 
+/*******************INFORMATIONS*****************************/
+.adminInfosTitle{
+    text-align: center;
+}
+
+.txtInfos{
+    height: 50vh;
+}
+
+.btnInfos{
+    padding-left: 175px;
+}
+
 /*******************BENEVOLES*****************************/
 .benevolTitle {
     display         : flex;
@@ -94,6 +107,11 @@
 }
 
 
+/* -------- ARTISTES -------- */
+
+.artist-form {
+    width: 100%;
+}
 
     /* ---------------------------------------------------
     MEDIAQUERIES
