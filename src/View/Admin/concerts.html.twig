@@ -13,15 +13,8 @@
 ● style : grisé, avec marqué «passé» pr anciens concerts ...
           itout /rouge pr les "annulés"
 ● affichage par défaut : une section / critère de tri
-● retour visuel non-JS :
-    pattern pour l'heure
-    si heure entrée pas bien ...
-● retour visuel JS :
-si heure entrée == mauvais format
-si date/heure fin < date/heure départ
 ● retour d'erreur ...
-_ JS : BdDial confirmation suppression enreg. en .needJS
-    → version sans JS : formulaire caché rendu visible par input:checked ...
+_ version sans JS : formulaire caché rendu visible par input:checked ...
 
 _ NOTE : This page will work at two levels:
  1) without JS. all is done through server-side validation
@@ -122,12 +115,37 @@ _ jquery hook to show # of modified items, modified entries, ...
                     Ordre inversé
                 </label>
 
-                <button type="submit" class="btn btn-info m-2 float-right"
-                        {% if actualSort %} name="sortBy" value="{{ actualSort }}" {% endif %}
-                        title="recharger la page avec les même critères de tri">
-                    <img src="/assets/images/sync.svg" alt="">
-                    Recharger la page
-                </button>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info m-2 float-right"
+                            {% if actualSort %} name="sortBy" value="{{ actualSort }}" {% endif %}
+                            title="recharger la page avec les même critères de tri">
+                        <img src="/assets/images/sync.svg" alt="">
+                        Recharger la page
+                    </button>
+
+                    <div class="btn-group btn-group-toggle"
+                         role="group"
+                         data-toggle="buttons">
+
+{#
+                        <label class="btn btn-secondary float-right>" id="radiooneConcert">
+                            <input type="radio" name="viewMode"
+                                    value="oneConcert" autocomplete="off"
+                                    {% if (viewMode == "oneConcert") or (viewMode == "") %}checked{% endif %}>
+                                un sélecteur pour tout les concerts
+                        </label>
+
+                        <label class="btn btn-secondary float-right>" id="radioconcertList">
+                            <input type="radio" name="viewMode"
+                                    value="concertList" autocomplete="off"
+                                    {% if viewMode == "concertList" %}checked{% endif %}>
+                                liste de concerts
+                        </label>
+#}
+
+                    </div> {# .btn-group .btn-group-toggle #}
+
+                </div> {# .form-group #}
 
 
                 <div class="form-group">
@@ -139,19 +157,18 @@ _ jquery hook to show # of modified items, modified entries, ...
                         </button>
                     {% endfor %}
 
-                </div>
+                </div> {# .form-group #}
 
             </form>
         </nav>
 
 
-
         <main>
 
-            {# HIDDEN FORM FOR DELETE CONFIRMATION #}
-            {##}
-            <div class="modal fade" id="confirmDelete" tabindex="-1"
-                 role="dialog" aria-hidden="true">
+          {# HIDDEN FORM FOR DELETE CONFIRMATION #}
+          {##}
+          <div class="modal fade" id="confirmDelete" tabindex="-1"
+               role="dialog" aria-hidden="true">
 
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -202,8 +219,80 @@ _ jquery hook to show # of modified items, modified entries, ...
                     </div> <!-- .modal-content -->
 
                 </div> <!-- .modal-dialog -->
-            </div>
+          </div>
 
+
+           <div id="oneConcertBlock">
+               <article class="bordered m-2 container">
+                  <form method="POST" action="" class="unHiddenable">
+                       <div>
+                           <img class="img-fluid float-right img-thumbnail downsized"
+                                src="" title="" alt="">
+                       </div>
+
+                       {% set selectedScene = '' %}
+                       {{ block('selectForScene') }}
+
+                       <div class="form-group">
+                           <label class="mr-2">
+                               Date&nbsp:
+                               <input type="date" name="concertDate" required
+                                       {# beware of the format we NEED to send to the browser : "Y-m-d"! #}
+                                      value="{{ 'now' | date('Y-m-d') }}">
+
+                               <p class="showInputInfo">
+                                   format de date invalide. Utiliser «jj/mm/AAAA»
+                               </p>
+                           </label>
+
+                           <label>
+                               Heure&nbsp:
+                               <input name="hour" required
+                                      title="heure du concert – heures puis minutes séparés par un h, deux-points, tiret ou espace"
+                                      pattern="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
+                                      value="{{ 'now' | date('H\\hi') }}">
+
+                               <p class="showInputInfo">
+                                   format de l'heure invalide. Utiliser «HH:MM», «HHhMM», «HH-MM» ou
+                                   «HH
+                                   MM»
+                               </p>
+                           </label>
+                       </div>
+
+                       {% set selectedArtist = '' %}
+                       {{ block('selectForArtist') }}
+
+                       <div class="form-group">
+                           <label class="form-group">
+                               <input type="checkbox" name="cancelledConcert">
+                               <span class="cancelled"></span>
+                           </label>
+
+                           <button type="submit" name="addOneNewConcert"
+                                   class="btn btn-primary m-2 float-right"
+                                   title="Envoyer les changements effectués vers le serveur">
+                            <span class="badge badge-light">
+                                <img src="/assets/images/cloud-upload.svg" alt="">
+                            </span>
+                               Envoyer
+                           </button>
+
+                           <button type="reset" class="btn btn-secondary m-2 float-right"
+                                   title="Annuler cet ajout">
+                            <span class="badge badge-light">
+                                <img src="/assets/images/trashcan.svg" alt="">
+                            </span>
+                               Annuler
+                           </button>
+                       </div>
+
+                   </form>
+               </article>
+
+          </div> {# #oneConcertBlock #}
+
+          <div id="concertListBlock">
 
             {# ADDITION OF A NEW ENTRY #}
             {##}
@@ -392,7 +481,9 @@ _ jquery hook to show # of modified items, modified entries, ...
                 <p>Aucun événement enregistré</p>
             </article>
 
-           {% endfor %}
+          {% endfor %}
+
+          </div> {# #concertListBlock #}
 
         </main>
     </div> {# .container #}
@@ -403,7 +494,10 @@ _ jquery hook to show # of modified items, modified entries, ...
 
     {# import a PHP array (formated as JSON) to a JS variable,
         that will be used by JS to associate an image url #}
-    <script>URLimgs = {{ URLimgs | raw }};</script>
+    <script>
+        URLimgs = {{ URLimgs | raw }};
+        viewMode = {{ jsViewMode | raw }};
+    </script>
     <script src="/js/adminConcert.js"></script>
 {% endblock %}
 

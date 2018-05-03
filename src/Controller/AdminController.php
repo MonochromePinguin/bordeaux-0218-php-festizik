@@ -115,6 +115,7 @@ class AdminController extends AbstractController
         //sort criterias sent in the URL
         $sortBy = null;
         $sortInverted = false;
+        $viewMode = '';
 
         #allow to sort data out of the model, so we save an SQL request
         static $props = null;
@@ -185,6 +186,15 @@ class AdminController extends AbstractController
             } else {
                 $sortInverted = '';
             }
+
+            if (isset($_GET['viewMode'])) {
+                $viewMode = $_GET['viewMode'];
+
+                if (!in_array($viewMode, ['concertList', 'oneConcert'])) {
+                    $this->storeMsg('Le paramètre d\'affichage «' . $viewMode .'» n\'est pas valide');
+                    $viewMode = '';
+                }
+            }
         }
 
 
@@ -206,10 +216,14 @@ class AdminController extends AbstractController
             return $this->twig->render('Admin/concerts.html.twig', ['sortableProperties' => $props,
 
                     'concerts' => $concerts, #these two are used by the template to generate options in select elements
-                    'sceneNames' => $sceneNameList, 'artistNames' => $artistNameList, 'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
+                    'sceneNames' => $sceneNameList,
+                    'artistNames' => $artistNameList,
+                    'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES), #used by JS
+                    'jsViewMode' => json_encode(($viewMode != '') ? $viewMode : 'oneConcert'), #used by JS
 
                     'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
                     'sortInvertedState' => $sortInverted,    # 'checked' or ''
+                    'viewMode' => $viewMode,                 # 'concertList', 'oneConcert', or ''
 
                     'errorList' => $this->errorStore ? $this->errorStore->formatAllMsg() : null]);
         } catch (\Exception $e) {
