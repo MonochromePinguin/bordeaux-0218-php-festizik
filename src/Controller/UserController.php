@@ -1,8 +1,6 @@
 <?php
 namespace Controller;
 
-require_once __DIR__ . '/../Misc/functions.php';
-
 use Model\ArtistManager;
 use Model\Concert;
 use Model\ConcertManager;

@@ -75,7 +75,7 @@ class AdminController extends AbstractController
     }
 
     public function adminBenevol()
-
+    {
         //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
         if (empty($_SESSION['username'])) {
@@ -84,22 +84,21 @@ class AdminController extends AbstractController
         $contentManager = new ArticleManager();
         $benevolManager = new BenevolManager();
 
-        if (isset($_GET['delete'])){
+        if (isset($_GET['delete'])) {
             $delete = $benevolManager->deleteBenevol($_GET['delete']);
         }
         $benevol = $benevolManager->selectNameId();
-         if ($_POST) {
-            $data = ['title' => $_POST['title'],
-                     'content' => $_POST['content']
-                    ];
-            if (strlen($_POST['picture'])> 0){
-                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+        if ($_POST) {
+            $data = ['title' => $_POST['title'], 'content' => $_POST['content']];
+            if (strlen($_POST['picture']) > 0) {
+                $data['picture'] = '/assets/DBimages/' . $_POST['picture'];
             }
             $contentManager->update(6, $data);
         }
 
         $content = $contentManager->selectOneById(6);
-        return $this->twig->render('Admin/adminBenevol.html.twig', ['content'=>$content, 'benevol'=>$benevol]);
+        return $this->twig->render('Admin/adminBenevol.html.twig', ['content' => $content, 'benevol' => $benevol]);
+    }
   
   
     public function adminInfos()
@@ -162,7 +161,7 @@ class AdminController extends AbstractController
         return $this->twig->render('Admin/logged.html.twig');
     }
 
- public function concerts()
+    public function concerts()
     {
         //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();

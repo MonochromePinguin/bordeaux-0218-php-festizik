@@ -67,7 +67,7 @@ class ConcertManager extends AbstractManager
     /**
     * returns an array of all sort criteria usable in sortConcertArray()
     */
-    public static function getAvailableSortCriteria() : array
+    public static function getAvailableSortCriterias() : array
     {
         return static::AVAILABLE_SORT_CRITERIAS;
     }
