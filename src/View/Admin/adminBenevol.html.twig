@@ -11,19 +11,22 @@
 
 {% block content %}
 <div class="container benevolTitle">
-	<h1>Administrateur de la page Benevoles</h1>
+	<h1>Administrateur de la page Bénévoles</h1>
 </div>
+<div class="container benevolContent">
+    <h2>Contenu de la page Bénévoles</h2>
+  </div>
 <form class="container benevoleForm" method="POST">
-  <div class="form-group row">
+  <div class="form-group row textPut">
     <label class="col-sm-2 col-form-label">Question</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="title" id="article" value="{{ question }}">
+      <input type="text" class="form-control" name="title" id="article" value="{{ content.title }}">
     </div>
   </div>
   <div class="form-group row">
     <label class="col-sm-2 col-form-label">Texte</label>
     <div class="col-sm-10">
-      <textarea type="text" class="form-control" name="content" id="article" value="">{{ beneContent }}</textarea>
+      <textarea type="text" class="form-control" name="content" id="article" value="">{{ content.content }}</textarea>
     </div>
   </div>
   <div class="form-group row">
@@ -33,7 +36,7 @@
     </div>
   </div>
     <div class="picture container">
-      <img class="rounded mx-auto d-block img-thumbnail " src="{{ picture }}">
+      <img class="rounded mx-auto d-block img-thumbnail " src="{{ content.picture }}">
     </div>
   <div class="form-group row container upDateBene">
     <div class="col-sm-10">
@@ -42,5 +45,30 @@
     </div>
   </div>
 </form>
+  <div class="container benevolList">
+    <h2>Liste des candidats bénévoles</h2>
+  </div>
+<div class="container listBenevole">
+  <table class="table table-hover"> 
+    <thead>
+      <td scope="col" class="font-weight-bold">Prenom</td>
+      <td scope="col" class="font-weight-bold">Nom</td>
+      <td scope="col" class="font-weight-bold">Téléphone</td>
+      <td scope="col" class="font-weight-bold">Début</td>
+      <td scope="col" class="font-weight-bold">Fin</td>
+    </thead>
+  {% for benevole in benevol %}
+    <tr>
+      <td>{{ benevole.name }}</td>
+      <td>{{ benevole.surname }}</td>
+      <td>{{ benevole.phone }}</td>
+      <td>{{ benevole.disponibility_start }}</td>
+      <td>{{ benevole.disponibility_end }}</td>
+      <td><form method="get"><button class="submit btn btn-danger" type="submit" value="{{ benevole.id }}" name="delete">supprimer</button></form></td>
+    </tr>
+                    
+  {% endfor %}
+  </table>
+</div>
 
 {% endblock %}

@@ -12,6 +12,7 @@ use Model\AdminManager;
 use Model\ArticleManager;
 use Model\ArtistManager;
 use Model\AdminBenevolManager;
+use Model\BenevolManager;
 use Model\StyleManager;
 
 /**
@@ -70,9 +71,14 @@ class AdminController extends AbstractController
 
      public function adminBenevol()
     {
-        $benevolManager = new ArticleManager();
+        $contentManager = new ArticleManager();
+        $benevolManager = new BenevolManager();
 
 
+        if (isset($_GET['delete'])){
+            $delete = $benevolManager->deleteBenevol($_GET['delete']);
+        }
+        $benevol = $benevolManager->selectNameId();
          if ($_POST) {
             $data = ['title' => $_POST['title'],
                      'content' => $_POST['content']
@@ -80,13 +86,10 @@ class AdminController extends AbstractController
             if (strlen($_POST['picture'])> 0){
                 $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
             }
-            $benevolManager->update(6, $data);
+            $contentManager->update(6, $data);
         }
-        $benevol = $benevolManager->selectAll();
-        $title = $benevol[0]->getTitle();
-        $content = $benevol[0]->getContent();
-        $picture = $benevol[0]->getPicture();
-        return $this->twig->render('Admin/adminBenevol.html.twig', ['question'=>$title, 'beneContent'=>$content, 'picture'=>$picture]);
+        $content = $contentManager->selectOneById(6);
+        return $this->twig->render('Admin/adminBenevol.html.twig', ['content'=>$content, 'benevol'=>$benevol]);
 
     }
 

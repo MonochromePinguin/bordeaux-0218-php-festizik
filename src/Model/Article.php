@@ -38,7 +38,7 @@ Class Article
         return $this->content;
     }
 
-    public function getPicture() : string
+    public function getPicture(): string
     {
         return $this->picture;
     }

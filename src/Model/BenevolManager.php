@@ -23,6 +23,11 @@ class BenevolManager extends AbstractManager
     {
         parent::__construct(self::TABLE);
     }
+
+     public function selectNameId()
+    {
+        return static::$pdoConnection->query("SELECT * FROM $this->table", \PDO::FETCH_ASSOC)->fetchAll();
+    }
      /**
      * INSERT one row in dataase
      *
@@ -39,6 +44,13 @@ class BenevolManager extends AbstractManager
         $statement->bindValue(':dispoEnd', $data['dispoEnd']);
         $statement->execute();
         }
+
+    public function deleteBenevol($id)
+    {
+        $statement = $this::$pdoConnection->prepare("DELETE FROM $this->table WHERE id = :id");
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
 
    
 }
