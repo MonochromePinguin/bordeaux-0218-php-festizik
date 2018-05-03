@@ -9,9 +9,8 @@ use Model\ConcertManager;
 use Model\Concert;
 use Model\DayManager;
 use Model\SceneManager;
+use Model\BenevolManager;
 use Model\StyleManager;
-
-
 
 /**
  *  Class AdminController
@@ -39,7 +38,9 @@ class AdminController extends AbstractController
                 } else {
                     $errors[] = 'Le nom d\'utilisateur et/ou le mot de passe est incorrect.';
                 }
-            } catch (\Exception $e) {
+            }
+            catch (\Exception $e)
+            {
                 echo $e->getMessage();
             }
         }
@@ -77,19 +78,33 @@ class AdminController extends AbstractController
 
     public function adminBenevol()
     {
+
         //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
         if (empty($_SESSION['username'])) {
             return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
         }
-
-        $benevolManager = new ArticleManager();
+        $contentManager = new ArticleManager();
+        $benevolManager = new BenevolManager();
         $benevol = $benevolManager->selectAll();
 
-        $title = $benevol[0]->getTitle();
-        $content = $benevol[0]->getContent();
-        $picture = $benevol[0]->getPicture();
-        return $this->twig->render('Admin/adminBenevol.html.twig', ['question'=>$title, 'beneContent'=>$content, 'picture'=>$picture]);
+
+        if (isset($_GET['delete'])){
+            $delete = $benevolManager->deleteBenevol($_GET['delete']);
+        }
+        $benevol = $benevolManager->selectNameId();
+         if ($_POST) {
+            $data = ['title' => $_POST['title'],
+                     'content' => $_POST['content']
+                    ];
+            if (strlen($_POST['picture'])> 0){
+                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+            }
+            $contentManager->update(6, $data);
+        }
+        $content = $contentManager->selectOneById(6);
+        return $this->twig->render('Admin/adminBenevol.html.twig', ['content'=>$content, 'benevol'=>$benevol]);
+
     }
 
     public function adminInfos()
@@ -104,10 +119,10 @@ class AdminController extends AbstractController
 
 
         if ($_POST) {
-    $data = ['title' => $_POST['title'],
-        'content' => $_POST['content']];
-        $infosManager->update(7, $data);
-            }
+            $data = ['title' => $_POST['title'],
+                'content' => $_POST['content']];
+            $infosManager->update(7, $data);
+        }
 
 
         $infos = $infosManager->selectAll();
@@ -117,12 +132,9 @@ class AdminController extends AbstractController
 
     }
 
-
-
     public function adminArtist()
     {
         $artistManager = new ArtistManager();
-
         $styleManager = new StyleManager();
         $styles = $styleManager->selectStyle();
 
