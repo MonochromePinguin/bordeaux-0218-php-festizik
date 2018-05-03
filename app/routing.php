@@ -17,6 +17,7 @@ $routes = [
         ['concerts', '/admin/concerts', ['POST', 'GET']],
         ['benevolContentUpdated', '/admin/logged', 'POST'],
         ['adminBenevol', '/admin/benevole', ['POST', 'GET']],
+        ['adminInfos', '/admin/infos', ['POST', 'GET']],
         ['adminArtist', '/admin/artistes', ['POST', 'GET']],
     ],
 

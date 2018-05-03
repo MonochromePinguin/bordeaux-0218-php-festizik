@@ -2,23 +2,28 @@
 
 {% block title %}Festizik - Les artistes {% endblock %}
 
+{% block stylesheet %}
+    <link href="assets/css/artistStyle.css" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="artist-header">
-            <h1>Les artistes</h1>
+    <div class="container artistCont">
+            <div class="artist-header">
+            <h1 class="bigTitle">Les artistes</h1>
             <hr>
-        </div>
-        <div class="row">
-            {% for artist in artists %}
-                <figure class="artist col-md-4 col-6">
-                    <h3>{{ artist.name }}</h3>
-                    <img src="{{ artist.ImageURL }}">
-                    <figcaption>
-                        <p>{{ artist.Description }}</p>
-                    </figcaption>
-                </figure>
-            {% endfor %}
+            </div>
+        <div class="row artistGallery">
+                {% for artist in artists %}
+                    <div class="col-4 hovereffect artPhoto overflow-x-scroll-no-scrollbar row">
+                        <img class="img-fluid pic" src="{{ artist.ImageURL }}" alt="">
+                        <div class="overlay layover">
+                            <h2 class="bigName">{{ artist.name }}</h2>
+                            <p>
+                                {{ artist.Description | raw }}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
         </div>
 
     </div>

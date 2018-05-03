@@ -103,7 +103,7 @@ class Concert
      * returns the concert's hour as a SQL time string (HH:MM:SS)
      * @return string
      */
-    public function getHour(): string
+    public function getHour()
     {
         return $this->hour;
     }

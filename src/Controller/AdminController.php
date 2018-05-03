@@ -4,12 +4,14 @@ namespace Controller;
 use Model\AdminBenevolManager;
 use Model\AdminManager;
 use Model\ArticleManager;
+use Model\AdminInfosManager;
 use Model\ArtistManager;
 use Model\ConcertManager;
 use Model\Concert;
 use Model\DayManager;
 use Model\SceneManager;
 use Model\StyleManager;
+use Model\ConcertManager;
 
 /**
  *  Class AdminController
@@ -22,9 +24,7 @@ class AdminController extends AbstractController
      */
     public function login()
     {
-//TODO : won't it be better to start the session below after authentication?
         session_start();
-
         $errors = [];
 
         if ($_POST) {
@@ -43,7 +43,8 @@ class AdminController extends AbstractController
             }
         }
 
-        if (!isset($_SESSION['username'])) {
+
+        if (!isset($_SESSION['username'])  || !empty($errors)) {
             return $this->twig->render('Admin/login.html.twig', ['errors' => $errors]);
         } else {
             header('Location: /admin');
@@ -73,20 +74,74 @@ class AdminController extends AbstractController
         exit;
     }
 
-
     public function adminBenevol()
     {
         $benevolManager = new ArticleManager();
         $benevol = $benevolManager->selectAll();
 
+         if ($_POST) {
+            $data = ['title' => $_POST['title'],
+                     'content' => $_POST['content']
+                    ];
+            if (strlen($_POST['picture'])> 0){
+                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+            }
+            $benevolManager->update(6, $data);
+        }
+        $benevol = $benevolManager->selectAll();
         $title = $benevol[0]->getTitle();
         $content = $benevol[0]->getContent();
         $picture = $benevol[0]->getPicture();
-        return $this->twig->render('Admin/adminBenevol.html.twig', ['question' => $title, 'beneContent' => $content, 'picture' => $picture]);
+        return $this->twig->render('Admin/adminBenevol.html.twig', ['question'=>$title, 'beneContent'=>$content, 'picture'=>$picture]);
+    }
+  
+    public function adminInfos()
+    {
+        $infosManager = new ArticleManager();
+        $infos = $infosManager->selectAll();
+        $title = $infos[1]->getTitle();
+        $content = $infos[1]->getContent();
+        return $this->twig->render('Admin/adminInfos.html.twig', ['title' => $title, 'content' => $content]);
+    }
+
+    public function adminArtist()
+    {
+        $artistManager = new ArtistManager();
+        $styleManager = new StyleManager();
+        $styles = $styleManager->selectStyle();
+
+        if ($_POST) {
+            $data = ['name' => $_POST['name'],
+                     'about' => $_POST['about'],
+                     'id_style' => $_POST['id_style']];
+            if (strlen($_POST['picture']) > 0) {
+                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
+            }
+            if (isset($_GET['artistSelect'])) {
+                $artistManager->update($_GET['artistSelect'], $data);
+            } else {
+                $artistManager->insert();
+            }
+        }
+
+        $artists = $artistManager->selectNameId();
+        if (isset($_GET['artistSelect'])) {
+            $artistId = $artistManager->selectOneById($_GET['artistSelect']);
+            return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'artistId' => $artistId, 'styles' => $styles]);
+        }
+        return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'styles' => $styles]);
+    }
+
+    public function benevolContentUpdated()
+    {
+        $BenevolManager = new AdminBenevolManager();
+        $benevol = $BenevolManager->benevolContentUpdate($_POST);
+        return $this->twig->render('Admin/logged.html.twig');
     }
 
 
-    public function concerts()
+  
+ public function concerts()
     {
         //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
@@ -208,35 +263,6 @@ class AdminController extends AbstractController
             return generateEmergencyPage('Erreur de génération de la page', [$e->getMessage()]);
         }
     }
-
-    public function adminArtist()
-    {
-        $artistManager = new ArtistManager();
-        $styleManager = new StyleManager();
-        $styles = $styleManager->selectStyle();
-
-        if ($_POST) {
-            $data = ['name' => $_POST['name'],
-                     'about' => $_POST['about'],
-                     'id_style' => $_POST['id_style']];
-            if (strlen($_POST['picture']) > 0) {
-                $data['picture'] = '/assets/DBimages/'.$_POST['picture'];
-            }
-            if (isset($_GET['artistSelect'])) {
-                $artistManager->update($_GET['artistSelect'], $data);
-            } else {
-                $artistManager->insert();
-            }
-        }
-
-        $artists = $artistManager->selectNameId();
-        if (isset($_GET['artistSelect'])) {
-            $artistId = $artistManager->selectOneById($_GET['artistSelect']);
-            return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'artistId' => $artistId, 'styles' => $styles]);
-        }
-        return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'styles' => $styles]);
-    }
-
 
     ## adminConcert Page functions ##
     # THESE FUNCTIONS NEED TO FOLLOW THE SAME PROTOTYPE.
