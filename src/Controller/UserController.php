@@ -21,70 +21,26 @@ class UserController extends AbstractController
 
     public function concerts()
     {
-        try {
-            $concertManager = new ConcertManager($this->errorStore);
-            $concerts = $concertManager->selectAll();
-        } catch (\Exception $e) {
-//TODO: TEST IT WORKS ALSO WITH PDO IN PRODUCTION ENV
-            #if something went wrong, show the user some apologies
-            echo generateEmergencyPage(
-                'Une erreur critique est survenue',
-                [ $e->getMessage() ]
-            );
-            exit;
-        }
 
-        $sortBy = null;
-
-        #allow to sort data out of the model, so we save an SQL request
-        static $props = null;
-
-
-        if (null === $props) {
-            $props = $concertManager::getAvailableSortCriterias();
-        }
-
-        if (0 !== count($_GET)) {
-            ## the goal of a GET method is to sort the available datas
-            # into the controller, thus saving some SQL different requests
-            if (isset($_GET['sortBy'])) {
-                $sortBy = $_GET['sortBy'];
-
-                if (! $concertManager->sortArray($concerts, $sortBy)) {
-                    $this->storeMsg(
-                        'Le paramètre de tri «' . $sortBy
-                        . '» n\'est pas valide'
-                    );
-                }
-            } else {
-                $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');
-            };
-        }
-
-
-        if (0 !== count($_POST)) {
-            $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec la méthode POST');
-        }
-
-        # retrieve a list of actually used artist names...
-        $artistNames = [];
-        foreach ($concerts as $concert) {
-            $artistNames[] = $concert->getArtist()->getName();
-        }
-        $artistNames = array_unique($artistNames);
-        sort($artistNames);
-
-        return $this->twig->render(
-            'User/concerts.html.twig',
-            [
-                'artistNames' => $artistNames,
-                'sortableProperties' => $props,
-                'concerts' => $concerts,
-                'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
-                'errorList' => $this->errorStore ?
-                    $this->errorStore->formatAllMsg() : null
-            ]
-        );
+        $concertManager = new ConcertManager();
+        $concertsD1S1 = $concertManager->selectAllByDay(1, 1);
+        $concertsD1S2 = $concertManager->selectAllByDay(1, 2);
+        $concertsD1S3 = $concertManager->selectAllByDay(1, 3);
+        $concertsD2S1 = $concertManager->selectAllByDay(2, 1);
+        $concertsD2S2 = $concertManager->selectAllByDay(2, 2);
+        $concertsD2S3 = $concertManager->selectAllByDay(2, 3);
+        $concertsD3S1 = $concertManager->selectAllByDay(3, 1);
+        $concertsD3S2 = $concertManager->selectAllByDay(3, 2);
+        $concertsD3S3 = $concertManager->selectAllByDay(3, 3);
+        return $this->twig->render('User/concerts.html.twig', ['concerts' => $concertsD1S1,
+                                                                     'concerts2' => $concertsD1S2,
+                                                                     'concerts3' => $concertsD1S3,
+                                                                     'concerts4' => $concertsD2S1,
+                                                                     'concerts5' => $concertsD2S2,
+                                                                     'concerts6' => $concertsD2S3,
+                                                                     'concerts7' => $concertsD3S1,
+                                                                     'concerts8' => $concertsD3S2,
+                                                                     'concerts9' => $concertsD3S3]);
     }
 
     public function artists()
@@ -117,8 +73,13 @@ class UserController extends AbstractController
         return $this->twig->render('User/insertedBenevol.html.twig');
     }
 
-    public function infos()
+        public function infos()
     {
-        return $this->twig->render('User/infos.html.twig');
+        $infosManager = new ArticleManager();
+        $infos = $infosManager->selectAll();
+
+        $title = $infos[1]->getTitle();
+        $content = $infos[1]->getContent();
+        return $this->twig->render('User/infos.html.twig', ['date'=>$title, 'content'=>$content]);
     }
 }

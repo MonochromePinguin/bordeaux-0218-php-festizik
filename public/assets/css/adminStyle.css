@@ -55,16 +55,67 @@
     background : #FFF;
 }
 
+/*******************INFORMATIONS*****************************/
+.adminInfosTitle{
+    text-align: center;
+}
+
+.txtInfos{
+    height: 50vh;
+}
+
+.btnInfos{
+    padding-left: 175px;
+}
+
 /*******************BENEVOLES*****************************/
 .benevolTitle {
     display         : flex;
     justify-content : center;
 }
 
-.benevoleForm {
-    margin-top : 250px;
+.textPut{
+  margin-top: 30px;
 }
 
+.benevoleForm {
+    margin-top : 70px;
+    border:1px solid black;
+}
+
+.picture {
+  justify-content: center;
+  width: 400px;
+  height: 300px;
+}
+
+.upDateBene {
+  padding-left: 120px;
+}
+
+.benevolList{
+    display         : flex;
+    justify-content : center;
+    margin-top: 100px;
+    margin-bottom: 60px;
+}
+
+.listBenevole{
+  margin-bottom: 50px;
+}
+
+.benevolContent{
+    display         : flex;
+    justify-content : center;
+    margin-top: 100px;
+}
+
+
+/* -------- ARTISTES -------- */
+
+.artist-form {
+    width: 100%;
+}
 
     /* ---------------------------------------------------
     MEDIAQUERIES
@@ -86,5 +137,4 @@
       #sidebarCollapse span {
         display: none;
       }
-
 }

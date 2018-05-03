@@ -13,24 +13,24 @@
     <div class="container">
         <h1 class="text-center">Modifier un artiste</h1>
         <hr>
-        <form method="get">
-            <label for="artistSelect">Artistes :</label>
-            <select id="artistSelect" name="artistSelect" class="form-control col-md-3">
+        <form method="get" class="d-flex">
+            <label for="artistSelect" class="col-form-label">Artistes :</label>
+            <select id="artistSelect" name="artistSelect" class="form-control col-md-3 mx-4">
                 {% for artist in artists %}
                     <option value="{{ artist.id }}" name="artistId">{{ artist.AN }}  ({{ artist.SN }})</option>
                 {% endfor %}
             </select>
-            <input type="submit" value="Modifier">
+            <input type="submit" value="Modifier" class="btn btn-primary">
         </form>
         <hr>
         <div class="row">
-            <form method="post">
-                <div class="row">
-                    <div class="form-group col-md-4">
+            <form method="post" class="artist-form">
+                <div class="d-flex">
+                    <div class="form-group  col-md-4">
                         <label for="name" class="col-form-label">Nom de l'artiste :</label>
                         <input type="text" value="{{ artistId.name }}" id="name" name="name" class="form-control">
                     </div>
-                    <div class="form-group col-md-4 col-form-label">
+                    <div class="form-group col-form-label col-md-4">
                         <label for="id_style">Style :</label>
                         <select id="id_style" name="id_style" class="form-control">
                             {% for style in styles %}
@@ -39,19 +39,21 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group col-md-12">
                     <label for="about" class="col-form-label">Description :</label>
-                    <textarea name="about" id="about" class="col-md-4 form-control">{{ artistId.Description }}</textarea>
+                    <textarea name="about" id="about" class="form-control">{{ artistId.Description }}</textarea>
                 </div>
                 <div class="form-group d-flex">
-                    <img src="{{ artistId.ImageURL }}" class="img-thumbnail col-md-4">
+                    {% if artistId.ImageURL %}
+                        <img src="{{ artistId.ImageURL }}" class="img-thumbnail col-md-4">
+                    {% endif %}
                     <div class="col-md-6">
                         <label for="img" class=" col-md-4">Image :</label>
                         <input type="file" id="picture" name="picture" class="form-control">
                     </div>
 
                 </div>
-                <input type="submit" value="Enregistrer" id="submit" name="submit">
+                <input type="submit" value="Enregistrer" id="submit" name="submit" class="btn btn-primary my-3">
             </form>
         </div>
     </div>

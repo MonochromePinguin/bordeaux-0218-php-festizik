@@ -9,7 +9,8 @@ namespace Model;
 
 class Article
 {
-    private $id_article;
+
+    private $id;
     private $title;
     private $id_page;
     private $picture;
@@ -22,7 +23,8 @@ class Article
      */
     public function getId(): int
     {
-        return $this->id_article;
+
+        return $this->id;
     }
 
    /**
@@ -38,8 +40,34 @@ class Article
         return $this->content;
     }
 
-    public function getPicture() : string
+    public function getPicture(): string
+	{
+		return $this->picture;
+	}
+
+
+        /**
+     * @param mixed $name
+     */
+    public function setTitle($title)
     {
-        return $this->picture;
+        $this->title = $title;
+    }
+
+
+    /**
+     * @param mixed $id_style
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @param mixed $picture
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
     }
 }
