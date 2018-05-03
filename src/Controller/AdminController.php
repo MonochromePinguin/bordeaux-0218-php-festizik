@@ -138,9 +138,7 @@ class AdminController extends AbstractController
         $styles = $styleManager->selectStyle();
 
         if ($_POST) {
-            $data = ['name' => $_POST['name'],
-                     'about' => $_POST['about'],
-                     'id_style' => $_POST['id_style']];
+            $data = ['name' => $_POST['name'], 'about' => $_POST['about'], 'id_style' => $_POST['id_style']];
             if (strlen($_POST['picture']) > 0) {
                 $data['picture'] = '/assets/DBimages/' . $_POST['picture'];
             }
@@ -150,6 +148,7 @@ class AdminController extends AbstractController
                 $artistManager->insert();
             }
         }
+    }
 
     public function benevolContentUpdated()
     {
@@ -256,6 +255,7 @@ class AdminController extends AbstractController
                 $concerts = array_reverse($concerts);
             } else {
                 $sortInverted = '';
+            }
 
             if (isset($_GET['viewMode'])) {
                 $viewMode = $_GET['viewMode'];
