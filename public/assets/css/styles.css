@@ -644,20 +644,12 @@ body {
         background-color : #009685;
     }
 
-    /* -------- ARTISTES -------- */
-    /* .artist-header {
-         margin-bottom : 5%;
-         color         : white;
-     }
+    /* -------- PROGRAMMATION -------- */
 
-     .artist {
-         background-color : rgba(58, 52, 62, 0.6);
-         color            : white;
-     }
-
-     .artist img {
-         width : inherit;
-     }*/
+    .prog-scene {
+        box-shadow       : 5px 5px 20px black;
+        animation : bounceIn 1s;
+    }
 
 }
 
