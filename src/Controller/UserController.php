@@ -1,7 +1,6 @@
 <?php
 namespace Controller;
 
-
 require_once __DIR__ . '/../Misc/functions.php';
 
 use Model\ArtistManager;
@@ -24,6 +23,7 @@ class UserController extends AbstractController
 
     public function concerts()
     {
+
         $concertManager = new ConcertManager();
         $concertsD1S1 = $concertManager->selectAllByDay(1, 1);
         $concertsD1S2 = $concertManager->selectAllByDay(1, 2);
@@ -43,6 +43,39 @@ class UserController extends AbstractController
                                                                      'concerts7' => $concertsD3S1,
                                                                      'concerts8' => $concertsD3S2,
                                                                      'concerts9' => $concertsD3S3]);
+
+        $sortBy = null;
+
+        #allow to sort data out of the model, so we save an SQL request
+        static $props = null;
+
+
+        if (null === $props) {
+            $props = $concertManager::getAvailableSortCriterias();
+        }
+
+        if (0 !== count($_GET)) {
+            ## the goal of a GET method is to sort the available datas
+            # into the controller, thus saving some SQL different requests
+            if (isset($_GET['sortBy'])) {
+                $sortBy = $_GET['sortBy'];
+
+                if (! $concertManager->sortArray($concerts, $sortBy)) {
+                    $this->storeMsg(
+                        'Le paramètre de tri «' . $sortBy
+                        . '» n\'est pas valide'
+                    );
+                }
+            } else {
+                $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');
+            };
+        }
+
+
+        if (0 !== count($_POST)) {
+            $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec la méthode POST');
+        }
+
     }
 
     public function artists()
@@ -50,10 +83,9 @@ class UserController extends AbstractController
         $artistManager = new ArtistManager();
         $artists = $artistManager->selectAll();
         return $this->twig->render('User/artist.html.twig', ['artists' => $artists]);
-
     }
 
-        public function benevol()
+    public function benevol()
     {
         $benevolManager = new ArticleManager();
         $benevol = $benevolManager->selectAll();
@@ -78,11 +110,13 @@ class UserController extends AbstractController
 
         public function infos()
     {
+
         $infosManager = new ArticleManager();
         $infos = $infosManager->selectAll();
 
         $title = $infos[1]->getTitle();
         $content = $infos[1]->getContent();
         return $this->twig->render('User/infos.html.twig', ['date'=>$title, 'content'=>$content]);
+
     }
 }

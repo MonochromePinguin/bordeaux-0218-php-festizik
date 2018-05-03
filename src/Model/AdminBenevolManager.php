@@ -27,9 +27,5 @@ class AdminBenevolManager extends AbstractManager
 
     public function editBenevol($id, $data)
     {
-        
     }
-     
-        
 }
-        
