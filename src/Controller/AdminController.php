@@ -11,6 +11,7 @@ use Model\Concert;
 use Model\DayManager;
 use Model\SceneManager;
 use Model\StyleManager;
+use Model\BenevolManager;
 
 
 /**
