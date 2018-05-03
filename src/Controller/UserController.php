@@ -20,7 +20,7 @@ class UserController extends AbstractController
     }
 
     public function concerts()
-    {
+    {     
 
         $concertManager = new ConcertManager();
         $concertsD1S1 = $concertManager->selectAllByDay(1, 1);

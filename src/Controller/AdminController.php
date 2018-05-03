@@ -7,12 +7,12 @@ use Model\AdminManager;
 use Model\ArticleManager;
 use Model\AdminInfosManager;
 use Model\ArtistManager;
+use Model\BenevolManager;
 use Model\ConcertManager;
 use Model\Concert;
 use Model\DayManager;
 use Model\SceneManager;
 use Model\StyleManager;
-use Model\BenevolManager;
 
 /**
  *  Class AdminController
@@ -26,6 +26,7 @@ class AdminController extends AbstractController
     public function login()
     {
         session_start();
+
         $errors = [];
 
         if ($_POST) {
@@ -97,6 +98,111 @@ class AdminController extends AbstractController
         }
 
         $content = $contentManager->selectOneById(6);
+        return $this->twig->render('Admin/adminBenevol.html.twig', ['content'=>$content, 'benevol'=>$benevol]);
+        
+    }
+
+
+    public function concerts()
+    {
+        //TODO: ADD SESSION TIMING-OUT AND REFRESHING
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['La page d\'administration des concerts n\'est pas accessible sans identification']]);
+        }
+
+        $sceneManager = new SceneManager($this->errorStore);
+        $scenes = $sceneManager->selectAll('name');
+
+        $artistManager = new ArtistManager($this->errorStore);
+        $artists = $artistManager->selectAll('name');
+
+        $dayManager = new DayManager($this->errorStore);
+        $days = $dayManager->selectAll('date');
+
+        $concertManager = new ConcertManager($this->errorStore);
+        $concerts = $concertManager->selectAll();
+
+        //sort criterias sent in the URL
+        $sortBy = null;
+        $sortInverted = false;
+
+        #allow to sort data out of the model, so we save an SQL request
+        static $props = null;
+        if (null === $props) {
+            $props = $concertManager::getAvailableSortCriterias();
+        }
+
+        ## STORING DATA ##
+        #
+        if (0 !== count($_POST)) {
+            #list of allowed actions and associated functions ; these one are
+            # activated by a classical POST page-reload
+            $actionKeys = ['addOneNewConcert', 'deleteOneConcert', 'modifyOneConcert'];
+            $actionFunctions = ['addOneConcert', 'deleteOneConcert', 'updateOneConcert'];
+
+//TODO : Should validate ALL parameters before doing anything,
+// instead of validation at the time of action
+// – and use $this->storeMsg('Cette page n\'accepte pas l\'action «' . $key . '» par la méthode POST');
+
+            #did at least an action succefully run and changed something?
+            # → we need to reload the datas
+            $actionFlag = false;
+
+//TODO : for now we are open to multiple actions in a same POST request, so we do that in a loop
+            $l = count($actionFunctions);
+            foreach ($_POST as $key => $value) {
+                for ($i = 0; $i < $l; ++$i) {
+                    if ($key == $actionKeys[$i]) {
+                        #So ... ¿ We cannot use directly $this->$actionFunctions[$i] ?
+                        $func = $actionFunctions[$i];
+                        if ($this->$func($concertManager, $dayManager, $concerts, $artists, $scenes, $days, $_POST)) {
+                            $actionFlag = true;
+                        }
+                    }
+                }
+            }
+
+//TODO : We need to load datas for validation, ok, but can we do this better
+//than by reloading the whole set ?
+            if ($actionFlag) {
+                $scenes = $sceneManager->selectAll('name');
+                #no need to reload the artists, we don't modify them
+                $days = $dayManager->selectAll('date');
+
+                #reload the static arrays, because some of them could have changed
+                Concert::initStatics();
+                $concerts = $concertManager->selectAll();
+            }
+        }
+
+
+        ## SORTING DATA ##
+        #
+        if (0 !== count($_GET)) {
+            ## the goal of a GET method is to sort the available datas
+            # into the controller, thus saving some SQL different requests
+            if (isset($_GET['sortBy'])) {
+                $sortBy = $_GET['sortBy'];
+
+                if (!$concertManager->sortArray($concerts, $sortBy)) {
+                    $this->storeMsg('Le paramètre de tri «' . $sortBy . '» n\'est pas valide');
+                }
+            }
+
+            if (isset($_GET['sortInverted'])) {
+                $sortInverted = true;
+                $concerts = array_reverse($concerts);
+            }
+        }
+
+
+        #these 3 lists are parameters for twig
+        $artistNameList = [];
+        $artistImgList = [];
+        $sceneNameList = [];
+        foreach ($artists as $artist) {
+            $name = $artist->getName();
         return $this->twig->render('Admin/adminBenevol.html.twig', ['content' => $content, 'benevol' => $benevol]);
     }
   
@@ -122,6 +228,26 @@ class AdminController extends AbstractController
         $content = $infos[1]->getContent();
         return $this->twig->render('Admin/adminInfos.html.twig', ['title' => $title, 'content' => $content]);
 
+            $artistNameList[] = $name;
+            $artistImgList[$name] = $artist->getImageURL();
+        }
+        foreach ($scenes as $scene) {
+            $sceneNameList[] = $scene->getName();
+        }
+
+        try {
+            return $this->twig->render('Admin/concerts.html.twig', ['sortableProperties' => $props,
+
+                    'concerts' => $concerts, #these two are used by the template to generate options in select elements
+                    'sceneNames' => $sceneNameList, 'artistNames' => $artistNameList, 'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
+
+                    'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
+                    'sortInverted' => $sortInverted,    # boolean
+
+                    'errorList' => $this->errorStore ? $this->errorStore->formatAllMsg() : null]);
+        } catch (\Exception $e) {
+            return generateEmergencyPage('Erreur de génération de la page', [$e->getMessage()]);
+        }
     }
 
 
@@ -317,8 +443,15 @@ class AdminController extends AbstractController
      *                          concertDate, hour, scene, artist, cancelled
      * @return bool
      */
-    private function addOneConcert(ConcertManager $concertManager, DayManager $dayManager, array $concerts, array $artists, array $scenes, array $days, array $values)
-    {
+    private function addOneConcert(
+        ConcertManager $concertManager,
+        DayManager $dayManager,
+        array $concerts,
+        array $artists,
+        array $scenes,
+        array $days,
+        array $values
+    ) {
         #the values looked up by $concertManager->insert() into $values are:
         #       id_day, hour, id_scene, id_artist, cancelled
         # and the one found into $_POST[] are:
@@ -364,7 +497,11 @@ class AdminController extends AbstractController
             $usedValues['hour'] = $h . ':00';
 
             #Validity checks
+            if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste')
+            || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène')
+            ) {
             if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste') || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène')) {
+
                 $this->storeMsg('requête invalide : propriété absente');
                 return false;
             }
@@ -377,8 +514,16 @@ class AdminController extends AbstractController
     }
 
 
-    private function updateOneConcert(ConcertManager $concertManager, DayManager $dayManager, array $concerts, array $artists, array $scenes, array $days, array $values)
-    {
+
+    private function updateOneConcert(
+        ConcertManager $concertManager,
+        DayManager $dayManager,
+        array $concerts,
+        array $artists,
+        array $scenes,
+        array $days,
+        array $values
+    ) {
         #the values looked up by $concertManager->update() into $values[] are:
         #       id_day, hour, id_scene, id_artist, cancelled, idConcertToUpdate
         # and the one found into $_POST[] are:
@@ -424,7 +569,30 @@ class AdminController extends AbstractController
 
 
         #Validity checks
+        if (!$this->checkValid(
+            $values['artist'],
+            $artists,
+            'getName',
+            $usedValues['id_artist'],
+            'Artiste'
+        )
+            || !$this->checkValid(
+                $values['scene'],
+                $scenes,
+                'getName',
+                $usedValues['id_scene'],
+                'Nom de Scène'
+            )
+            || !$this->checkValid(
+                $values['idConcertToUpdate'],
+                $concerts,
+                'getId',
+                $idConcertToUpdate,
+                'id de concert'
+            )
+        ) {
         if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste') || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène') || !$this->checkValid($values['idConcertToUpdate'], $concerts, 'getId', $idConcertToUpdate, 'id de concert')) {
+
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         }
@@ -437,14 +605,13 @@ class AdminController extends AbstractController
         }
     }
 
-
     /**
      * check if a day entry exist for the date given into $dateToTest,
      * create one if not, and get back the id of the corresponding Day object
      * intointo &toId
-     * @param string $dateToTest the date as a string in the SQL format YYYY-MM-DD
+     * @param string $dateToTest        the date as a string in the SQL format YYYY-MM-DD
      * @param DayManager $dayManager
-     * @param array $days the array to parse
+     * @param array $days               the array to parse
      * @param $toId
      * @return bool                     true if is a concert id was send back, false otherwise
      */
@@ -478,16 +645,20 @@ class AdminController extends AbstractController
      * $lookedFor, and returns an appropriate boolean ;
      * we eventually store an error message into $this->errorStore
      * @param string $lookedFor
-     * @param array $into array of examinated objects
-     * @param string $getterName name of the getter to use to compare data
+     * @param array $into   array of examinated objects
+     * @param string $getterName     name of the getter to use to compare data
      * @param &$toVar       variable where the id of the corresponding object should be set
-     * @param string|null $errName name of the object for error message,
+     * @param string|null $errName   name of the object for error message,
      *                               or null if nothing is to be shown
      * @return bool
      */
-    private function checkValid(string $lookedFor, array $into, string $getterName, &$toVar, $errName): bool
-    {
-
+    private function checkValid(
+        string $lookedFor,
+        array $into,
+        string $getterName,
+        &$toVar,
+        $errName
+    ): bool {    
         foreach ($into as $item) {
             if ($lookedFor == $item->$getterName()) {
                 $toVar = $item->getId();
@@ -507,20 +678,33 @@ class AdminController extends AbstractController
      * @param ConcertManager $concertManager
      * @param DayManager $dayManager
      * @param array $concerts
-     * @param array $artists unused
-     * @param array $scenes unused
-     * @param array $days unused
-     * @param array $values unused
+     * @param array $artists    unused
+     * @param array $scenes     unused
+     * @param array $days       unused
+     * @param array $values     unused
      */
-    private function deleteOneConcert(ConcertManager $concertManager, DayManager $dayManager, array $concerts, array $artists, array $scenes, array $days, array $values)
-    {
+    private function deleteOneConcert(
+        ConcertManager $concertManager,
+        DayManager $dayManager,
+        array $concerts,
+        array $artists,
+        array $scenes,
+        array $days,
+        array $values
+    ) {
         $id = '';
-        if (!$this->checkValid($values['idConcertToDelete'], $concerts, 'getId', $id, 'Concert')) {
+        if (!$this->checkValid(
+            $values['idConcertToDelete'],
+            $concerts,
+            'getId',
+            $id,
+            'Concert'
+        )) {
+
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         };
-
-        //TODO: DELETE THE DAY ENTRY IF NO MORE REFERENCES
+      
         try {
             $concertManager->delete($id);
             return true;
