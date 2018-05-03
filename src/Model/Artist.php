@@ -1,10 +1,6 @@
 <?php
 namespace Model;
 
-/**
- * Class Item
- *
- */
 class Artist
 {
     private $id;
@@ -17,7 +13,12 @@ class Artist
 
     public static function initStatics()
     {
-        static::$styles = ( new StyleManager() )->selectAll();
+        static::$styles = [];
+
+        //build $styles as an associative array using Artist::id as index
+        foreach ((new StyleManager())->selectAll('id') as $object) {
+            static::$styles[ $object->getId() ] = $object;
+        }
     }
 
     /**
@@ -41,7 +42,7 @@ class Artist
      */
     public function getStyle(): string
     {
-        $style = static::$styles[$this->id_style -1];
+        $style = static::$styles[$this->id_style];
         if ($style) {
             return $this->getName();
         } else {
@@ -49,12 +50,18 @@ class Artist
         }
     }
 
-    public function getImageURL() : string
+    /**
+     * @return string|null
+     */
+    public function getImageURL()
     {
         return $this->picture;
     }
 
-    public function getDescription() : string
+    /**
+     * @return string|null
+     */
+    public function getDescription()
     {
         return $this->about;
     }
@@ -77,6 +84,7 @@ class Artist
 
     /**
      * @param mixed $picture
+     * @returns
      */
     public function setPicture($picture)
     {

@@ -1,43 +1,411 @@
-{% extends 'layout.html.twig' %}
+{# this instruction forces escaping of text #}
+{% autoescape 'html' %}
 
 
-{% block title %}Festizik – administration concerts{% endblock %}
+{% extends 'admin-layout.html.twig' %}
+
+{# TODO :
+● jquery changement aspect / nom boutons !
+● «sélectionner une entrée» ds les 2 combo ...
+// grey out «apply» button when any data is not correct;
+//make the select elements into "create entry" start with "select something";
+//perhaps enforce the pattern in the "hour" entry;
+● style : grisé, avec marqué «passé» pr anciens concerts ...
+          itout /rouge pr les "annulés"
+● affichage par défaut : une section / critère de tri
+● retour visuel non-JS :
+    pattern pour l'heure
+    si heure entrée pas bien ...
+● retour visuel JS :
+si heure entrée == mauvais format
+si date/heure fin < date/heure départ
+● retour d'erreur ...
+_ JS : BdDial confirmation suppression enreg. en .needJS
+    → version sans JS : formulaire caché rendu visible par input:checked ...
+
+_ NOTE : This page will work at two levels:
+ 1) without JS. all is done through server-side validation
+    → write .noJS and warning banner.
+    → la confirmation de suppression se fera par un formulaire caché,
+      généré ds chaque entrée ...
+ 2) with JS
+    → write .needJS. client-side + server-side validation
+_ client-side input validation of hour through JS;
+_ AJAX requests for modifying more than 1 entry per POST request
+_ jquery hook to show # of modified items, modified entries, ...
+#}
+
+{% block title %}Festizik – administration des concerts{% endblock %}
+
+{% block keywords %}festizik,concerts,administration{% endblock %}
 
 
 {% block stylesheet %}
-    <link href="assets/css/admin.css" rel="stylesheet">
+    {{ parent() }}
+    <link rel="stylesheet" href="/assets/css/adminConcert.css">
+{% endblock %}
+
+{% block adminnavbar %}
+    {% include 'admin-navbar.html.twig' %}
+{% endblock %}
+
+{%  block bodyProperties %} class="adminConcert"{% endblock %}
+
+
+{# needed variables : sceneNames[] selectedScene #}
+{% block selectForScene %}
+    <label class="form-group">
+        Scène&nbsp:
+        <select name="scene">
+            {# using scene names instead of their id seems slower but more secure #}
+            {% for name in sceneNames %}
+                <option value="{{ name }}" {% if name == selectedScene %}selected{% endif %}>
+                    {{ name }}
+                </option>
+            {% endfor %}
+
+{#TODO : WRITE JS to make it work #}
+{#TODO : Write .needJS #}
+            {# this one is visible only if JS is operational#}
+ {#               <option value="newScene" class="needJS">
+                    Nouvelle scène&nbsp...
+                </option>
+#}
+        </select>
+    </label>
+{% endblock %}
+
+
+{# need variables : artistNames[] selectedArtist #}
+{% block selectForArtist %}
+    <label class="form-group">
+        Artiste&nbsp;:
+        <select name="artist" class="selectArtist">
+            {% for name in artistNames %}
+                <option value="{{ name }}" {% if name == selectedArtist %}selected{% endif %}>
+                    {{ name }}
+                </option>
+            {% endfor %}
+
+{#TODO : WRITE JS to make it work #}
+{#TODO : Write .needJS #}
+            {# this one is visible only if JS is operational#}
+{#            <option value="newScene" class="needJS">
+                Nouvel artiste&nbsp...
+            </option>
+ #}
+        </select>
+    </label>
 {% endblock %}
 
 
 {% block content %}
-    <header>
-        <h1>Édition du planning concerts</h1>
-    </header
+    <div class="container">
 
-    <hr/>
+        <header>
+            <h1>administration des concerts</h1>
+        </header>
 
-    <main>
+        <hr/>
 
- {# TODO : à écrire ! #}
-      {% for c in concerts %}
-        <article>
-            <header>
-                <h1>le {{ c.date }} à {{ c.hour }}</h1>
-                <h2>à {{ c.scene }}</h2>
-            </header>
+        {% include 'errorList.html.twig' %}
 
-            <main>
-                {# <p>{{ c.artiste.nom }}</p> #}
-                <p>{{ c.artiste.about }}</p>
-            </main>
-        </article>
+        <nav>
+            <form method="GET" action=""
+                  class="border border-info p-2 m-2 sublined">
 
-        {% else %}
+                <p class="mb-0 font-weight-bold font-weight-italic">Trier&nbsp;...</p>
+
+                <label class="form-group">
+                    <input type="checkbox" class="btn btn-info checkbox-highlight"
+                           name="sortInverted" {% if sortInverted is not null %}checked{% endif %}>
+                    Ordre inversé
+                </label>
+
+                <button type="submit" class="btn btn-info m-2 float-right"
+                        {% if actualSort %} name="sortBy" value="{{ actualSort }}" {% endif %}
+                        title="recharger la page avec les même critères de tri">
+                    <img src="/assets/images/sync.svg" alt="">
+                    Recharger la page
+                </button>
+
+
+                <div class="form-group">
+                    {% for prop in sortableProperties %}
+                        <button type="submit" class="btn btn-info m-2 {% if prop.name == actualSort %}active{% endif %}"
+                            title="recharger la page avec un ordre différent de tri"
+                            name="sortBy" value="{{prop.name}}">
+                            par {{prop.label}}
+                        </button>
+                    {% endfor %}
+
+                </div>
+
+            </form>
+        </nav>
+
+
+
+        <main>
+
+            {# HIDDEN FORM FOR DELETE CONFIRMATION #}
+            {##}
+            <div class="modal fade" id="confirmDelete" tabindex="-1"
+                 role="dialog" aria-hidden="true">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                Sûr de vouloir supprimer ce concert&nbsp;?
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal"
+                              aria-label="Close">
+                                <span aria-hidden="true">&times</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p id ="concertInfos"> {# filled by calling button's JS#}
+                            </p>
+                        </div>
+
+                        <div class="modal-footer container-fluid">
+                            <div class="row">
+
+                                <form method="post" action="" class="m-3 col">
+
+                                    <input type="hidden" id="idConcertToDelete"
+                                           name="idConcertToDelete"
+                                           value="" {# filled by JS #}>
+
+                                    <button class="btn btn-danger" id="deleterButton"
+                                            title="Supprimer ce concert"
+                                            name="deleteOneConcert">
+                                        <span class="badge badge-light">
+                                            <img src="/assets/images/trashcan.svg" alt="">
+                                        </span>
+                                        Supprimer
+                                    </button>
+
+                                </form>
+
+                                <button type="button" id="abortDeleteBtn"
+                                        class="m-3 col btn btn-secondary"
+                                        data-dismiss="modal" aria-label="Close">
+                                    NON
+                                </button>
+                            </div> <!-- .row -->
+                        </div> <!--.modal-footer -->
+
+                    </div> <!-- .modal-content -->
+
+                </div> <!-- .modal-dialog -->
+            </div>
+
+
+            {# ADDITION OF A NEW ENTRY #}
+            {##}
+            <article class="bordered m-2 container">
+
+                {# "input[type=checkbox]:checked + elem" trick #}
+                <label for="shower1" class="btn btn-primary" role="button">
+                    <span class="badge badge-light">
+                        <img src="/assets/images/plus.svg" alt="">
+                    </span>
+                    Créer nouvelle entrée ...
+                </label>
+                <input type="checkbox" id="shower1" class="showNext" aria-hidden="true">
+
+                <form method="POST" action="" class="unHiddenable">
+                    <div>
+                        <img class="img-fluid float-right img-thumbnail downsized"
+                             src="" title="" alt="">
+                    </div>
+
+                    {% set selectedScene = '' %}
+                    {{ block('selectForScene') }}
+
+                    <div class="form-group">
+                        <label class="mr-2">
+                            Date&nbsp:
+                            <input type="date" name="concertDate" required
+                                    {# beware of the format we NEED to send to the browser : "Y-m-d"! #}
+                                   value="{{ 'now' | date('Y-m-d') }}">
+
+                            <p class="showInputInfo">
+                                format de date invalide. Utiliser «jj/mm/AAAA»
+                            </p>
+                        </label>
+
+                        <label>
+                            Heure&nbsp:
+                            <input name="hour" required
+                                   title="heure du concert – heures puis minutes séparés par un h, deux-points, tiret ou espace"
+                                   pattern="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
+                                   value="{{ 'now' | date('H\\hi') }}">
+
+                            <p class="showInputInfo">
+                                format de l'heure invalide. Utiliser «HH:MM», «HHhMM», «HH-MM» ou «HH
+                                MM»
+                            </p>
+                        </label>
+                    </div>
+
+                    {% set selectedArtist = '' %}
+                    {{ block('selectForArtist') }}
+
+                    <div class="form-group">
+                        <label class="form-group">
+                            <input type="checkbox" name="cancelledConcert">
+                            <span class="cancelled"></span>
+                        </label>
+
+                        <button type="submit" name="addOneNewConcert"
+                                class="btn btn-primary m-2 float-right"
+                                title="Envoyer les changements effectués vers le serveur">
+                            <span class="badge badge-light">
+                                <img src="/assets/images/cloud-upload.svg" alt="">
+                            </span>
+                            Envoyer
+                        </button>
+
+                        <button type="reset" class="btn btn-secondary m-2 float-right"
+                                title="Annuler cet ajout">
+                            <span class="badge badge-light">
+                                <img src="/assets/images/trashcan.svg" alt="">
+                            </span>
+                            Annuler
+                        </button>
+                    </div>
+
+                </form>
+            </article>
+
+          {# LIST OF ALL PRESENT ENTRIES #}
+          {##}
+          {% for concert in concerts %}
+              <article class="bordered m-2 p-1 container">
+                  <form method="POST" action="">
+
+                      <div class="row">
+
+                           <div class="col-xs-6 col-sm-8 col-lg-10">
+                              {% set selectedScene = concert.SceneName %}
+                              {{ block('selectForScene') }}
+
+                              <div class="form-group">
+                                  <label class="mr-2">
+                                      Date&nbsp:
+                                      <input type="date" name="concertDate" required
+                                              {# beware of the format we NEED to the browser : "Y-m-d"! #}
+                                             value="{{ concert.Date | date('Y-m-d') }}">
+
+                                      <p class="showInputInfo">
+                                          format de date invalide. Utiliser «jj/mm/AAAA»
+                                      </p>
+                                  </label>
+
+                                  <label>
+                                      Heure&nbsp:
+                                      <input name="hour" required
+                                             title="heure du concert – heures puis minutes séparés par un h, deux-points, tiret ou espace"
+                                             pattern="(0?[0-9]|1[0-9]|2[0-3])[-hH: ](0?[0-9]|[1-5][0-9])[mM]?"
+                                             value="{{ concert.hour | date('H\\hi') }}">
+
+                                      <p class="showInputInfo">
+                                          format de l'heure invalide. Utiliser «HH:MM», «HHhMM», «HH-MM»
+                                          ou «HH
+                                          MM»
+                                      </p>
+                                  </label>
+                              </div>
+
+                              {% set selectedArtist = concert.Artist.Name %}
+                              {{ block('selectForArtist') }}
+
+                              <div class="form-group">
+                                  <label>
+                                      <input type="checkbox" name="cancelledConcert"
+                                             {% if concert.cancelled %}checked{% endif %}>
+                                      <span class="cancelled"></span>
+                                  </label>
+                              </div>
+
+                           </div> {# .col... #}
+
+                         {% if concert.Artist.ImageURL %}
+                            <div class="hidden-sm-down col">
+                                <img class="img-fluid float-right img-thumbnail downsized"
+                                       src="{{ concert.Artist.ImageURL }}"
+                                       title="{{ concert.Artist.Name }}"
+                                       alt="image pour «{{ concert.Artist.Name }}» absente">
+                            </div>
+                         {% endif %}
+
+                      </div> {# .row #}
+
+                      <div class="row form-group m-1 justify-content-end">
+
+                          <input type="hidden" name="idConcertToUpdate"
+                                 value="{{ concert.Id }}">
+
+                           <button type="submit" name="modifyOneConcert"
+                                  class="btn btn-primary m-2"
+                                  title="Envoyer les changements effectués vers le serveur">
+                              <span class="badge badge-light">
+                                  <img src="/assets/images/cloud-upload.svg" alt="">
+                              </span>
+                              Envoyer changements
+                          </button>
+
+                          <button type="reset" class="btn btn-secondary m-2"
+                                  title="annuler les changements effectués pour ce concert">
+                              <span class="badge badge-light">
+                                 <img src="/assets/images/sync.svg" alt="">
+                              </span>
+                              Annuler
+                          </button>
+
+                          {#TODO : without JS this button should show a div containing the yes/no buttons,
+                          and so show a different label ... #}
+                          <button type="button"
+                                  class="btn btn-danger m-2 askForDeleteBtn"
+                                  data-target="#confirmDelete" data-toggle="modal"
+                                  data-id-to-delete="{{ concert.Id }}"
+                                  title="Supprimer ce concert (après confirmation)"
+                                  data-infos-concert="{{ concert.Artist.Name }}, le {{ concert.DateAsString }} à {{ concert.hour }}">
+                              <span class="badge badge-light">
+                                  <img src="/assets/images/trashcan.svg" alt="">
+                              </span>
+                              Supprimer ...
+                          </button>
+
+                      </div> {# .row #}
+
+                  </form>
+              </article>
+
+          {% else %}
             <article>
                 <p>Aucun événement enregistré</p>
             </article>
 
-      {% endfor %}
-    </main>
+           {% endfor %}
 
+        </main>
+    </div> {# .container #}
 {% endblock %}
+
+{%  block javascript %}
+    {{ parent() }}
+
+    {# import a PHP array (formated as JSON) to a JS variable,
+        that will be used by JS to associate an image url #}
+    <script>URLimgs = {{ URLimgs | raw }};</script>
+    <script src="/js/adminConcert.js"></script>
+{% endblock %}
+
+
+{% endautoescape %}

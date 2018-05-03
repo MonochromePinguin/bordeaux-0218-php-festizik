@@ -30,49 +30,48 @@ class Benevol
     /**
      * @return int
      */
-     function __construct($id_volunteer, $name, $surname, $phone, $disponibility_start, $disponibility_end)
+    public function __construct($id_volunteer, $name, $surname, $phone, $disponibility_start, $disponibility_end)
     {
-         $this->id_volunteer = $id_volunteer;
-         $this->name = $name;
-         $this->surname = $surname;
-         $this->phone = $phone;
-         $this->disponibility_start = $disponibility_start;
-         $this->disponibility_end = $disponibility_end;
+        $this->id_volunteer = $id_volunteer;
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->phone = $phone;
+        $this->disponibility_start = $disponibility_start;
+        $this->disponibility_end = $disponibility_end;
     }
 
-    function getId_volunteer()
+    public function getId_volunteer()
     {
         return $this->id_volunteer;
     }
 
-    function getName()
+    public function getName()
     {
         return $this->name;
     }
 
-    function getSurname()
+    public function getSurname()
     {
         return $this->surname;
     }
 
-    function getPhone()
+    public function getPhone()
     {
         return $this->phone;
     }
 
-    function getDisponibility_start()
+    public function getDisponibility_start()
     {
         return $this->disponibility_start;
     }
 
-    function getDisponibility_end()
+    public function getDisponibility_end()
     {
         return $this->disponibility_end;
     }
 
-    function getContent()
+    public function getContent()
     {
         return $this->content;
     }
 }
-    

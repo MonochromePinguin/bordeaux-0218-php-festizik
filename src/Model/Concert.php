@@ -10,7 +10,7 @@ use Model\ArtistManager;
 class Concert
 {
     /**
-    * all of these vars are of the same type as theire corresponding field
+    * all of these vars are of the same type as their corresponding field
     * into the DB
     */
     private $id;
@@ -29,9 +29,20 @@ class Concert
 
     public static function initStatics()
     {
-        static::$artists = ( new ArtistManager() )->selectAll();
-        static::$scenes = ( new SceneManager() )->selectAll();
-        static::$days = ( new DayManager() )->selectAll();
+        //these ASSOCIATIVE ARRAYS use the id as index
+        static::$artists = [];
+        static::$scenes = [];
+        static::$days = [];
+
+        foreach ((new ArtistManager())->selectAll('id') as $object) {
+            static::$artists[$object->getId()] = $object;
+        }
+        foreach ((new SceneManager())->selectAll('id') as $object) {
+            static::$scenes[$object->getId()] = $object;
+        }
+        foreach ((new DayManager())->selectAll('id') as $object) {
+            static::$days[$object->getId()] = $object;
+        }
     }
 
 
@@ -43,9 +54,13 @@ class Concert
         return $this->id;
     }
 
+    /**
+     * return concert's day only as a \DateTime object ; return a "Year 0" date in case of error
+     * @return \DateTime
+     */
     public function getDate(): \DateTime
     {
-         $day = static::$days[$this->id_day -1];
+         $day = static::$days[$this->id_day];
         return $day ?
             new \DateTime($day->getDateAsRaw())
             # if an error occurend, returns an as-null-as-possible Date
@@ -53,20 +68,26 @@ class Concert
     }
 
     /**
-     * @return string
+     * @return string the concert's date as a locale-formatted string (french)
      */
     public function getDateAsString(): string
     {
-        $day = static::$days[$this->id_day -1];
+        $day = static::$days[$this->id_day];
         return $day ?
             $day->getDateAsString()
             :  'Index de jour erroné : ' . $this->id_day;
     }
 
+    /**
+     * returns a combination of concert's day 's date and concert's hour
+     *   in a \DateTime object
+     * @return \DateTime
+     */
     public function getDateTime() : \DateTime
     {
         if (! isset($this->dateObject)) {
-            $day = static::$days[$this->id_day -1];
+            $day = static::$days[$this->id_day];
+
             if (isset($day)) {
                 $theDate = $day->getDateAsRaw();
             } else {
@@ -78,16 +99,8 @@ class Concert
         return $this->dateObject;
     }
 
-//TODO : seems unneeded. Delete it if no-one want it.
     /**
-     * @return string
-     */
-    public function getDayName(): string
-    {
-        return 'NON IMPLÉMENTÉ : ' . $this->id_day;
-    }
-
-    /**
+     * returns the concert's hour as a SQL time string (HH:MM:SS)
      * @return string
      */
     public function getHour()
@@ -116,7 +129,7 @@ class Concert
      */
     public function getArtist()
     {
-        return Concert::$artists[$this->id_artist -1]  ??  null;
+        return Concert::$artists[$this->id_artist]  ??  null;
     }
 
     /**
@@ -127,6 +140,7 @@ class Concert
         return $this->cancelled;
     }
 
+## comparison functions ##
 
     /*
      sort functions for use into ConcertManager::sortArray()
