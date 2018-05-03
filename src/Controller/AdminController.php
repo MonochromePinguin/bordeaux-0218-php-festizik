@@ -103,7 +103,6 @@ class AdminController extends AbstractController
   
     public function adminInfos()
     {
-
         session_start();
         if (empty($_SESSION['username'])) {
             return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
@@ -128,6 +127,11 @@ class AdminController extends AbstractController
 
     public function adminArtist()
     {
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
+        }
+
         $artistManager = new ArtistManager();
         $styleManager = new StyleManager();
         $styles = $styleManager->selectStyle();
@@ -156,6 +160,11 @@ class AdminController extends AbstractController
 
     public function benevolContentUpdated()
     {
+        session_start();
+        if (empty($_SESSION['username'])) {
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
+        }
+
         $BenevolManager = new AdminBenevolManager();
         $benevol = $BenevolManager->benevolContentUpdate($_POST);
         return $this->twig->render('Admin/logged.html.twig');
@@ -166,7 +175,7 @@ class AdminController extends AbstractController
         //TODO: ADD SESSION TIMING-OUT AND REFRESHING
         session_start();
         if (empty($_SESSION['username'])) {
-            return $this->twig->render('Admin/login.html.twig', ['errors' => ['La page d\'administration des concerts n\'est pas accessible sans identification']]);
+            return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
         }
 
         $sceneManager = new SceneManager($this->errorStore);
@@ -249,8 +258,10 @@ class AdminController extends AbstractController
             }
 
             if (isset($_GET['sortInverted'])) {
-                $sortInverted = true;
+                $sortInverted = 'checked';
                 $concerts = array_reverse($concerts);
+            } else {
+                $sortInverted = '';
             }
         }
 
@@ -272,13 +283,13 @@ class AdminController extends AbstractController
         try {
             return $this->twig->render('Admin/concerts.html.twig', ['sortableProperties' => $props,
 
-                    'concerts' => $concerts, #these two are used by the template to generate options in select elements
-                    'sceneNames' => $sceneNameList, 'artistNames' => $artistNameList, 'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
+                'concerts' => $concerts, #these two are used by the template to generate options in select elements
+                'sceneNames' => $sceneNameList, 'artistNames' => $artistNameList, 'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
 
-                    'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
-                    'sortInverted' => $sortInverted,    # boolean
+                'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
+                'sortInvertedState' => $sortInverted,    # 'checked' or ''
 
-                    'errorList' => $this->errorStore ? $this->errorStore->formatAllMsg() : null]);
+                'errorList' => $this->errorStore ? $this->errorStore->formatAllMsg() : null]);
         } catch (\Exception $e) {
             return generateEmergencyPage('Erreur de génération de la page', [$e->getMessage()]);
         }
@@ -304,19 +315,9 @@ class AdminController extends AbstractController
      *                      associative array.
      *                      AWAITED KEYS:
      *                          concertDate, hour, scene, artist, cancelled
-
      * @return bool
      */
-    private function addOneConcert(
-        ConcertManager $concertManager,
-        DayManager $dayManager,
-        array $concerts,
-        array $artists,
-        array $scenes,
-        array $days,
-        array $values
-
-    )
+    private function addOneConcert(ConcertManager $concertManager, DayManager $dayManager, array $concerts, array $artists, array $scenes, array $days, array $values)
     {
         #the values looked up by $concertManager->insert() into $values are:
         #       id_day, hour, id_scene, id_artist, cancelled
@@ -363,11 +364,7 @@ class AdminController extends AbstractController
             $usedValues['hour'] = $h . ':00';
 
             #Validity checks
-            if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste')
-
-            || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène')
-
-            ) {
+            if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste') || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène')) {
                 $this->storeMsg('requête invalide : propriété absente');
                 return false;
             }
@@ -380,18 +377,8 @@ class AdminController extends AbstractController
     }
 
 
-    private function updateOneConcert(
-        ConcertManager $concertManager,
-        DayManager $dayManager,
-        array $concerts,
-        array $artists,
-        array $scenes,
-        array $days,
-        array $values
-
-    )
+    private function updateOneConcert(ConcertManager $concertManager, DayManager $dayManager, array $concerts, array $artists, array $scenes, array $days, array $values)
     {
-
         #the values looked up by $concertManager->update() into $values[] are:
         #       id_day, hour, id_scene, id_artist, cancelled, idConcertToUpdate
         # and the one found into $_POST[] are:
@@ -437,29 +424,7 @@ class AdminController extends AbstractController
 
 
         #Validity checks
-        if (!$this->checkValid(
-                $values['artist'],
-                $artists,
-                'getName',
-                $usedValues['id_artist'],
-                'Artiste'
-            )
-
-            || !$this->checkValid(
-                $values['scene'],
-                $scenes,
-                'getName',
-                $usedValues['id_scene'],
-                'Nom de Scène'
-            )
-            || !$this->checkValid(
-                $values['idConcertToUpdate'],
-                $concerts,
-                'getId',
-                $idConcertToUpdate,
-                'id de concert'
-            )
-        ) {
+        if (!$this->checkValid($values['artist'], $artists, 'getName', $usedValues['id_artist'], 'Artiste') || !$this->checkValid($values['scene'], $scenes, 'getName', $usedValues['id_scene'], 'Nom de Scène') || !$this->checkValid($values['idConcertToUpdate'], $concerts, 'getId', $idConcertToUpdate, 'id de concert')) {
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         }
@@ -472,13 +437,14 @@ class AdminController extends AbstractController
         }
     }
 
+
     /**
      * check if a day entry exist for the date given into $dateToTest,
      * create one if not, and get back the id of the corresponding Day object
      * intointo &toId
-     * @param string $dateToTest        the date as a string in the SQL format YYYY-MM-DD
+     * @param string $dateToTest the date as a string in the SQL format YYYY-MM-DD
      * @param DayManager $dayManager
-     * @param array $days               the array to parse
+     * @param array $days the array to parse
      * @param $toId
      * @return bool                     true if is a concert id was send back, false otherwise
      */
@@ -512,24 +478,15 @@ class AdminController extends AbstractController
      * $lookedFor, and returns an appropriate boolean ;
      * we eventually store an error message into $this->errorStore
      * @param string $lookedFor
-     * @param array $into   array of examinated objects
-     * @param string $getterName     name of the getter to use to compare data
+     * @param array $into array of examinated objects
+     * @param string $getterName name of the getter to use to compare data
      * @param &$toVar       variable where the id of the corresponding object should be set
-     * @param string|null $errName   name of the object for error message,
+     * @param string|null $errName name of the object for error message,
      *                               or null if nothing is to be shown
-
      * @return bool
      */
-    private function checkValid(
-        string $lookedFor,
-        array $into,
-        string $getterName,
-        &$toVar,
-        $errName
-
-    ): bool
+    private function checkValid(string $lookedFor, array $into, string $getterName, &$toVar, $errName): bool
     {
-
 
         foreach ($into as $item) {
             if ($lookedFor == $item->$getterName()) {
@@ -538,81 +495,32 @@ class AdminController extends AbstractController
             }
         }
 
-
-        if (0 !== count($_GET)) {
-            ## the goal of a GET method is to sort the available datas
-            # into the controller, thus saving some SQL different requests
-            if (isset($_GET['sortBy'])) {
-                $sortBy = $_GET['sortBy'];
-
-                if (!$concertManager->sortArray($concerts, $sortBy)) {
-                    $this->storeMsg(
-                        'Le paramètre de tri «' . $sortBy
-                        . '» n\'est pas valide'
-                    );
-                }
-            } else {
-                $this->storeMsg('Cette page n\'est pas prévue pour être utilisée avec ces paramètres de requête');
-            };
+        if (null !== $errName) {
+            $this->storeMsg("{$errName} Inconnu «{$lookedFor}» passé en paramètre. Pas d'enregistrement.");
         }
-
-
-        if (0 !== count($_POST)) {
-            $this->storeMsg('TODO : Cette page n\'est pas encore fonctionnelle avec la méthode POST');
-        }
-
-        return $this->twig->render(
-            'Admin/concerts.html.twig',
-            [
-                'sortableProperties' => $props,
-                'concerts' => $concerts,
-                'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
-                'errorList' => $this->errorStore ?
-                    $this->errorStore->formatAllMsg() : null
-            ]
-        );
+        return false;
     }
-
-
 
 
     /**
      * DeleteOneConcert by Id.
-     *
      * @param ConcertManager $concertManager
-     * @param DayManager     $dayManager
-     * @param array          $concerts
-     * @param array          $artists unused
-     * @param array          $scenes  unused
-     * @param array          $days    unused
-     * @param array          $values  unused
+     * @param DayManager $dayManager
+     * @param array $concerts
+     * @param array $artists unused
+     * @param array $scenes unused
+     * @param array $days unused
+     * @param array $values unused
      */
-    private
-    function deleteOneConcert(
-
-        ConcertManager $concertManager,
-        DayManager $dayManager,
-        array $concerts,
-        array $artists,
-        array $scenes,
-        array $days,
-        array $values
-
-    )
+    private function deleteOneConcert(ConcertManager $concertManager, DayManager $dayManager, array $concerts, array $artists, array $scenes, array $days, array $values)
     {
-
         $id = '';
-        if (!$this->checkValid(
-            $values['idConcertToDelete'],
-            $concerts,
-            'getId',
-            $id,
-            'Concert'
-        )) {
+        if (!$this->checkValid($values['idConcertToDelete'], $concerts, 'getId', $id, 'Concert')) {
             $this->storeMsg('requête invalide : propriété absente');
             return false;
         };
-      
+
+        //TODO: DELETE THE DAY ENTRY IF NO MORE REFERENCES
         try {
             $concertManager->delete($id);
             return true;
@@ -620,6 +528,5 @@ class AdminController extends AbstractController
             $this->storeMsg('Impossible de supprimer l\'entrée : <br>' . $e->getMessage());
             return false;
         }
-
     }
 }
