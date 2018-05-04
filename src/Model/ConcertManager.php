@@ -7,7 +7,8 @@ class ConcertManager extends AbstractManager
 
     const AVAILABLE_SORT_CRITERIAS = [
         [ 'name' => 'Day', 'label' => 'journée' ],
-        [ 'name' => 'Scene', 'label' => 'scène' ]
+        [ 'name' => 'Scene', 'label' => 'scène' ],
+        [ 'name' => 'ArtistName', 'label' => 'artist' ]
     ];
 
 

@@ -18,6 +18,7 @@
     max-height: 15vh;
 }
 
+
 /* page-global styling and boostrap overriding */
 
 .adminConcert .btn-info:focus,
@@ -28,6 +29,7 @@ input:focus,
 select:focus {
     box-shadow: 0 0 0 .2rem rgb(67, 251, 93);
 }
+
 
 .btn-info:not(:disabled):not(.disabled).active:focus, .btn-info:not(:disabled):not(.disabled):active:focus,
 .show > .btn-info.dropdown-toggle:focus {
@@ -81,3 +83,7 @@ input[type="checkbox"]:checked + .cancelled::after {
 .adminConcert > nav {
     margin: 3%;
 }
+
+
+/* for the toggle between "oneConcert" and "concertList" view mode */
+.hidden { display: none }

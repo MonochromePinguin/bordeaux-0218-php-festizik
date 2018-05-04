@@ -82,6 +82,7 @@ class AdminController extends AbstractController
         if (empty($_SESSION['username'])) {
             return $this->twig->render('Admin/login.html.twig', ['errors' => ['Cette page d\'administration n\'est pas accessible sans identification']]);
         }
+
         $contentManager = new ArticleManager();
         $benevolManager = new BenevolManager();
 
@@ -263,9 +264,7 @@ class AdminController extends AbstractController
         $styles = $styleManager->selectStyle();
 
         if ($_POST) {
-            $data = ['name' => $_POST['name'],
-                     'about' => $_POST['about'],
-                     'id_style' => $_POST['id_style']];
+            $data = ['name' => $_POST['name'], 'about' => $_POST['about'], 'id_style' => $_POST['id_style']];
             if (strlen($_POST['picture']) > 0) {
                 $data['picture'] = '/assets/DBimages/' . $_POST['picture'];
             }
@@ -275,13 +274,6 @@ class AdminController extends AbstractController
                 $artistManager->insert();
             }
         }
-
-        $artists = $artistManager->selectNameId();
-        if (isset($_GET['artistSelect'])) {
-            $artistId = $artistManager->selectOneById($_GET['artistSelect']);
-            return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'artistId' => $artistId, 'styles' => $styles]);
-        }
-        return $this->twig->render('Admin/adminArtist.html.twig', ['artists' => $artists, 'styles' => $styles]);
     }
 
     public function benevolContentUpdated()
@@ -319,6 +311,7 @@ class AdminController extends AbstractController
         //sort criterias sent in the URL
         $sortBy = null;
         $sortInverted = false;
+        $viewMode = '';
 
         #allow to sort data out of the model, so we save an SQL request
         static $props = null;
@@ -389,6 +382,15 @@ class AdminController extends AbstractController
             } else {
                 $sortInverted = '';
             }
+
+            if (isset($_GET['viewMode'])) {
+                $viewMode = $_GET['viewMode'];
+
+                if (!in_array($viewMode, ['concertList', 'oneConcert'])) {
+                    $this->storeMsg('Le paramètre d\'affichage «' . $viewMode . '» n\'est pas valide');
+                    $viewMode = '';
+                }
+            }
         }
 
 
@@ -410,10 +412,14 @@ class AdminController extends AbstractController
             return $this->twig->render('Admin/concerts.html.twig', ['sortableProperties' => $props,
 
                 'concerts' => $concerts, #these two are used by the template to generate options in select elements
-                'sceneNames' => $sceneNameList, 'artistNames' => $artistNameList, 'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES),
+                'sceneNames' => $sceneNameList,
+                'artistNames' => $artistNameList,
+                'URLimgs' => json_encode($artistImgList, JSON_UNESCAPED_SLASHES), #used by JS
+                'jsViewMode' => json_encode(($viewMode != '') ? $viewMode : 'oneConcert'), #used by JS
 
                 'actualSort' => $sortBy,        #sort criteria actually used, or null if none specified
                 'sortInvertedState' => $sortInverted,    # 'checked' or ''
+                'viewMode' => $viewMode,                 # 'concertList', 'oneConcert', or ''
 
                 'errorList' => $this->errorStore ? $this->errorStore->formatAllMsg() : null]);
         } catch (\Exception $e) {

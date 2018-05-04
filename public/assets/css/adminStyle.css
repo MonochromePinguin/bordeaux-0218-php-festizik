@@ -9,7 +9,7 @@
 ----------------------------------------------------- */
 
 #sidebar {
-    width      : 15%;
+    max-width  : 14em;
     position   : fixed;
     top        : 0;
     left       : 0;
@@ -22,6 +22,10 @@
 
 #sidebar.active {
     margin-left : -250px;
+}
+
+#sidebar:hover {
+    margin-left: 0;
 }
 
 #sidebar .sidebar-header {
